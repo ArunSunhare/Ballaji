@@ -58,11 +58,11 @@ const DIAG_CRITERIA = [
 ];
 
 const SATISFACTION_LABELS: Record<number, { label: string; color: string }> = {
-  1: { label: "Very Dissatisfied", color: "text-red-500" },
-  2: { label: "Dissatisfied", color: "text-orange-400" },
-  3: { label: "Neutral", color: "text-yellow-500" },
-  4: { label: "Satisfied", color: "text-lime-500" },
-  5: { label: "Very Satisfied", color: "text-emerald-500" },
+  1: { label: "Good", color: "text-red-500" },
+  2: { label: "Average", color: "text-orange-400" },
+  3: { label: "Poor", color: "text-yellow-500" },
+  4: { label: "Very Good", color: "text-lime-500" },
+  5: { label: "Excellent", color: "text-emerald-500" },
 };
 
 const INITIAL_FEEDBACKS: Feedback[] = [
@@ -528,7 +528,7 @@ export default function HospitalFeedback() {
                   <SectionCard icon="👤" title="Patient Information" subtitle="Basic details for record" accent="orange">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name <span className="text-slate-400 font-normal">(Optional)</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name </label>
                         <input
                           type="text"
                           placeholder="e.g. Rahul Verma"
@@ -539,7 +539,7 @@ export default function HospitalFeedback() {
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number <span className="text-slate-400 font-normal">(Optional)</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number </label>
                         <input
                           type="text"
                           placeholder="e.g. SHB-00123"
@@ -696,7 +696,7 @@ export default function HospitalFeedback() {
                             </div>
                             <p className={`text-xs font-bold mt-0.5 ${SATISFACTION_LABELS[fb.overallSatisfaction]?.color}`}>
                               Overall: {SATISFACTION_LABELS[fb.overallSatisfaction]?.label}
-                            </p>
+~                            </p>
                             <p className="text-xs text-slate-400 mt-0.5">{fb.date}</p>
                           </div>
                         </div>

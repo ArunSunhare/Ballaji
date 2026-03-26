@@ -216,23 +216,21 @@ const RatingGrid = ({
             className={`border-t border-slate-100 transition-colors ${!readonly && "hover:bg-orange-50/40"} ${i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}
           >
             <td className="px-4 py-3 text-slate-700 font-medium">{c}</td>
-            {[1, 2, 3, 4, 5].map((rating) => (
-              <td key={rating} className="text-center px-2 py-3">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <td key={star} className="text-center px-2 py-3">
                 <button
                   type="button"
                   disabled={readonly}
-                  onClick={() => onChange?.(c, rating)}
-                  className={`flex flex-col items-center justify-center gap-1 p-2 rounded-xl border-2 transition-all mx-auto w-12 h-12 ${
-                    values[c] === rating
-                      ? "border-orange-500 bg-orange-50 shadow-md shadow-orange-100"
-                      : values[c] > 0 && rating <= values[c]
-                      ? "border-orange-300 bg-orange-100"
-                      : "border-slate-200 bg-white hover:border-orange-300"
-                  } ${readonly ? "cursor-default" : "cursor-pointer hover:scale-105"}`}
-                  aria-label={`${SATISFACTION_LABELS[rating].label} for ${c}`}
-                >
-                  <span className="text-xs font-bold">{rating}</span>
-                </button>
+                  onClick={() => onChange?.(c, star)}
+                  className={`w-6 h-6 rounded-full border-2 transition-all mx-auto block ${
+                    values[c] === star
+                      ? "bg-orange-500 border-orange-500 shadow-md shadow-orange-200"
+                      : values[c] > 0 && star <= values[c]
+                      ? "bg-orange-200 border-orange-300"
+                      : "bg-white border-slate-300 hover:border-orange-400"
+                  } ${readonly ? "cursor-default" : "cursor-pointer hover:scale-110"}`}
+                  aria-label={`${SATISFACTION_LABELS[star].label} for ${c}`}
+                />
               </td>
             ))}
           </tr>
@@ -300,7 +298,7 @@ const SatisfactionSelector = ({
               : "border-slate-200 bg-white hover:border-orange-300"
           }`}
         >
-          <span className="text-lg font-bold">{o.v}</span>
+          <span className="text-3xl">{o.v}</span>
           <span className={`text-xs font-semibold ${value === o.v ? "text-orange-600" : "text-slate-500"}`}>
             {o.label}
           </span>
@@ -528,7 +526,7 @@ export default function HospitalFeedback() {
                   <SectionCard icon="👤" title="Patient Information" subtitle="Basic details for record" accent="orange">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name </label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           placeholder="e.g. Rahul Verma"
@@ -539,7 +537,7 @@ export default function HospitalFeedback() {
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number </label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           placeholder="e.g. SHB-00123"

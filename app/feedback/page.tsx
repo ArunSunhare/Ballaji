@@ -279,11 +279,11 @@ const SatisfactionSelector = ({
   onChange: (v: number) => void;
 }) => {
   const options = [
-    { v: 1, label: "Very Dissatisfied" },
-    { v: 2, label: "Dissatisfied" },
-    { v: 3, label: "Neutral" },
-    { v: 4, label: "Satisfied" },
-    { v: 5, label: "Very Satisfied" },
+    { v: 1, emoji: "😞", label: "Very Dissatisfied" },
+    { v: 2, emoji: "😕", label: "Dissatisfied" },
+    { v: 3, emoji: "😐", label: "Neutral" },
+    { v: 4, emoji: "😊", label: "Satisfied" },
+    { v: 5, emoji: "😍", label: "Very Satisfied" },
   ];
   return (
     <div className="flex flex-wrap gap-3 justify-center mt-2">
@@ -298,7 +298,7 @@ const SatisfactionSelector = ({
               : "border-slate-200 bg-white hover:border-orange-300"
           }`}
         >
-          <span className="text-3xl">{o.v}</span>
+          <span className="text-3xl">{o.emoji}</span>
           <span className={`text-xs font-semibold ${value === o.v ? "text-orange-600" : "text-slate-500"}`}>
             {o.label}
           </span>
@@ -631,7 +631,7 @@ export default function HospitalFeedback() {
                   {/* Suggestions */}
                   <SectionCard icon="💡" title="Suggestions / Comments" subtitle="Tell us how we can serve you better (Optional)" accent="teal">
                     <textarea
-                      rows={4}
+                      rows={6}
                       placeholder="Share your thoughts, suggestions, or any specific feedback about your experience..."
                       value={form.suggestions}
                       onChange={(e) => setForm((f) => ({ ...f, suggestions: e.target.value }))}

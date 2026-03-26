@@ -546,7 +546,7 @@ export default function HospitalFeedback() {
                           className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
                         />
                       </div>
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Department Visited <span className="text-red-500">*</span></label>
                         <div className="flex flex-wrap gap-2">
                           {DEPARTMENTS.map((d) => (
@@ -565,7 +565,7 @@ export default function HospitalFeedback() {
                           ))}
                         </div>
                         {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}
-                      </div>
+                      </div> */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Visit <span className="text-red-500">*</span></label>
                         <input

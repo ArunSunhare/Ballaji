@@ -58,9 +58,9 @@ const DIAG_CRITERIA = [
 ];
 
 const SATISFACTION_LABELS: Record<number, { label: string; color: string }> = {
-  1: { label: "Good", color: "text-red-500" },
-  2: { label: "Average", color: "text-orange-400" },
   3: { label: "Poor", color: "text-yellow-500" },
+  2: { label: "Average", color: "text-orange-400" },
+  1: { label: "Good", color: "text-red-500" },
   4: { label: "Very Good", color: "text-lime-500" },
   5: { label: "Excellent", color: "text-emerald-500" },
 };
@@ -279,11 +279,11 @@ const SatisfactionSelector = ({
   onChange: (v: number) => void;
 }) => {
   const options = [
-    { v: 1, emoji: "😞", label: "Very Dissatisfied" },
-    { v: 2, emoji: "😕", label: "Dissatisfied" },
-    { v: 3, emoji: "😐", label: "Neutral" },
-    { v: 4, emoji: "😊", label: "Satisfied" },
-    { v: 5, emoji: "😍", label: "Very Satisfied" },
+    { v: 1, emoji: "😞", label: "Poor" },
+    { v: 2, emoji: "😕", label: "Average" },
+    { v: 3, emoji: "😐", label: "Good" },
+    { v: 4, emoji: "😊", label: "Very Good" },
+    { v: 5, emoji: "😍", label: "Excellent" },
   ];
   return (
     <div className="flex flex-wrap gap-3 justify-center mt-2">
@@ -292,7 +292,7 @@ const SatisfactionSelector = ({
           key={o.v}
           type="button"
           onClick={() => onChange(o.v)}
-          className={`flex flex-col items-center gap-1.5 px-4 py-3 rounded-2xl border-2 transition-all hover:scale-105 ${
+          className={`flex flex-col items-center gap-1.5 px-4 py-3 rounded-2xl border-2 transition-all hover:scale-105 w-24 h-24 ${
             value === o.v
               ? "border-orange-500 bg-orange-50 shadow-md shadow-orange-100"
               : "border-slate-200 bg-white hover:border-orange-300"

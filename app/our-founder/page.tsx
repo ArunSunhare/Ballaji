@@ -8,7 +8,7 @@ import { Footer } from "@/app/componets/footer";
 
 // ─── FOUNDER DATA ────────────────────────────────────────────────────────────
 const CHAIRMAN = {
-  name: "Shri Vinod Kumar Bindal",
+  name: "Shri Vinod Kumar Bindal Ji",
 //  title: "Chairman",
   image: "assets/IMG-20260219-WA0008.jpg.jpeg",
   tagline: "Words are not enough to write about Shri Vinod Kumar Bindal ji",

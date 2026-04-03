@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Navigation } from "@/app/componets/navbar";
 import { Footer } from "@/app/componets/footer";
 import { TopHeader } from "../../top_header";
 import { TopNavbar } from "../../TopNavbar";
@@ -10,11 +9,23 @@ import { MainNavbar } from "../../MainNavbar";
 
 const radiationTherapyImages = [
   {
-    src: "/assets/diagnostics/radiation-therapy-machine.jpg",
-    title: "Advanced Radiation Therapy System"
-  }
+    src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
+    title: "TrueBeam Radiotherapy Machine",
+  },
 ];
 
+const radiationTechniques = [
+  "IGRT (Image Guided Radiotherapy)",
+  "IMRT (Intensity Modulated Radiation Therapy)",
+  "3DCRT (3D Conformal Radiation Therapy)",
+  "Rapid-ARC",
+  "SRS",
+  "SBRT",
+  "Respiratory Gating",
+  "DIBH",
+  "TSET",
+  "TBI",
+];
 
 export default function RadiationTherapyPage() {
   const [activeImage, setActiveImage] = useState<null | typeof radiationTherapyImages[0]>(null);
@@ -28,7 +39,7 @@ export default function RadiationTherapyPage() {
       <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-40">
           <Image
-            src="/assets/diagnostics/radiation-therapy-machine.jpg"
+            src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
             alt="Radiation Therapy Facility"
             fill
             priority
@@ -62,6 +73,42 @@ export default function RadiationTherapyPage() {
               <p className="text-xl font-semibold text-orange-800 italic text-center">
                 World-class diagnostics at subsidized cost – true charitable healthcare
               </p>
+            </div>
+
+            <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-teal-900 to-cyan-700 shadow-2xl">
+              <div className="grid gap-8 lg:grid-cols-[1.25fr_0.95fr] items-center">
+                <div className="p-8 md:p-10 lg:p-12 text-white">
+                  <p className="text-lg md:text-xl leading-relaxed text-cyan-50">
+                    We use precision-targeted radiation to destroy cancer cells while preserving healthy tissue.
+                  </p>
+
+                  <h2 className="mt-6 text-3xl md:text-4xl font-extrabold tracking-wide">
+                    RADIATION THERAPY TECHNIQUES :
+                  </h2>
+
+                  <ul className="mt-6 space-y-3 text-lg md:text-2xl font-medium">
+                    {radiationTechniques.map((technique) => (
+                      <li key={technique} className="flex items-start gap-3">
+                        <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-white" />
+                        <span>{technique}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveImage(radiationTherapyImages[0])}
+                  className="relative block h-full min-h-[320px] w-full bg-white/10 transition hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-cyan-200/60"
+                >
+                  <Image
+                    src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
+                    alt="TrueBeam machine"
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              </div>
             </div>
 
             <p className="text-justify">

@@ -8,44 +8,16 @@ import { TopHeader } from "../../top_header";
 import { TopNavbar } from "../../TopNavbar";
 import { MainNavbar } from "../../MainNavbar";
 
-const pathologyImages = [
+const radiationTherapyImages = [
   {
-    src: "/assets/diagnostics/BIO-RAD D10.jpg",
-    title: "Bio-Rad D-10 HbA1c Analyzer"
-  },
-  {
-    src: "/assets/diagnostics/ERBA MANNHEIM ECL 105..jpg",
-    title: "Erba Mannheim ECL 105 Semi-Auto Biochemistry Analyzer"
-  },
-  {
-    src: "/assets/diagnostics/Horiba ABX Pentra XL.png",
-    title: "Horiba ABX Pentra XL-80 Hematology Analyzer"
-  },
-  {
-    src: "/assets/diagnostics/I-chroma 2.jpg",
-    title: "i-Chroma II Immunoassay Analyzer"
-  },
-  {
-    src: "/assets/diagnostics/Ortho Clinical Diagnostics Vitros 4600 Chemistry.jpg",
-    title: "Vitros 4600 Integrated Chemistry System"
-  },
-  {
-    src: "/assets/diagnostics/Ortho Clinical Diagnostics Vitros 5600.jpg",
-    title: "Vitros 5600 Integrated Chemistry & Immunoassay System"
-  },
-  {
-    src: "/assets/diagnostics/Ortho Clinical Diagnostics Vitros ECiQ immunodiagnostics.jpg",
-    title: "Vitros ECiQ Immunodiagnostic System"
-  },
-  {
-    src: "/assets/diagnostics/URI-PLUS 200.jpg",
-    title: "URI-PLUS 200 Urine Analyzer"
+    src: "/assets/diagnostics/radiation-therapy-machine.jpg",
+    title: "Advanced Radiation Therapy System"
   }
 ];
 
 
-export default function PathologyPage() {
-  const [activeImage, setActiveImage] = useState<null | typeof pathologyImages[0]>(null);
+export default function RadiationTherapyPage() {
+  const [activeImage, setActiveImage] = useState<null | typeof radiationTherapyImages[0]>(null);
 
   return (
     <div className="min-h-screen bg-white">
@@ -56,8 +28,8 @@ export default function PathologyPage() {
       <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-40">
           <Image
-            src="/assets/diagnostics/Ortho Clinical Diagnostics Vitros ECiQ immunodiagnostics.jpg"
-            alt="Pathology Laboratory Facility"
+            src="/assets/diagnostics/radiation-therapy-machine.jpg"
+            alt="Radiation Therapy Facility"
             fill
             priority
             className="object-cover"
@@ -67,10 +39,10 @@ export default function PathologyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-white mb-4 text-4xl md:text-5xl font-bold">
-              Advanced Pathology Laboratory
+              Advanced Radiation Therapy Center
             </h1>
             <p className="text-white/90 text-lg md:text-xl">
-              Accuracy • Precision • Compassionate Healthcare
+              Precision • Innovation • Compassionate Cancer Care
             </p>
           </div>
         </div>
@@ -81,11 +53,9 @@ export default function PathologyPage() {
           <div className="p-8 md:p-12 lg:p-16 space-y-10 text-gray-800 leading-relaxed text-lg">
 
             <p className="text-justify">
-              The <strong>Pathology Laboratory</strong> at{" "}
+              The <strong>Radiation Therapy Center</strong> at{" "}
               <strong>Shri Hanuman Balaji Charitable Diagnostic Centre</strong>{" "}
-              is equipped with state-of-the-art laboratory equipment from globally
-              trusted manufacturers. Our goal is to deliver accurate test results
-              with maximum patient safety and comfort.
+              is equipped with cutting-edge radiation therapy technology and advanced treatment techniques. Our goal is to deliver precise radiation treatment with maximum effectiveness and minimal side effects for cancer patients.
             </p>
 
             <div className="bg-orange-50 border-l-4 border-orange-600 p-8 rounded-r-xl">
@@ -95,23 +65,24 @@ export default function PathologyPage() {
             </div>
 
             <p className="text-justify">
-              Our services include{" "}
+              Our advanced radiation therapy techniques include{" "}
               <strong>
-                Complete Blood Count, Biochemistry Tests, Hormone Assays,
-                Coagulation Studies, Microscopy, Serology Tests,
-                Urine Analysis, and Histopathology
+                IGRT (Image Guided Radiotherapy), IMRT (Intensity Modulated Radiation Therapy),
+                3DCRT (3D Conformal Radiation Therapy), Rapid-ARC,
+                SRS (Stereotactic Radiosurgery), SBRT (Stereotactic Body Radiation Therapy),
+                Respiratory Gating, DIBH (Deep Inspiration Breath Hold),
+                TSET (Total Skin Electron Therapy), and TBI (Total Body Irradiation)
               </strong>.
-              All investigations are conducted by skilled laboratory technologists under
-              strict quality and safety protocols.
+              All treatments are planned and delivered by skilled radiation oncologists and technologists under strict quality and safety protocols.
             </p>
 
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Pathology Infrastructure
+                Radiation Therapy Infrastructure
               </h2>
 
               <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {pathologyImages.map((img, index) => (
+                {radiationTherapyImages.map((img, index) => (
                   <div
                     key={index}
                     onClick={() => setActiveImage(img)}
@@ -136,19 +107,19 @@ export default function PathologyPage() {
             <p className="text-justify">
               We emphasize{" "}
               <strong>
-                sample quality control, fast reporting, diagnostic accuracy,
-                and patient comfort
+                treatment precision, patient safety, advanced imaging guidance,
+                and compassionate care
               </strong>.
               Special care is provided to elderly patients and economically
-              weaker sections with complete dignity and support.
+              weaker sections with complete dignity and support throughout their cancer treatment journey.
             </p>
 
             <div className="mt-12 bg-gradient-to-r from-orange-100 to-orange-50 p-10 rounded-xl text-center">
               <p className="text-2xl font-bold text-orange-700">
-                Accurate Results • Compassionate Care • Affordable Access
+                Precise Treatment • Advanced Technology • Compassionate Care
               </p>
               <p className="mt-4 text-gray-700">
-                Advanced pathology services in service of humanity
+                Advanced radiation therapy services in service of humanity
               </p>
             </div>
 

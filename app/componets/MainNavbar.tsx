@@ -277,8 +277,9 @@ export function MainNavbar() {
           )}
         </div>
         <a href="/our_locations" className="text-gray-700 hover:text-orange-600 transition-colors">Our Location</a>
-        <a href="/contact_us" className="text-gray-700 hover:text-orange-600 transition-colors">Contact Us</a>
         <a href="/feedback" className="text-gray-700 hover:text-orange-600 transition-colors">Feedback</a>
+        <a href="/contact_us" className="text-gray-700 hover:text-orange-600 transition-colors">Contact Us</a>
+       
 
       </nav>
     </div>

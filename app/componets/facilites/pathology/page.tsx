@@ -7,12 +7,10 @@ import { TopHeader } from "../../top_header";
 import { TopNavbar } from "../../TopNavbar";
 import { MainNavbar } from "../../MainNavbar";
 
-const radiationTherapyImages = [
-  {
-    src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
-    title: "TrueBeam Radiotherapy Machine",
-  },
-];
+const trueBeamImage = {
+  src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
+  title: "TrueBeam Radiotherapy Machine",
+};
 
 const radiationTechniques = [
   "IGRT (Image Guided Radiotherapy)",
@@ -28,7 +26,7 @@ const radiationTechniques = [
 ];
 
 export default function RadiationTherapyPage() {
-  const [activeImage, setActiveImage] = useState<null | typeof radiationTherapyImages[0]>(null);
+  const [activeImage, setActiveImage] = useState<null | typeof trueBeamImage>(null);
 
   return (
     <div className="min-h-screen bg-white">
@@ -76,17 +74,17 @@ export default function RadiationTherapyPage() {
             </div>
 
             <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-teal-900 to-cyan-700 shadow-2xl">
-              <div className="grid gap-8 lg:grid-cols-[1.25fr_0.95fr] items-center">
+              <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] items-center">
                 <div className="p-8 md:p-10 lg:p-12 text-white">
                   <p className="text-lg md:text-xl leading-relaxed text-cyan-50">
-                    We use precision-targeted radiation to destroy cancer cells while preserving healthy tissue.
+                    High-precision radiation planning helps target tumor cells accurately while supporting safer treatment for nearby healthy tissue.
                   </p>
 
-                  <h2 className="mt-6 text-3xl md:text-4xl font-extrabold tracking-wide">
-                    RADIATION THERAPY TECHNIQUES :
+                  <h2 className="mt-6 text-2xl md:text-3xl font-extrabold tracking-wide">
+                    RADIATION THERAPY TECHNIQUES 
                   </h2>
 
-                  <ul className="mt-6 space-y-3 text-lg md:text-2xl font-medium">
+                  <ul className="mt-5 space-y-2.5 text-base md:text-xl font-medium">
                     {radiationTechniques.map((technique) => (
                       <li key={technique} className="flex items-start gap-3">
                         <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-white" />
@@ -98,14 +96,15 @@ export default function RadiationTherapyPage() {
 
                 <button
                   type="button"
-                  onClick={() => setActiveImage(radiationTherapyImages[0])}
-                  className="relative block h-full min-h-[320px] w-full bg-white/10 transition hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-cyan-200/60"
+                  onClick={() => setActiveImage(trueBeamImage)}
+                  className="flex min-h-[240px] w-full items-center justify-center bg-white/5 p-6 md:p-8 transition hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-cyan-200/60"
                 >
                   <Image
                     src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
                     alt="TrueBeam machine"
-                    fill
-                    className="object-cover"
+                    width={1200}
+                    height={900}
+                    className="h-auto max-h-[340px] w-full rounded-2xl object-contain"
                   />
                 </button>
               </div>
@@ -122,34 +121,6 @@ export default function RadiationTherapyPage() {
               </strong>.
               All treatments are planned and delivered by skilled radiation oncologists and technologists under strict quality and safety protocols.
             </p>
-
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Radiation Therapy Infrastructure
-              </h2>
-
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {radiationTherapyImages.map((img, index) => (
-                  <div
-                    key={index}
-                    onClick={() => setActiveImage(img)}
-                    className="rounded-xl overflow-hidden shadow-md bg-white hover:shadow-xl transition-shadow cursor-pointer"
-                  >
-                    <div className="relative aspect-[4/3]">
-                      <Image
-                        src={img.src}
-                        alt={img.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-4 text-center text-sm font-semibold text-gray-700">
-                      {img.title}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <p className="text-justify">
               We emphasize{" "}
@@ -196,9 +167,6 @@ export default function RadiationTherapyPage() {
               fill
               className="object-contain"
             />
-            <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-lg font-semibold">
-              {activeImage.title}
-            </p>
           </div>
         </div>
       )}

@@ -25,6 +25,8 @@ const radiationTechniques = [
   "TBI",
 ];
 
+const spotlightTechniques = ["IGRT", "IMRT", "3DCRT", "Rapid-ARC", "SRS", "SBRT"];
+
 export default function RadiationTherapyPage() {
   const [activeImage, setActiveImage] = useState<null | typeof trueBeamImage>(null);
 
@@ -73,39 +75,64 @@ export default function RadiationTherapyPage() {
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-teal-900 to-cyan-700 shadow-2xl">
-              <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] items-center">
-                <div className="p-8 md:p-10 lg:p-12 text-white">
-                  <p className="text-lg md:text-xl leading-relaxed text-cyan-50">
-                    High-precision radiation planning helps target tumor cells accurately while supporting safer treatment for nearby healthy tissue.
+            <div className="rounded-[2rem] border border-stone-200 bg-[#faf8f3] p-6 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.28)] md:p-10">
+              <div className="flex flex-wrap gap-x-8 gap-y-3 border-b border-stone-300 pb-5 text-sm font-semibold text-stone-500">
+                {spotlightTechniques.map((technique, index) => (
+                  <span
+                    key={technique}
+                    className={index === 0 ? "border-b-2 border-stone-700 pb-2 text-stone-900" : "pb-2"}
+                  >
+                    {technique}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-8 grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+                <div className="space-y-6 text-stone-700">
+                  <div className="space-y-3">
+                    <p className="text-sm font-semibold uppercase tracking-[0.22em] text-amber-700">
+                      Advanced Radiation Care
+                    </p>
+                    <h2 className="text-3xl font-bold leading-tight text-stone-900 md:text-4xl">
+                      Focused treatment planning with modern TrueBeam support
+                    </h2>
+                  </div>
+
+                  <p className="max-w-2xl text-base leading-8 md:text-lg">
+                    Our radiation therapy unit combines accurate imaging, detailed planning, and
+                    dependable delivery systems to support safe and effective cancer care for every patient.
                   </p>
 
-                  <h2 className="mt-6 text-2xl md:text-3xl font-extrabold tracking-wide">
-                    RADIATION THERAPY TECHNIQUES 
-                  </h2>
-
-                  <ul className="mt-5 space-y-2.5 text-base md:text-xl font-medium">
-                    {radiationTechniques.map((technique) => (
-                      <li key={technique} className="flex items-start gap-3">
-                        <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-white" />
-                        <span>{technique}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="grid gap-3 text-base md:text-lg">
+                    <p className="flex items-start gap-3">
+                      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
+                      <span>Image-guided and intensity-modulated techniques help clinicians deliver better precision.</span>
+                    </p>
+                    <p className="flex items-start gap-3">
+                      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
+                      <span>Advanced planning supports Rapid-ARC, SRS, SBRT, Respiratory Gating, and DIBH workflows.</span>
+                    </p>
+                    <p className="flex items-start gap-3">
+                      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
+                      <span>Specialized treatment pathways are also available for TSET and TBI where clinically required.</span>
+                    </p>
+                  </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setActiveImage(trueBeamImage)}
-                  className="flex min-h-[240px] w-full items-center justify-center bg-white/5 p-6 md:p-8 transition hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-cyan-200/60"
+                  className="group relative mx-auto block w-full max-w-[720px] overflow-hidden rounded-[1.75rem] bg-stone-950 p-4 shadow-2xl transition hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-amber-200"
                 >
-                  <Image
-                    src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
-                    alt="TrueBeam machine"
-                    width={1200}
-                    height={900}
-                    className="h-auto max-h-[340px] w-full rounded-2xl object-contain"
-                  />
+                  <div className="relative overflow-hidden rounded-[1.2rem]">
+                    <Image
+                      src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
+                      alt="TrueBeam machine"
+                      width={1200}
+                      height={900}
+                      className="h-[320px] w-full object-cover transition duration-300 group-hover:scale-[1.02] md:h-[420px] lg:h-[500px]"
+                    />
+                  </div>
                 </button>
               </div>
             </div>

@@ -9,6 +9,7 @@ import { useState } from "react";
 
 
 
+
 type Facility = {
  name: string;
  image: string;
@@ -143,7 +144,5 @@ export function Facilities() {
    </section>
  );
 }
-
-
 
 

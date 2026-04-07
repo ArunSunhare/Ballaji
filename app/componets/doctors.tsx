@@ -183,6 +183,42 @@ const doctorsData = [
     qualification: "B. SC & M. SC (Food & Nutrition)",
     image: "/assets/DT. mans.jpg",
     description: "Specialized in clinical nutrition and dietary planning for optimal health."
+  },
+  {
+    id: 21,
+    name: "Dr. Vivek Kumar Chhimpa",
+    specialization: "Orthopedics",
+    experience: "Experienced Specialist",
+    qualification: "M.B.B.S., D.N.B",
+    image: "/assets/Dr. Vivek Chhimpa1.jpeg",
+    description: "Specialized in orthopedic care, bone and joint disorders, and musculoskeletal treatment."
+  },
+  {
+    id: 22,
+    name: "Dr. Rajendra Pal Midha",
+    specialization: "General Physician",
+    experience: "Experienced Specialist",
+    qualification: "M.B.B.S.",
+    image: "/assets/Dr. RAJENDRA.png",
+    description: "Expert in general medicine and primary healthcare with a focus on comprehensive patient care."
+  },
+  {
+    id: 23,
+    name: "Dr. Ajay Aggarwal",
+    specialization: "Urologist",
+    experience: "Experienced Specialist",
+    qualification: "M.B.B.S., M.S., M.Ch.",
+    image: "/assets/Dr. Ajay Agarwal.png",
+    description: "Specialized in urology with experience in urinary tract, kidney, and related surgical care."
+  },
+  {
+    id: 24,
+    name: "Dr. Navida Batra",
+    specialization: "Cardiologist",
+    experience: "Experienced Specialist",
+    qualification: "M.B.B.S, MD, DM",
+    image: "/assets/Dr. Navida.png",
+    description: "Expert in cardiology with a focus on heart health, diagnosis, and preventive cardiac care."
   }
 ];
 
@@ -194,7 +230,7 @@ export function DoctorsSection() {
   const [visibleDoctors, setVisibleDoctors] = useState(4);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const trackRef = useRef<HTMLDivElement>(null);
-  const total = loopedDoctors.length; // 40 cards
+  const total = loopedDoctors.length; // doubled list for seamless looping
 
   useEffect(() => {
     const handleResize = () => {
@@ -219,7 +255,7 @@ export function DoctorsSection() {
     return () => clearInterval(interval);
   }, []);
 
-  // Jab startIndex doctorsData.length pe pahunche (20),
+  // Jab startIndex doctorsData.length pe pahunche,
   // transition off karke silently 0 pe reset karo — koi jump nahi dikhega
   useEffect(() => {
     if (startIndex === doctorsData.length) {

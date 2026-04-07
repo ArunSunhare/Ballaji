@@ -2,25 +2,115 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Navigation } from "@/app/componets/navbar";
 import { Footer } from "@/app/componets/footer";
 import { MainNavbar } from "../../MainNavbar";
 import { TopNavbar } from "../../TopNavbar";
 import { TopHeader } from "../../top_header";
 
-const ctScanImages = [
-  { src: "/assets/diagnostics/CT.jpg", title: "Philips CT Scanner" },
-  { src: "/assets/diagnostics/MRI.jpg", title: "MRI Scanner" },
-  { src: "/assets/diagnostics/PET-CT.jpg", title: "PET-CT Scanner (Siemens Biograph Horizon)" },
-  { src: "/assets/diagnostics/X-RAY.jpg", title: "Digital X-Ray System" },
-  { src: "/assets/diagnostics/USG.jpg", title: "Ultrasound (USG) Machine" },
-  { src: "/assets/diagnostics/ECG.jpg", title: "ECG Machine" },
-  { src: "/assets/diagnostics/OPG.jpeg", title: "OPG Dental X-Ray Machine" },
-  { src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg", title: "TrueBeam Radiotherapy Machine" },
+type DiagnosticItem = {
+  src: string;
+  title: string;
+  heading: string;
+  content: string[];
+};
+
+const ctScanImages: DiagnosticItem[] = [
+  {
+    src: "/assets/diagnostics/CT.jpg",
+    title: "Philips CT Scanner",
+    heading: "CT: Computed Tomography",
+    content: [
+      "We are using one of the leading brand 16 Slice CT Scanner / 3.5 MHU Tube Access CT machine of Philips for CT (Computed Tomography). As computers have become more powerful and less expensive, CT systems have become a more efficient mode of inspection technology. Coupled with the use of Flat Panel Detectors, CT systems have drastically reduced scanning and image processing times.",
+      "CT, or CAT scans, are special X-ray tests that produce cross-sectional images of the body using X-rays and a computer. CT scans are also referred to as computerized axial tomography.",
+      "CT scanners first began to be installed in 1974. CT scanners have vastly improved patient comfort because a scan can be done quickly. Improvements have led to higher-resolution images, which assist the doctor in making a diagnosis. For example, the CT scan can help doctors to visualize small nodules or tumours, which they cannot see with a plain film X-ray.",
+      "CT scan images allow the doctor to look at the inside of the body just as one would look at the inside of a loaf of bread by slicing it. CT scans are frequently used to evaluate the brain, neck, spine, chest, abdomen, pelvis, and sinuses.",
+      "CT is non-invasive, safe, and well-tolerated. It provides a highly detailed look at many different parts of the body.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/MRI.jpg",
+    title: "MRI Scanner",
+    heading: "MRI: Magnetic Resonance Imaging",
+    content: [
+      "We are using one of the leading brand Philips 1.5 Tesla Advance INGENIA PRODIVA CS Digital Broadband MR machine for Magnetic Resonance Imaging.",
+      "Philips has been a pioneer in the field of magnetic resonance imaging in India and is first to do functional MRI, TRICKS multi-phase MR angiography, VIBRANT MR mammography and LAVA liver imaging in the world. Our centre is equipped with the latest high-definition 1.5 Tesla digital broadband MRI system and all MR examinations are routinely performed.",
+      "Even uncooperative patients who move in the MRI machine can be scanned using special PROPELLOR sequences.",
+      "MRI is a non-invasive modality using nuclear magnetic resonance to render images of the inside of an object. It is primarily used in medical imaging to demonstrate pathological or other physiological alterations of the living tissues.",
+      "MR imaging uses a powerful magnet, radio waves and a computer to generate pictures of organs, soft tissues, and other internal body structures in exquisite detail. No harmful ionizing radiation is used in MR imaging.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/PET-CT.jpg",
+    title: "PET-CT Scanner (Siemens Biograph Horizon)",
+    heading: "Pathology",
+    content: [
+      "Shri Hanuman Balaji Charitable Diagnostic Centre is having in house Pathology Laboratory. We have following departments Pathology Lab.",
+      "BioChemistry – By Vitros 4600. At our centre we use most advance Biochemistry analyser Vitros 4600 by Johnson and Johnson. The machine works on the concept of dry chemistry without using water and no wastage of reagent. It has a capacity of performing 900 tests per hour.",
+      "The tests included in Biochemistry are: Electrolytes, Renal Function Test, Liver Function Test, Cardiac Markers, Minerals, Vitamins, Glucose, Hb1Ac, etc.",
+      "Immunology and Serology – By Vitros ECiQ. The VITROS ECiQ Immunodiagnostic System verifies and documents each step throughout processing. The machine has a capacity to perform 90 tests per hour.",
+      "Haematology – By Horiba 5 Parts Analyser. Clinical Pathology – By URIT 50. Cytology is the examination of cells from the body under a microscope by an experienced Pathologist.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/X-RAY.jpg",
+    title: "Digital X-Ray System",
+    heading: "Dialysis",
+    content: [
+      "Satya Sheel Gupta Dialysis Hall. Under the aegis of Shri Hanuman Balaji Charitable Diagnostic Centre we run 8 Bedded Dialysis Centre where we are using best in class and technology, the latest technology Haemodialysis 710200A machine of B Braun Dialog + (German machines) with capacity of 32 dialysis per day with all machines.",
+      "People with failed or damaged kidneys may have difficulty eliminating waste and unwanted water from the blood. Dialysis is an artificial way of carrying out this process.",
+      "Dialysis substitutes the natural work of the kidneys, so it is also known as renal replacement therapy (RRT). Healthy kidneys regulate the body's levels of water and minerals and remove waste.",
+      "A healthy person's kidneys filter around 100 to 130 litres of blood each day. If the kidneys are not working correctly, waste builds up in the blood.",
+      "Dialysis prevents the waste products in the blood from reaching hazardous levels. It can also remove toxins or drugs from the blood in an emergency setting.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/USG.jpg",
+    title: "Ultrasound (USG) Machine",
+    heading: "USG: Ultrasound Sonography Test",
+    content: [
+      "We are using the leading brand Affiniti 50 USG and Affiniti 30 machines of Philips for Ultrasound Sonography Test.",
+      "An USG Scan is a diagnostic test that uses high-frequency sound waves to capture live images from the inside of your body. It is also known as ultrasonography.",
+      "Unlike other imaging techniques, ultrasound uses no radiation. For this reason, it is the preferred method for viewing a developing foetus during pregnancy.",
+      "An ultrasound can provide a view of the bladder, brain in infants, eyes, gallbladder, kidneys, liver, ovaries, pancreas, spleen, thyroid, testicles, uterus and blood vessels.",
+      "An ultrasound is also a helpful way to guide surgeons’ movements during certain medical procedures, such as biopsies.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/ECG.jpg",
+    title: "ECG Machine",
+    heading: "ECG (Electro Cardio Gram)",
+    content: [
+      "We are using one of the leading Brand Cardiomax Machine of Medicaid for ECG (Electro Cardio Gram).",
+      "An electrocardiogram (ECG) is a medical test that detects cardiac abnormalities by measuring the electrical activity generated by the heart as it contracts.",
+      "The electrocardiograph records the electrical activity of the heart muscle and displays this data as a trace on a screen or on paper. This data is then interpreted by a medical practitioner.",
+      "Any irregularity in the heart rhythm or damage to the heart muscle can change the electrical activity of the heart so that the shape of the ECG is changed.",
+      "A doctor may recommend an ECG for people who may be at risk of heart disease or are experiencing symptoms such as chest pain, dizziness, shortness of breath, or fainting.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/OPG.jpeg",
+    title: "OPG Dental X-Ray Machine",
+    heading: "OPG – Ortho Pantomo Gram",
+    content: [
+      "OPG (OrthoPantomoGram) complete denture x-ray by the latest technology DIGITAL OPG machine by Allengers.",
+      "Allengers Smart PAN is a fully micro controller based OPG system. It is controlled by a soft touch console and equipped with an alphanumeric digital display for a clear indication of the working parameters and operative messages.",
+      "The operative cycle is entirely run by microprocessor, controlling its different modes from programming of the emission parameters according to chosen examination and patient’s size, to the voltage fluctuation and to the notification of possible anomalies, failures or errors.",
+    ],
+  },
+  {
+    src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
+    title: "TrueBeam Radiotherapy Machine",
+    heading: "Multispeciality OPD",
+    content: [
+      "OPD consultation of various specialities and super specialities i.e. Medicine, Gynaecology, Paediatrics, Orthopaedics, ENT, Dermatology, Neurology, Gastroenterology, Oncology will be given at a nominal and highly subsidised consultation fees by the philanthropist specialists.",
+      "The centre provides affordable access to specialist consultations under one roof for patients who need follow-up, diagnosis support and expert medical advice.",
+      "This service is part of the charitable mission of the centre to make healthcare more accessible to all sections of society.",
+    ],
+  },
 ];
 
 export default function CTScanPage() {
-  const [activeImage, setActiveImage] = useState<null | typeof ctScanImages[0]>(null);
+  const [activeImage, setActiveImage] = useState<null | DiagnosticItem>(null);
 
   return (
     <div className="min-h-screen bg-white">
@@ -132,7 +222,7 @@ export default function CTScanPage() {
 
       {activeImage && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
           onClick={() => setActiveImage(null)}
         >
           <button
@@ -143,18 +233,34 @@ export default function CTScanPage() {
           </button>
 
           <div
-            className="relative w-[90vw] h-[90vh]"
+            className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={activeImage.src}
-              alt={activeImage.title}
-              fill
-              className="object-contain"
-            />
-            <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-lg font-semibold">
-              {activeImage.title}
-            </p>
+            <div className="relative h-64 md:h-80">
+              <Image
+                src={activeImage.src}
+                alt={activeImage.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            <div className="p-6 md:p-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                {activeImage.heading}
+              </h2>
+              <p className="text-orange-600 font-semibold mb-6">
+                {activeImage.title}
+              </p>
+
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                {activeImage.content.map((paragraph, index) => (
+                  <p key={index} className="text-justify">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}

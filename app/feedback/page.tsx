@@ -11,7 +11,8 @@ import { Footer } from "../componets/footer";
 type Feedback = {
   id: number;
   name: string;
-  uhid: string;
+  mobile:string;
+  // uhid: string;
   department: string;
   dateOfVisit: string;
   doctorRatings: Record<string, number>;
@@ -69,7 +70,8 @@ const INITIAL_FEEDBACKS: Feedback[] = [
   {
     id: 1,
     name: "Priya Sharma",
-    uhid: "SHB-00123",
+    mobile:"1122334455",
+    // uhid: "SHB-00123",
     department: "OPD",
     dateOfVisit: "2026-03-14",
     doctorRatings: {
@@ -104,7 +106,8 @@ const INITIAL_FEEDBACKS: Feedback[] = [
   {
     id: 2,
     name: "Arjun Mehta",
-    uhid: "SHB-00456",
+    mobile:"2233445566",
+    // uhid: "SHB-00456",
     department: "Emergency",
     dateOfVisit: "2026-03-11",
     doctorRatings: {
@@ -222,13 +225,12 @@ const RatingGrid = ({
                   type="button"
                   disabled={readonly}
                   onClick={() => onChange?.(c, star)}
-                  className={`w-6 h-6 rounded-full border-2 transition-all mx-auto block ${
-                    values[c] === star
+                  className={`w-6 h-6 rounded-full border-2 transition-all mx-auto block ${values[c] === star
                       ? "bg-orange-500 border-orange-500 shadow-md shadow-orange-200"
                       : values[c] > 0 && star <= values[c]
-                      ? "bg-orange-200 border-orange-300"
-                      : "bg-white border-slate-300 hover:border-orange-400"
-                  } ${readonly ? "cursor-default" : "cursor-pointer hover:scale-110"}`}
+                        ? "bg-orange-200 border-orange-300"
+                        : "bg-white border-slate-300 hover:border-orange-400"
+                    } ${readonly ? "cursor-default" : "cursor-pointer hover:scale-110"}`}
                   aria-label={`${SATISFACTION_LABELS[star].label} for ${c}`}
                 />
               </td>
@@ -292,11 +294,10 @@ const SatisfactionSelector = ({
           key={o.v}
           type="button"
           onClick={() => onChange(o.v)}
-          className={`flex flex-col items-center gap-1.5 px-4 py-3 rounded-2xl border-2 transition-all hover:scale-105 w-24 h-24 ${
-            value === o.v
+          className={`flex flex-col items-center gap-1.5 px-4 py-3 rounded-2xl border-2 transition-all hover:scale-105 w-24 h-24 ${value === o.v
               ? "border-orange-500 bg-orange-50 shadow-md shadow-orange-100"
               : "border-slate-200 bg-white hover:border-orange-300"
-          }`}
+            }`}
         >
           <span className="text-3xl">{o.emoji}</span>
           <span className={`text-xs font-semibold ${value === o.v ? "text-orange-600" : "text-slate-500"}`}>
@@ -359,7 +360,8 @@ export default function HospitalFeedback() {
 
   const [form, setForm] = useState({
     name: "",
-    uhid: "",
+    mobile: "", 
+    // uhid: "",
     department: "",
     dateOfVisit: "",
     doctorRatings: defaultRatings(DOCTOR_CRITERIA),
@@ -397,7 +399,57 @@ export default function HospitalFeedback() {
     if (!form.overallSatisfaction) e.overallSatisfaction = "Please select overall satisfaction";
     return e;
   };
+  
 
+  const handleNameChange = (e:any) => {
+    const { name, value } = e.target
+    setForm((f) => ({ ...f, name: value }));
+    setErrors((er) => ({ ...er, name: "" }));
+  }
+
+  const fetchPatientDetails = async (mobile: string) => {
+  try {
+    const res = await fetch(`/api/get-patient?MobileNo=${mobile}`); // ✅ fixed
+    const result = await res.json();
+
+    console.log("PATIENT DATA:", result);
+    if (result?.status === "Success" && result?.data?.length > 0) {
+      const patient = result.data[0];
+
+    // if (data) {
+      setForm((prev) => ({
+        ...prev,
+        name:
+          patient.PName ||
+          `${patient.PFirstName || ""} ${patient.PLastName || ""}`,
+        // uhid: patient.MRNo || "",   // THIS IS YOUR UHID
+        mobile: patient.ContactNo || "",
+      }));
+    }else {
+          setForm((prev) => ({
+            ...prev,
+            name: "",
+          }));
+          console.warn("Patient not found");
+        }
+  } catch (err) {
+    console.error(err);
+  }
+};
+const handleMobileChange = (e: any) => {
+  const value = e.target.value;
+
+  setForm((prev) => ({
+    ...prev,
+    mobile: value,   // store mobile correctly
+  }));
+
+  if (value.length === 10) {   // better condition
+    fetchPatientDetails(value);
+  }
+};
+
+  
   const handleSubmit = () => {
     const e = validate();
     if (Object.keys(e).length) return setErrors(e);
@@ -412,7 +464,8 @@ export default function HospitalFeedback() {
     const newFeedback: Feedback = {
       id: Date.now(),
       name: form.name.trim(),
-      uhid: form.uhid.trim() || "—",
+      mobile: form.mobile.trim(),
+      // uhid: form.uhid.trim() || "—",
       department: form.department,
       dateOfVisit: form.dateOfVisit,
       doctorRatings: { ...form.doctorRatings },
@@ -433,7 +486,8 @@ export default function HospitalFeedback() {
     setSubmitted(true);
     setForm({
       name: "",
-      uhid: "",
+      mobile:"",
+      // uhid: "",      
       department: "",
       dateOfVisit: "",
       doctorRatings: defaultRatings(DOCTOR_CRITERIA),
@@ -462,10 +516,16 @@ export default function HospitalFeedback() {
       <div className="min-h-screen bg-white font-sans">
         {/* Header */}
         <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-10">
-      
+
         </header>
 
         <main className="max-w-5xl mx-auto px-6 py-8">
+          {/* <button 
+            onClick={fetchPatientDetails}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Fetch Patient Data
+          </button> */}
           {/* Stats Row */}
           <div className="grid grid-cols-3 gap-4 mb-8">
             {[
@@ -491,11 +551,10 @@ export default function HospitalFeedback() {
               <button
                 key={t}
                 onClick={() => { setTab(t); setSubmitted(false); }}
-                className={`px-7 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                  tab === t
+                className={`px-7 py-2.5 rounded-xl text-sm font-bold transition-all ${tab === t
                     ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-200"
                     : "text-slate-500 hover:text-slate-700"
-                }`}
+                  }`}
               >
                 {t === "submit" ? "✍️  Submit Feedback" : "📋  View All Feedbacks"}
               </button>
@@ -530,22 +589,35 @@ export default function HospitalFeedback() {
                         <input
                           type="text"
                           placeholder="e.g. Rahul Verma"
-                          value={form.name}
-                          onChange={(e) => { setForm((f) => ({ ...f, name: e.target.value })); setErrors((er) => ({ ...er, name: "" })); }}
+                          value={form.name}                          
+                          onChange={handleNameChange}
                           className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.name ? "border-red-400 bg-red-50" : "border-slate-200"}`}
                         />
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                       </div>
+                      
                       <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Mobile Number <span className="text-red-500">*</span></label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 79XXXXXXXX "
+                          value={form.mobile}
+                          // onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
+                          onChange={handleMobileChange}
+                          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+                        />
+                      </div>
+                      {/* <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           placeholder="e.g. SHB-00123"
                           value={form.uhid}
-                          onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
+                          // onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
+                          onChange={(e)=>handleUHIDChange(e)}
                           className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
                         />
-                      </div>
+                      </div> */}
                       {/* <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Department Visited <span className="text-red-500">*</span></label>
                         <div className="flex flex-wrap gap-2">
@@ -676,9 +748,9 @@ export default function HospitalFeedback() {
                             <p className="font-bold text-slate-800 text-base">{fb.name}</p>
                             <div className="flex items-center gap-2 mt-1 flex-wrap">
                               <DeptBadge dept={fb.department} />
-                              {fb.uhid !== "—" && (
+                              {/* {fb.uhid !== "—" && (
                                 <span className="text-xs text-slate-400 font-mono">#{fb.uhid}</span>
-                              )}
+                              )} */}
                               {fb.dateOfVisit && (
                                 <span className="text-xs text-slate-400">
                                   Visit: {new Date(fb.dateOfVisit).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
@@ -694,7 +766,7 @@ export default function HospitalFeedback() {
                             </div>
                             <p className={`text-xs font-bold mt-0.5 ${SATISFACTION_LABELS[fb.overallSatisfaction]?.color}`}>
                               Overall: {SATISFACTION_LABELS[fb.overallSatisfaction]?.label}
-~                            </p>
+                              ~                            </p>
                             <p className="text-xs text-slate-400 mt-0.5">{fb.date}</p>
                           </div>
                         </div>

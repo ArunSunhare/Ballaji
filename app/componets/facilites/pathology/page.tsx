@@ -42,7 +42,7 @@ export default function RadiationTherapyPage() {
             src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
             alt="Radiation Therapy Facility"
             fill
-            priority
+            priority            
             className="object-cover"
           />
         </div>
@@ -122,7 +122,8 @@ export default function RadiationTherapyPage() {
                 <button
                   type="button"
                   onClick={() => setActiveImage(trueBeamImage)}
-                  className="group relative mx-auto block w-full max-w-[720px] overflow-hidden rounded-[1.75rem] bg-stone-950 p-4 shadow-2xl transition hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-amber-200"
+                  // style={{backgroundColor: #ddd}}
+                  className="group relative mx-auto block w-full max-w-[720px] overflow-hidden rounded-[1.75rem] bg-stone-100 p-4 shadow-2xl transition hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-amber-200"
                 >
                   <div className="relative overflow-hidden rounded-[1.2rem]">
                     <Image

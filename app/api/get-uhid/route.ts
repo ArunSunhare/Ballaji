@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
       phone: parsed.data?.MobileNo || "",
     };
 
-    console.log("formatted patient data:", patient);
+    // console.log("formatted patient data:", patient);
 
     return NextResponse.json({
       Status: "Success",

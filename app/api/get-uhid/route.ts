@@ -18,11 +18,12 @@ export async function GET(req: NextRequest) {
 
   try {
     const res = await fetch(
-        `${baseUrl}/GetPatientDetails?SecurityKey=${SecurityKey}&ClientId=${ClientId}&UHID=${uhid}`,
+        `${baseUrl}/GetPatientByUHID?SecurityKey=${SecurityKey}&ClientId=${ClientId}&PatientID=${uhid}`,
       {
         method: "GET",
         cache: "no-store",
       }
+      //http://shbcdc.in/HIS/API/MobileApplication.asmx/GetPatientByUHID?SecurityKey=XZY45ZTYLG19045GHTY&ClientId=XZY45ZTBNG190489GHTY&PatientID=MR/26/005552
     );
 
     if (!res.ok) {
@@ -30,7 +31,7 @@ export async function GET(req: NextRequest) {
     }
 
     const text = await res.text();
-    console.log(" RAW PATIENT RESPONSE:", text);
+    // console.log(" RAW PATIENT RESPONSE:", text);
 
     let jsonString = text;
 
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
     }
 
     const parsed = JSON.parse(jsonString);
-    console.log("PARSED PATIENT DATA:", parsed);
+    // console.log("PARSED PATIENT DATA:", parsed);
 
     if (parsed.status === "Failure") {
       return NextResponse.json(
@@ -57,15 +58,17 @@ export async function GET(req: NextRequest) {
     }
 
     // Format patient data (adjust fields as per API response)
+    const patientRaw = parsed.data?.[0];
+
     const patient = {
-      id: parsed.data?.UHID || "",
-      name: parsed.data?.PatientName || "",
-      age: parsed.data?.Age || "",
-      gender: parsed.data?.Gender || "",
-      phone: parsed.data?.MobileNo || "",
+      id: patientRaw?.MRNo || "",
+      name: patientRaw?.PName || "",
+      age: patientRaw?.Age || "",
+      gender: patientRaw?.Gender || "",
+      phone: patientRaw?.ContactNo || "",
     };
 
-    console.log("formatted patient data:", patient);
+    // console.log("formatted patient data:", patient);
 
     return NextResponse.json({
       Status: "Success",

@@ -412,7 +412,7 @@ export default function HospitalFeedback() {
       const res = await fetch(`/api/get-uhid?uhid=${uhid}`); // 
       const result = await res.json();
 
-      console.log("PATIENT DATA:", result);
+      // console.log("PATIENT DATA:", result);
       if (result?.Status === "Success" && result?.Data) {
         const patient = result.Data;
 

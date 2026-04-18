@@ -50,13 +50,13 @@ export default function InvestigationsPage() {
         limit: "1000",
       });
 
-      console.log("Fetching investigations from:", `/api/get-investigation?${params}`);
+      // console.log("Fetching investigations from:", `/api/get-investigation?${params}`);
 
       const res = await fetch(`/api/get-investigation?${params}`, {
         next: { revalidate: 3600 },
       });
 
-      console.log("API Response status:", res.status);
+      // console.log("API Response status:", res.status);
 
       if (!res.ok) {
         const errorText = await res.text();
@@ -65,11 +65,11 @@ export default function InvestigationsPage() {
       }
 
       const json = await res.json();
-      console.log("API Response data:", json);
+      // console.log("API Response data:", json);
 
       if (json.status === "Success") {
         setAllInvestigations(json.data || []);
-        console.log("Successfully loaded", json.data?.length || 0, "investigations");
+        // console.log("Successfully loaded", json.data?.length || 0, "investigations");
       } else {
         console.error("API returned error status:", json);
         setError(json.message || "Failed to load investigations");

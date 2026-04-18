@@ -42,7 +42,7 @@ export default function PackageDetailPage() {
     const fetchFromApi = async () => {
       try {
         const searchTerm = slug.replace(/-/g, " ");
-        console.log("🔍 SEARCH TERM:", searchTerm);
+        // console.log("🔍 SEARCH TERM:", searchTerm);
 
         const res = await fetch("/api/get-health-packages");
         const json = await res.json();
@@ -57,7 +57,7 @@ export default function PackageDetailPage() {
           parsed = json;
         }
 
-        console.log("✅ API RESPONSE:", parsed);
+        // console.log("✅ API RESPONSE:", parsed);
 
         if (parsed?.status !== "Success" || !parsed.data?.length) {
           setError("Package not found");
@@ -74,7 +74,7 @@ export default function PackageDetailPage() {
           match = parsed.data.find((item: any) => slugify(item?.ItemName) === targetSlug);
         }
 
-        console.log("🎯 MATCHED PACKAGE:", match);
+        // console.log("🎯 MATCHED PACKAGE:", match);
 
         if (!match) {
           setError("Package not found");
@@ -104,7 +104,7 @@ export default function PackageDetailPage() {
           centres: STATIC_CENTRES,
         };
 
-        console.log("🚀 FINAL PACKAGE OBJECT:", mappedPackage);
+        // console.log("🚀 FINAL PACKAGE OBJECT:", mappedPackage);
 
         setDynamicPackage(mappedPackage);
       } catch (err) {

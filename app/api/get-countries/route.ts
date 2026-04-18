@@ -20,7 +20,7 @@ export async function GET() {
     }
 
     const text = await res.text();
-    console.log("🌍 RAW RESPONSE:", text);
+    // console.log("🌍 RAW RESPONSE:", text);
 
     // ✅ XML se JSON extract karo
     let jsonString = text;
@@ -31,13 +31,13 @@ export async function GET() {
       const match = text.match(/<string[^>]*>([\s\S]*?)<\/string>/);
       if (match && match[1]) {
         jsonString = match[1];
-        console.log("📦 EXTRACTED JSON STRING:", jsonString);
+        // console.log("📦 EXTRACTED JSON STRING:", jsonString);
       }
     }
 
     // Parse JSON
     const parsed = JSON.parse(jsonString);
-    console.log("✅ PARSED DATA:", parsed);
+    // console.log("✅ PARSED DATA:", parsed);
 
     // Check for failure
     if (parsed.status === "Failure") {
@@ -51,14 +51,14 @@ export async function GET() {
 
     // Format countries
     const countries = (parsed.data || []).map((item: any) => {
-      console.log("🔍 Country Item:", item);
+      // console.log("🔍 Country Item:", item);
       return {
         id: item.CountryID || item.Id || item.id || "",
         name: item.CountryName || item.Name || item.name || ""
       };
     });
 
-    console.log("✅ FORMATTED COUNTRIES:", countries);
+    // console.log("✅ FORMATTED COUNTRIES:", countries);
 
     return NextResponse.json({
       Status: "Success",

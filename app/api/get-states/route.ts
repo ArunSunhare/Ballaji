@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     }
 
     const text = await res.text();
-    console.log("🏛️ RAW STATE RESPONSE:", text);
+    // console.log("🏛️ RAW STATE RESPONSE:", text);
 
     // ✅ XML se JSON extract karo (same as country)
     let jsonString = text;
@@ -42,13 +42,13 @@ export async function GET(req: NextRequest) {
 
       if (match && match[1]) {
         jsonString = match[1];
-        console.log("📦 EXTRACTED JSON STRING:", jsonString);
+        // console.log("📦 EXTRACTED JSON STRING:", jsonString);
       }
     }
 
     // Parse JSON
     const parsed = JSON.parse(jsonString);
-    console.log("✅ PARSED STATE DATA:", parsed);
+    // console.log("✅ PARSED STATE DATA:", parsed);
 
     // Check for failure
     if (parsed.status === "Failure") {
@@ -65,14 +65,14 @@ export async function GET(req: NextRequest) {
 
     // Format states (same as country)
     const states = (parsed.data || []).map((item: any) => {
-      console.log("🔍 State Item:", item);
+      // console.log("🔍 State Item:", item);
       return {
         id: item.StateID || item.Id || item.id || "",
         name: item.StateName || item.Name || item.name || "",
       };
     });
 
-    console.log("✅ FORMATTED STATES:", states);
+    // console.log("✅ FORMATTED STATES:", states);
 
     return NextResponse.json({
       Status: "Success",

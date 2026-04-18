@@ -59,7 +59,7 @@ export function Navigation() {
 
   useEffect(() => {
     if (serverOtp) {
-      console.log("Anshul serverOtp:", serverOtp);
+      // console.log("Anshul serverOtp:", serverOtp);
     }
   }, [serverOtp]);
 
@@ -132,7 +132,7 @@ export function Navigation() {
       const parsed = JSON.parse(data.d);
       const receivedOtp = parsed?.data?.[0]?.OTP;
 
-      console.log("OTP API RESPONSE:", receivedOtp);
+      // console.log("OTP API RESPONSE:", receivedOtp);
 
       setOtp(Array(4).fill(""));
       setStep("otp");

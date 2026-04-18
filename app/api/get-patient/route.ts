@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        console.log("📞 Calling GetPatient API for mobile:", mobile);
+        // console.log("📞 Calling GetPatient API for mobile:", mobile);
 
         const url = `${BASE_URL}?SecurityKey=${SecurityKey}&ClientId=${ClientId}&MobileNo=${mobile}`;
         
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
         const rawText = await response.text();
         const parsed = parseGetPatientResponse(rawText);
 
-        console.log("✅ GetPatient API Response:", parsed);
+        // console.log("✅ GetPatient API Response:", parsed);
 
         return NextResponse.json(parsed ?? { raw: rawText });
     } catch (error: any) {
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
             );
         }
 
-        console.log("📞 Calling GetPatient API for mobile:", mobile);
+        // console.log("📞 Calling GetPatient API for mobile:", mobile);
 
         const url = `${BASE_URL}?SecurityKey=${SecurityKey}&ClientId=${ClientId}&MobileNo=${mobile}`;
         
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
         const rawText = await response.text();
         const parsed = parseGetPatientResponse(rawText);
 
-        console.log("✅ GetPatient API Response:", parsed);
+        // console.log("✅ GetPatient API Response:", parsed);
 
         return NextResponse.json(parsed ?? { raw: rawText });
     } catch (error: any) {

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     }
 
     const text = await res.text();
-    console.log("🏙️ RAW DISTRICT RESPONSE:", text);
+    // console.log("🏙️ RAW DISTRICT RESPONSE:", text);
 
     let jsonString = text;
     if (text.includes("<?xml")) {
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
     }
 
     const parsed = JSON.parse(jsonString);
-    console.log("✅ PARSED DISTRICT DATA:", parsed);
+    // console.log("✅ PARSED DISTRICT DATA:", parsed);
 
     if (parsed.status === "Failure") {
       return NextResponse.json(
@@ -55,14 +55,14 @@ export async function GET(req: NextRequest) {
 
     // 🔥 FIX: Backend returns "District" NOT "DistrictName"
     const districts = (parsed.data || []).map((item: any) => {
-      console.log("🔍 DISTRICT ITEM:", item);
+      // console.log("🔍 DISTRICT ITEM:", item);
       return {
         id: String(item.DistrictID || item.Id || item.id || ""),
         name: item.District || item.DistrictName || item.Name || item.name || "", // ✅ "District" first!
       };
     });
 
-    console.log("✅ FORMATTED DISTRICTS:", districts);
+    // console.log("✅ FORMATTED DISTRICTS:", districts);
 
     return NextResponse.json({
       Status: "Success",

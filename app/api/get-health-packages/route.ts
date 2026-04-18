@@ -34,7 +34,7 @@ function parseHealthPackageResponse(rawText: string) {
 
 export async function GET() {
     try {
-        console.log("📦 Calling GethealthPackage API");
+        // console.log("📦 Calling GethealthPackage API");
 
         const url = `${BASE_URL}?SecurityKey=${SecurityKey}&ClientId=${ClientId}`;
 
@@ -55,7 +55,7 @@ export async function GET() {
         const rawText = await response.text();
         const parsed = parseHealthPackageResponse(rawText);
 
-        console.log("✅ GethealthPackage API Response:", parsed);
+        // console.log("✅ GethealthPackage API Response:", parsed);
 
         return NextResponse.json(parsed ?? { raw: rawText });
     } catch (error: any) {

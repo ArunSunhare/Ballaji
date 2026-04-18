@@ -26,7 +26,7 @@ export default function StatusPage() {
             const res = await fetch(`/api/get-status?MobileNo=${mobile}`);
             const json = await res.json();
 
-            console.log("📊 Status Result:", json);
+            // console.log("📊 Status Result:", json);
 
             if (json.status === "Success" || json.Length > 0 || (json.data && json.data.length > 0)) {
                 setResult(json.data || []);

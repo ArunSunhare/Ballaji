@@ -6,7 +6,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 const slugify = (text: string) => {
@@ -23,6 +23,8 @@ export function HealthPackages() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const visiblePackages = 3;
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [translateX, setTranslateX] = useState(0);
 
   useEffect(() => {
     const fetchHealthPackages = async () => {
@@ -91,16 +93,47 @@ export function HealthPackages() {
     fetchHealthPackages();
   }, []);
 
-  const handlePrev = () =>
-    setStartIndex((prev) => Math.max(0, prev - 1));
+  const maxStartIndex = Math.max(0, packages.length - visiblePackages);
 
-  const handleNext = () =>
-    setStartIndex((prev) =>
-      Math.min(packages.length - visiblePackages, prev + 1)
-    );
+  const updateTranslate = useCallback((index: number) => {
+    const card = cardRefs.current[index];
+
+    if (!card) {
+      return;
+    }
+
+    setTranslateX(card.offsetLeft);
+  }, []);
+
+  useEffect(() => {
+    const syncLayout = () => {
+      const nextIndex = Math.min(startIndex, maxStartIndex);
+      if (nextIndex !== startIndex) {
+        setStartIndex(nextIndex);
+      }
+      updateTranslate(nextIndex);
+    };
+
+    syncLayout();
+    window.addEventListener("resize", syncLayout);
+
+    return () => window.removeEventListener("resize", syncLayout);
+  }, [maxStartIndex, packages.length, startIndex, updateTranslate]);
 
   const handleBookClick = (pkg: any) => {
     router.push(`/health-packages/${pkg.slug}`);
+  };
+
+  const handlePrev = () => {
+    const nextIndex = Math.max(0, startIndex - 1);
+    setStartIndex(nextIndex);
+    updateTranslate(nextIndex);
+  };
+
+  const handleNext = () => {
+    const nextIndex = Math.min(maxStartIndex, startIndex + 1);
+    setStartIndex(nextIndex);
+    updateTranslate(nextIndex);
   };
 
   if (loading) {
@@ -151,8 +184,6 @@ export function HealthPackages() {
     );
   }
 
-  const maxStartIndex = Math.max(0, packages.length - visiblePackages);
-
   return (
     <section className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -166,14 +197,15 @@ export function HealthPackages() {
         <div className="relative">
           <div className="overflow-hidden">
             <div
-              className="flex gap-6 transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${startIndex * (100 / visiblePackages)}%)`
-              }}
+              className="flex gap-6 transition-transform duration-500 ease-in-out will-change-transform"
+              style={{ transform: `translateX(-${translateX}px)` }}
             >
               {packages.map((pkg, index) => (
                 <div
                   key={pkg.id || index}
+                  ref={(element) => {
+                    cardRefs.current[index] = element;
+                  }}
                   className="flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                 >
                   {/* Card */}
@@ -219,6 +251,7 @@ export function HealthPackages() {
                       </div>
 
                       <button
+                        type="button"
                         onClick={() => handleBookClick(pkg)}
                         className="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
                       >
@@ -233,11 +266,12 @@ export function HealthPackages() {
 
           {/* Prev Button */}
           <button
+            type="button"
             onClick={handlePrev}
             disabled={startIndex === 0}
             aria-label="Previous packages"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10
-              bg-white border border-gray-200 rounded-full p-2 shadow-md
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-10
+              bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
               transition-all duration-200 hover:bg-gray-50 hover:shadow-lg
               disabled:opacity-40 disabled:cursor-not-allowed"
           >
@@ -246,11 +280,12 @@ export function HealthPackages() {
 
           {/* Next Button */}
           <button
+            type="button"
             onClick={handleNext}
             disabled={startIndex >= maxStartIndex}
             aria-label="Next packages"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10
-              bg-white border border-gray-200 rounded-full p-2 shadow-md
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-10
+              bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
               transition-all duration-200 hover:bg-gray-50 hover:shadow-lg
               disabled:opacity-40 disabled:cursor-not-allowed"
           >

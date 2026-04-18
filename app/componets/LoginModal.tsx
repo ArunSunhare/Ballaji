@@ -75,7 +75,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
       }
 
       let result = await response.json();
-      console.log("🔍 GetPatient API Response:", result);
+      // console.log("🔍 GetPatient API Response:", result);
 
       // Parse response
       let parsed;

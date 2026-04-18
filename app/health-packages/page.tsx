@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Search, Activity, Loader2 } from "lucide-react";
@@ -12,6 +12,8 @@ import { MainNavbar } from "../componets/MainNavbar";
 
 export default function HealthPackagesPage() {
   const router = useRouter();
+  const resultsRef = useRef<HTMLDivElement | null>(null);
+  const shouldScrollOnPageChangeRef = useRef(false);
 
   const [allPackages, setAllPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,6 +96,12 @@ export default function HealthPackagesPage() {
   const totalItems = filteredPackages.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -118,6 +126,44 @@ export default function HealthPackagesPage() {
     }
     return pages;
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (!shouldScrollOnPageChangeRef.current || loading) {
+      return;
+    }
+
+    shouldScrollOnPageChangeRef.current = false;
+
+    const top = resultsRef.current
+      ? resultsRef.current.getBoundingClientRect().top + window.scrollY - 24
+      : 0;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: "smooth",
+    });
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }, [currentPage, loading]);
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      const nextPage = Math.min(Math.max(page, 1), totalPages);
+
+      if (!nextPage || nextPage === currentPage) {
+        return;
+      }
+
+      shouldScrollOnPageChangeRef.current = true;
+      setCurrentPage(nextPage);
+    },
+    [currentPage, totalPages]
+  );
+
+  const isPreviousDisabled = loading || totalPages <= 1 || currentPage <= 1;
+  const isNextDisabled = loading || totalPages <= 1 || currentPage >= totalPages;
 
   return (
     <div className="min-h-screen bg-white">
@@ -157,6 +203,7 @@ export default function HealthPackagesPage() {
                   />
                 </div>
                 <button
+                  type="button"
                   className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
                 >
                   <Search className="w-5 h-5" />
@@ -168,7 +215,7 @@ export default function HealthPackagesPage() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-6">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(9)].map((_, i) => (
@@ -190,6 +237,7 @@ export default function HealthPackagesPage() {
           <div className="text-center bg-red-50 p-8 rounded-xl border border-red-100">
             <p className="text-red-600 text-lg">{error}</p>
             <button
+              type="button"
               onClick={fetchHealthPackages}
               className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
             >
@@ -264,6 +312,7 @@ export default function HealthPackagesPage() {
                         </div>
                       )}
                       <button
+                        type="button"
                         onClick={() => router.push(`/health-packages/${slugify(item.ItemName)}`)}
                         className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-medium shadow-sm"
                       >
@@ -278,8 +327,10 @@ export default function HealthPackagesPage() {
             {totalPages > 1 && packagesToShow.length > 0 && (
               <div className="flex justify-center items-center gap-2 mt-12">
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
+                  type="button"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={isPreviousDisabled}
+                  aria-disabled={isPreviousDisabled}
                   className="px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
                 >
                   Previous
@@ -288,10 +339,13 @@ export default function HealthPackagesPage() {
                 {getPageNumbers().map((page) => (
                   <button
                     key={page}
-                    onClick={() => setCurrentPage(page)}
+                    type="button"
+                    onClick={() => handlePageChange(page)}
+                    disabled={currentPage === page}
+                    aria-current={currentPage === page ? "page" : undefined}
                     className={`w-12 h-12 rounded-lg font-medium transition ${
                       currentPage === page
-                        ? "bg-orange-600 text-white"
+                        ? "bg-orange-600 text-white cursor-default"
                         : "border hover:bg-gray-50 text-gray-700"
                     }`}
                   >
@@ -300,8 +354,10 @@ export default function HealthPackagesPage() {
                 ))}
 
                 <button
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
+                  type="button"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={isNextDisabled}
+                  aria-disabled={isNextDisabled}
                   className="px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
                 >
                   Next

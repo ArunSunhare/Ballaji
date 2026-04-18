@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     }
 
     const text = await res.text();
-    console.log("🌆 RAW CITY RESPONSE:", text);
+    // console.log("🌆 RAW CITY RESPONSE:", text);
 
     let jsonString = text;
     if (text.includes("<?xml")) {
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
     }
 
     const parsed = JSON.parse(jsonString);
-    console.log("✅ PARSED CITY DATA:", parsed);
+    // console.log("✅ PARSED CITY DATA:", parsed);
 
     if (parsed.status === "Failure") {
       return NextResponse.json(
@@ -55,14 +55,14 @@ export async function GET(req: NextRequest) {
 
     // 🔥 FIX: Backend returns "ID" and "City" NOT "CityID" and "CityName"
     const cities = (parsed.data || []).map((item: any) => {
-      console.log("🔍 CITY ITEM:", item);
+      // console.log("🔍 CITY ITEM:", item);
       return {
         id: String(item.ID || item.CityID || item.Id || item.id || ""), // ✅ "ID" first!
         name: item.City || item.CityName || item.Name || item.name || "", // ✅ "City" first!
       };
     });
 
-    console.log("✅ FORMATTED CITIES:", cities);
+    // console.log("✅ FORMATTED CITIES:", cities);
 
     return NextResponse.json({
       Status: "Success",

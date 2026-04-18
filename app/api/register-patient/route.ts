@@ -55,10 +55,10 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("📤 FINAL PAYLOAD TO SOAP:", JSON.stringify(payload, null, 2));
-    console.log("📱 Registering Mobile:", payload.MobileNo);
-    console.log("👤 Patient Name:", payload.FirstName, payload.PatientLastName);
-    console.log("🧪 Test Count:", payload.TestDetails?.length || 0);
+    // console.log("📤 FINAL PAYLOAD TO SOAP:", JSON.stringify(payload, null, 2));
+    // console.log("📱 Registering Mobile:", payload.MobileNo);
+    // console.log("👤 Patient Name:", payload.FirstName, payload.PatientLastName);
+    // console.log("🧪 Test Count:", payload.TestDetails?.length || 0);
 
     const res = await fetch(BASE_URL, {
       method: "POST",
@@ -77,16 +77,16 @@ export async function POST(req: Request) {
     }
 
     const rawText = await res.text();
-    console.log("📥 RAW SOAP RESPONSE:", rawText);
+    // console.log("📥 RAW SOAP RESPONSE:", rawText);
 
     const { inner } = parseWrappedResponse(rawText);
     const success = inner?.status === "Success";
     const requestId = inner?.data?.[0]?.RequestID;
 
     if (success) {
-      console.log("✅ DATABASE SAVE CONFIRMED!", requestId);
+      // console.log("✅ DATABASE SAVE CONFIRMED!", requestId);
     } else {
-      console.log("❌ DATABASE SAVE FAILED:", inner?.message || "Unknown error");
+      // console.log("❌ DATABASE SAVE FAILED:", inner?.message || "Unknown error");
     }
 
     return NextResponse.json(

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TopHeader } from "../componets/top_header";
 import { TopNavbar } from "../componets/TopNavbar";
 import { MainNavbar } from "../componets/MainNavbar";
@@ -11,8 +11,8 @@ import { Footer } from "../componets/footer";
 type Feedback = {
   id: number;
   name: string;
-  mobile:string;
-  // uhid: string;
+  mobile: string;
+  uhid: string;
   department: string;
   dateOfVisit: string;
   doctorRatings: Record<string, number>;
@@ -59,9 +59,9 @@ const DIAG_CRITERIA = [
 ];
 
 const SATISFACTION_LABELS: Record<number, { label: string; color: string }> = {
-  3: { label: "Poor", color: "text-yellow-500" },
+  1: { label: "Poor", color: "text-yellow-500" },
   2: { label: "Average", color: "text-orange-400" },
-  1: { label: "Good", color: "text-red-500" },
+  3: { label: "Good", color: "text-red-500" },
   4: { label: "Very Good", color: "text-lime-500" },
   5: { label: "Excellent", color: "text-emerald-500" },
 };
@@ -70,8 +70,8 @@ const INITIAL_FEEDBACKS: Feedback[] = [
   {
     id: 1,
     name: "Priya Sharma",
-    mobile:"1122334455",
-    // uhid: "SHB-00123",
+    mobile: "1122334455",
+    uhid: "SHB-00123",
     department: "OPD",
     dateOfVisit: "2026-03-14",
     doctorRatings: {
@@ -106,8 +106,8 @@ const INITIAL_FEEDBACKS: Feedback[] = [
   {
     id: 2,
     name: "Arjun Mehta",
-    mobile:"2233445566",
-    // uhid: "SHB-00456",
+    mobile: "2233445566",
+    uhid: "SHB-00456",
     department: "Emergency",
     dateOfVisit: "2026-03-11",
     doctorRatings: {
@@ -226,10 +226,10 @@ const RatingGrid = ({
                   disabled={readonly}
                   onClick={() => onChange?.(c, star)}
                   className={`w-6 h-6 rounded-full border-2 transition-all mx-auto block ${values[c] === star
-                      ? "bg-orange-500 border-orange-500 shadow-md shadow-orange-200"
-                      : values[c] > 0 && star <= values[c]
-                        ? "bg-orange-200 border-orange-300"
-                        : "bg-white border-slate-300 hover:border-orange-400"
+                    ? "bg-orange-500 border-orange-500 shadow-md shadow-orange-200"
+                    : values[c] > 0 && star <= values[c]
+                      ? "bg-orange-200 border-orange-300"
+                      : "bg-white border-slate-300 hover:border-orange-400"
                     } ${readonly ? "cursor-default" : "cursor-pointer hover:scale-110"}`}
                   aria-label={`${SATISFACTION_LABELS[star].label} for ${c}`}
                 />
@@ -295,8 +295,8 @@ const SatisfactionSelector = ({
           type="button"
           onClick={() => onChange(o.v)}
           className={`flex flex-col items-center gap-1.5 px-4 py-3 rounded-2xl border-2 transition-all hover:scale-105 w-24 h-24 ${value === o.v
-              ? "border-orange-500 bg-orange-50 shadow-md shadow-orange-100"
-              : "border-slate-200 bg-white hover:border-orange-300"
+            ? "border-orange-500 bg-orange-50 shadow-md shadow-orange-100"
+            : "border-slate-200 bg-white hover:border-orange-300"
             }`}
         >
           <span className="text-3xl">{o.emoji}</span>
@@ -357,12 +357,13 @@ export default function HospitalFeedback() {
   const [tab, setTab] = useState<"submit" | "view">("submit");
   const [submitted, setSubmitted] = useState(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const dateInputRef = useRef<HTMLInputElement | null>(null);
 
   const [form, setForm] = useState({
     name: "",
-    mobile: "", 
-    // uhid: "",
-    department: "",
+    mobile: "",
+    uhid: "",
+    department: "OPD",
     dateOfVisit: "",
     doctorRatings: defaultRatings(DOCTOR_CRITERIA),
     nursingRatings: defaultRatings(NURSING_CRITERIA),
@@ -371,7 +372,7 @@ export default function HospitalFeedback() {
     overallSatisfaction: 0,
     suggestions: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const setRating = (
@@ -386,7 +387,6 @@ export default function HospitalFeedback() {
   const validate = () => {
     const e: Record<string, string> = {};
     if (!form.name.trim()) e.name = "Name is required";
-    if (!form.department) e.department = "Please select a department";
     if (!form.dateOfVisit) e.dateOfVisit = "Please select date of visit";
     if (Object.values(form.doctorRatings).some((v) => v === 0))
       e.doctorRatings = "Please rate all Doctor Services criteria";
@@ -399,61 +399,135 @@ export default function HospitalFeedback() {
     if (!form.overallSatisfaction) e.overallSatisfaction = "Please select overall satisfaction";
     return e;
   };
-  
 
-  const handleNameChange = (e:any) => {
-    const { name, value } = e.target
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     setForm((f) => ({ ...f, name: value }));
     setErrors((er) => ({ ...er, name: "" }));
-  }
+  };
 
-  const fetchPatientDetails = async (mobile: string) => {
-  try {
-    const res = await fetch(`/api/get-patient?MobileNo=${mobile}`); // ✅ fixed
-    const result = await res.json();
+  const fetchPatientDetails = async (uhid: string) => {
+    try {
+      const res = await fetch(`/api/get-uhid?uhid=${uhid}`); // 
+      const result = await res.json();
 
-    console.log("PATIENT DATA:", result);
-    if (result?.status === "Success" && result?.data?.length > 0) {
-      const patient = result.data[0];
+      // console.log("PATIENT DATA:", result);
+      if (result?.Status === "Success" && result?.Data) {
+        const patient = result.Data;
 
-    // if (data) {
-      setForm((prev) => ({
-        ...prev,
-        name:
-          patient.PName ||
-          `${patient.PFirstName || ""} ${patient.PLastName || ""}`,
-        // uhid: patient.MRNo || "",   // THIS IS YOUR UHID
-        mobile: patient.ContactNo || "",
-      }));
-    }else {
-          setForm((prev) => ({
-            ...prev,
-            name: "",
-          }));
-          console.warn("Patient not found");
-        }
-  } catch (err) {
-    console.error(err);
-  }
+        // if (data) {
+        setForm((prev) => ({
+          ...prev,
+          name: patient.name || "",
+          uhid: patient.id || "",
+          mobile: patient.phone || "",
+        }));
+      } else {
+        setForm((prev) => ({
+          ...prev,
+          name: "",
+        }));
+        console.warn("Patient not found");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUHIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    setForm((prev) => ({
+      ...prev,
+      uhid: value,
+    }));
+  };
+  useEffect(() => {
+    //if (!form.uhid || form.uhid.length < 8) return;
+    if (!form.uhid.trim()) return;
+
+    const timer = setTimeout(() => {
+      fetchPatientDetails(form.uhid);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [form.uhid]);
+
+const buildApiPayload = () => {
+  return {
+    PatientName: form.name.trim(),
+    MobileNo: form.mobile.trim() || "NA",
+    PatientID: form.uhid.trim(),
+    department: form.department || "OPD",
+    VisitDate: form.dateOfVisit,
+
+    Doctor_explained_the_disease_clearly:
+      form.doctorRatings["Doctor explained the disease clearly"],
+    Doctor_listened_carefully:
+      form.doctorRatings["Doctor listened carefully"],
+    Doctor_gave_enough_consultation_time:
+      form.doctorRatings["Doctor gave enough consultation time"],
+    Doctor_behaviour_and_professionalism:
+      form.doctorRatings["Doctor behaviour and professionalism"],
+
+    Nursing_staff_responsiveness:
+      form.nursingRatings["Nursing staff responsiveness"],
+    Courtesy_of_nursing_staff:
+      form.nursingRatings["Courtesy of nursing staff"],
+    Attention_to_patient_needs:
+      form.nursingRatings["Attention to patient needs"],
+
+    Cleanliness_of_hospital:
+      form.hospitalRatings["Cleanliness of hospital"],
+    Waiting_time:
+      form.hospitalRatings["Waiting time"],
+    Admission_process:
+      form.hospitalRatings["Admission process"],
+    Discharge_process:
+      form.hospitalRatings["Discharge process"],
+    Billing_clarity:
+      form.hospitalRatings["Billing clarity"],
+
+    Diagnostic_services_efficiency:
+      form.diagRatings["Diagnostic services efficiency"],
+    Lab_report_delivery_time:
+      form.diagRatings["Lab report delivery time"],
+    Pharmacy_staff_behaviour:
+      form.diagRatings["Pharmacy staff behaviour"],
+    Medicine_availability:
+      form.diagRatings["Medicine availability"],
+
+    Overall_satisfaction: form.overallSatisfaction,
+    Comments: form.suggestions.trim(),
+  };
 };
-const handleMobileChange = (e: any) => {
-  const value = e.target.value;
-
-  setForm((prev) => ({
-    ...prev,
-    mobile: value,   // store mobile correctly
-  }));
-
-  if (value.length === 10) {   // better condition
-    fetchPatientDetails(value);
-  }
-};
-
-  
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const e = validate();
-    if (Object.keys(e).length) return setErrors(e);
+    if (Object.keys(e).length) {
+      setErrors(e);
+      return;
+    }
 
+    try {
+      setLoading(true);
+      const payload = buildApiPayload();
+
+    const res = await fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+      const data = await res.json();
+
+      if (!res.ok || data.Status !== "Success") {
+        alert(data?.Message || "Submission failed");
+        return;
+      }
+
+
+    // ✅ SUCCESS — now update UI
     const initials = form.name
       .split(" ")
       .map((w) => w[0])
@@ -465,8 +539,8 @@ const handleMobileChange = (e: any) => {
       id: Date.now(),
       name: form.name.trim(),
       mobile: form.mobile.trim(),
-      // uhid: form.uhid.trim() || "—",
-      department: form.department,
+      uhid: form.uhid.trim(),
+      department: form.department || "—",
       dateOfVisit: form.dateOfVisit,
       doctorRatings: { ...form.doctorRatings },
       nursingRatings: { ...form.nursingRatings },
@@ -484,11 +558,13 @@ const handleMobileChange = (e: any) => {
 
     setFeedbacks((prev) => [newFeedback, ...prev]);
     setSubmitted(true);
+
+    // 🔄 Reset form
     setForm({
       name: "",
-      mobile:"",
-      // uhid: "",      
-      department: "",
+      mobile: "",
+      uhid: "",
+      department: "OPD",
       dateOfVisit: "",
       doctorRatings: defaultRatings(DOCTOR_CRITERIA),
       nursingRatings: defaultRatings(NURSING_CRITERIA),
@@ -497,8 +573,13 @@ const handleMobileChange = (e: any) => {
       overallSatisfaction: 0,
       suggestions: "",
     });
+
     setErrors({});
-  };
+  } catch (err) {
+    console.error("SUBMIT ERROR:", err);
+    alert("Server error. Please try again later.");
+  }
+};
 
   const avgRating =
     feedbacks.length > 0
@@ -519,7 +600,7 @@ const handleMobileChange = (e: any) => {
 
         </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-8">
+        <main className="max-w-5xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
           {/* <button 
             onClick={fetchPatientDetails}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -527,19 +608,26 @@ const handleMobileChange = (e: any) => {
             Fetch Patient Data
           </button> */}
           {/* Stats Row */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
             {[
               { label: "Total Reviews", value: feedbacks.length, icon: "💬", from: "from-blue-400", to: "to-blue-600" },
               { label: "Avg Satisfaction", value: avgRating.toFixed(1) + " / 5", icon: "⭐", from: "from-amber-400", to: "to-orange-500" },
               { label: "Patient Satisfaction", value: satisfaction + "%", icon: "✅", from: "from-emerald-400", to: "to-teal-500" },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl border border-slate-100 p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                <div className={`w-13 h-13 w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.from} ${stat.to} flex items-center justify-center text-2xl shadow-md`}>
+              <div
+                key={stat.label}
+                className="flex h-full min-w-0 items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:gap-4 sm:p-5"
+              >
+                <div className={`h-12 w-12 shrink-0 rounded-2xl bg-gradient-to-br ${stat.from} ${stat.to} flex items-center justify-center text-xl shadow-md sm:h-14 sm:w-14 sm:text-2xl`}>
                   {stat.icon}
                 </div>
-                <div>
-                  <p className="text-2xl font-extrabold text-slate-800">{stat.value}</p>
-                  <p className="text-xs text-slate-400 font-medium mt-0.5">{stat.label}</p>
+                <div className="min-w-0">
+                  <p className="break-words text-xl font-extrabold leading-tight text-slate-800 sm:text-2xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-1 text-[11px] font-medium leading-tight text-slate-400 sm:text-xs">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             ))}
@@ -552,8 +640,8 @@ const handleMobileChange = (e: any) => {
                 key={t}
                 onClick={() => { setTab(t); setSubmitted(false); }}
                 className={`px-7 py-2.5 rounded-xl text-sm font-bold transition-all ${tab === t
-                    ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-200"
-                    : "text-slate-500 hover:text-slate-700"
+                  ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-lg shadow-orange-200"
+                  : "text-slate-500 hover:text-slate-700"
                   }`}
               >
                 {t === "submit" ? "✍️  Submit Feedback" : "📋  View All Feedbacks"}
@@ -583,41 +671,28 @@ const handleMobileChange = (e: any) => {
                 <div className="space-y-6">
                   {/* Patient Info */}
                   <SectionCard icon="👤" title="Patient Information" subtitle="Basic details for record" accent="orange">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name <span className="text-red-500">*</span></label>
-                        <input
-                          type="text"
-                          placeholder="e.g. Rahul Verma"
-                          value={form.name}                          
-                          onChange={handleNameChange}
-                          className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.name ? "border-red-400 bg-red-50" : "border-slate-200"}`}
-                        />
-                        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Mobile Number <span className="text-red-500">*</span></label>
-                        <input
-                          type="text"
-                          placeholder="e.g. 79XXXXXXXX "
-                          value={form.mobile}
-                          // onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
-                          onChange={handleMobileChange}
-                          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
-                        />
-                      </div>
-                      {/* <div>
+                    <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
+                      <div className="md:order-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           placeholder="e.g. SHB-00123"
                           value={form.uhid}
-                          // onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
-                          onChange={(e)=>handleUHIDChange(e)}
+                          onChange={(e) => handleUHIDChange(e)}
                           className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
                         />
-                      </div> */}
+                      </div>
+                      <div className="md:order-1">
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name <span className="text-red-500">*</span></label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Rahul Verma"
+                          value={form.name}
+                          onChange={handleNameChange}
+                          className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.name ? "border-red-400 bg-red-50" : "border-slate-200"}`}
+                        />
+                        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                      </div>
                       {/* <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Department Visited <span className="text-red-500">*</span></label>
                         <div className="flex flex-wrap gap-2">
@@ -638,12 +713,15 @@ const handleMobileChange = (e: any) => {
                         </div>
                         {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}
                       </div> */}
-                      <div>
+                      <div className="md:order-3">
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Visit <span className="text-red-500">*</span></label>
                         <input
+                          ref={dateInputRef}
                           type="date"
                           value={form.dateOfVisit}
                           onChange={(e) => { setForm((f) => ({ ...f, dateOfVisit: e.target.value })); setErrors((er) => ({ ...er, dateOfVisit: "" })); }}
+                          onClick={() => dateInputRef.current?.showPicker?.()}
+                          onFocus={() => dateInputRef.current?.showPicker?.()}
                           className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.dateOfVisit ? "border-red-400 bg-red-50" : "border-slate-200"}`}
                         />
                         {errors.dateOfVisit && <p className="text-red-500 text-xs mt-1">{errors.dateOfVisit}</p>}
@@ -715,9 +793,10 @@ const handleMobileChange = (e: any) => {
                   {/* Submit */}
                   <button
                     onClick={handleSubmit}
-                    className="w-full py-4 bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-orange-200 text-base tracking-wide"
+                    disabled={loading}
+                    className="w-full py-4 bg-gradient-to-r from-orange-500 to-rose-500 text-white rounded-2xl"
                   >
-                    Submit Feedback →
+                    {loading ? "Submitting..." : "Submit Feedback →"}
                   </button>
                   <p className="text-center text-xs text-slate-400 -mt-4">
                     This feedback will be used for NABH quality audit and patient satisfaction monitoring.

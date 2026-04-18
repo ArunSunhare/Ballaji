@@ -1,36 +1,5 @@
 "use client";
-import { Shield, Award, Users, Globe, Cpu, Clock } from "lucide-react";
-
-const features = [
-  {
-    icon: Shield,
-    title: "15+ years of Trust",
-    description: "Trusted by thousands of families for accurate and reliable diagnostic services.",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600"
-  },
-  {
-    icon: Users,
-    title: "Trust of over 50,000+ consumers",
-    description: "Serving the community with dedication and excellence in healthcare diagnostics.",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600"
-  },
-  {
-    icon: Cpu,
-    title: "Innovative and Advanced Technology",
-    description: "State-of-the-art equipment ensuring precise and quick test results.",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600"
-  },
-  {
-    icon: Award,
-    title: "5000+ Tests and Packages",
-    description: "Comprehensive range of diagnostic tests and health checkup packages.",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600"
-  }
-];
+import { Shield } from "lucide-react";
 
 export function WhyChooseUs() {
   return (
@@ -46,26 +15,20 @@ export function WhyChooseUs() {
           <div className="w-24 h-1 bg-orange-600 mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-8">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-2 md:p-4 lg:p-8 text-center hover:shadow-lg transition-shadow border border-gray-100 w-full max-w-sm mx-auto"
-              >
-                <div className={`inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 lg:w-20 lg:h-20 ${feature.iconBg} rounded-lg mb-2 md:mb-4 lg:mb-6`}>
-                  <Icon className={`w-4 h-4 md:w-6 md:h-6 lg:w-10 lg:h-10 ${feature.iconColor}`} />
-                </div>
-                <h3 className="text-gray-900 mb-1 md:mb-2 lg:mb-3 text-xs md:text-sm lg:text-base">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-xs md:text-xs lg:text-sm line-clamp-2">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg p-6 md:p-8 lg:p-10 text-center border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+            <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-xl mb-5">
+              <Shield className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
+            </div>
+            <h3 className="text-gray-900 text-lg md:text-xl font-semibold mb-4">
+              Trusted Diagnostics, Technology, and Care Under One Roof
+            </h3>
+            <p className="text-gray-600 text-sm md:text-base leading-7 max-w-3xl mx-auto">
+              With 15+ years of trust, service to over 50,000 consumers, advanced diagnostic technology,
+              and access to 5000+ tests and health packages, we focus on delivering reliable healthcare
+              services with accuracy, convenience, and patient-first care.
+            </p>
+          </div>
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Footer } from "@/app/componets/footer";
 import { TopHeader } from "../../top_header";
 import { TopNavbar } from "../../TopNavbar";
@@ -11,6 +11,105 @@ const trueBeamImage = {
   src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
   title: "TrueBeam Radiotherapy Machine",
 };
+
+const techniqueCards = [
+  {
+    id: "IGRT",
+    eyebrow: "Advanced Radiation Care",
+    title: "IGRT with image-guided precision for confident daily positioning",
+    description:
+      "Image Guided Radiotherapy supports accurate treatment delivery by verifying patient positioning and target alignment before each session.",
+    points: [
+      "Daily imaging helps clinicians correct setup variations before radiation delivery.",
+      "Precise targeting helps protect nearby healthy organs while maintaining treatment accuracy.",
+      "Well suited for cases where tumor position can shift between treatment sessions.",
+    ],
+    image: {
+      src: "/assets/diagnostics/CT.jpg",
+      title: "IGRT imaging guidance reference",
+    },
+  },
+  {
+    id: "IMRT",
+    eyebrow: "Advanced Radiation Care",
+    title: "IMRT for highly shaped dose delivery around complex tumor volumes",
+    description:
+      "Intensity Modulated Radiation Therapy uses advanced planning to vary beam intensity, helping deliver radiation closely to the tumor shape.",
+    points: [
+      "Supports dose sculpting around sensitive nearby structures and critical organs.",
+      "Useful for complex treatment areas that require greater dose conformity.",
+      "Helps improve treatment balance between tumor coverage and normal tissue protection.",
+    ],
+    image: {
+      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
+      title: "IMRT planning and delivery support",
+    },
+  },
+  {
+    id: "3DCRT",
+    eyebrow: "Advanced Radiation Care",
+    title: "3DCRT planning for dependable conformal treatment pathways",
+    description:
+      "3D Conformal Radiation Therapy uses three-dimensional imaging and planning to shape treatment beams according to the target volume.",
+    points: [
+      "Treatment fields are planned using anatomical detail from modern imaging workflows.",
+      "Delivers dependable conformal coverage for a wide range of cancer treatment indications.",
+      "Supports practical and effective radiation planning with controlled dose distribution.",
+    ],
+    image: {
+      src: "/assets/diagnostics/MRI.jpg",
+      title: "3DCRT treatment support",
+    },
+  },
+  {
+    id: "Rapid-ARC",
+    eyebrow: "Advanced Radiation Care",
+    title: "Rapid-ARC delivery for efficient arc-based treatment sessions",
+    description:
+      "Rapid-ARC enables rotational treatment delivery that combines speed, precision, and advanced dose shaping in a streamlined workflow.",
+    points: [
+      "Arc-based delivery can reduce treatment time while maintaining planning quality.",
+      "Supports efficient execution of advanced plans with consistent machine performance.",
+      "Designed to improve patient comfort through shorter and smoother treatment sessions.",
+    ],
+    image: {
+      src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
+      title: "Rapid-ARC capable treatment platform",
+    },
+  },
+  {
+    id: "SRS",
+    eyebrow: "Advanced Radiation Care",
+    title: "SRS for focused high-precision treatment of selected small targets",
+    description:
+      "Stereotactic Radiosurgery is intended for highly precise radiation delivery to carefully selected targets using advanced planning and immobilization support.",
+    points: [
+      "Built for sharp targeting accuracy where millimetric precision is essential.",
+      "Supports focused dose delivery for carefully selected intracranial indications.",
+      "Combines imaging guidance, planning detail, and strict safety workflow checks.",
+    ],
+    image: {
+      src: "/assets/diagnostics/PET-CT.jpg",
+      title: "SRS-ready precision radiotherapy setup",
+    },
+  },
+  {
+    id: "SBRT",
+    eyebrow: "Advanced Radiation Care",
+    title: "SBRT for ablative precision in carefully planned body treatments",
+    description:
+      "Stereotactic Body Radiation Therapy supports highly focused treatment for selected body sites using detailed planning, motion management, and image guidance.",
+    points: [
+      "Designed for high-precision body treatments where target motion must be considered carefully.",
+      "Integrates well with image guidance and respiratory management workflows when required.",
+      "Helps deliver concentrated treatment with strong attention to nearby organ safety.",
+    ],
+    image: {
+      src: "/assets/diagnostics/USG.jpg",
+      title: "SBRT treatment workflow support",
+    },
+  },
+];
 
 const radiationTechniques = [
   "IGRT (Image Guided Radiotherapy)",
@@ -29,6 +128,11 @@ const spotlightTechniques = ["IGRT", "IMRT", "3DCRT", "Rapid-ARC", "SRS", "SBRT"
 
 export default function RadiationTherapyPage() {
   const [activeImage, setActiveImage] = useState<null | typeof trueBeamImage>(null);
+  const [activeTechnique, setActiveTechnique] = useState("IGRT");
+  const selectedTechnique = useMemo(
+    () => techniqueCards.find((technique) => technique.id === activeTechnique) ?? techniqueCards[0],
+    [activeTechnique]
+  );
 
   return (
     <div className="min-h-screen bg-white">
@@ -75,66 +179,66 @@ export default function RadiationTherapyPage() {
               </p>
             </div>
 
-            <div className="rounded-[2rem] border border-stone-200 bg-[#faf8f3] p-6 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.28)] md:p-10">
+            <div className="space-y-8">
               <div className="flex flex-wrap gap-x-8 gap-y-3 border-b border-stone-300 pb-5 text-sm font-semibold text-stone-500">
-                {spotlightTechniques.map((technique, index) => (
-                  <span
+                {spotlightTechniques.map((technique) => (
+                  <button
                     key={technique}
-                    className={index === 0 ? "border-b-2 border-stone-700 pb-2 text-stone-900" : "pb-2"}
+                    type="button"
+                    onClick={() => setActiveTechnique(technique)}
+                    className={`pb-2 transition-colors ${
+                      activeTechnique === technique
+                        ? "border-b-2 border-stone-700 text-stone-900"
+                        : "text-stone-500 hover:text-stone-800"
+                    }`}
                   >
                     {technique}
-                  </span>
+                  </button>
                 ))}
               </div>
 
-              <div className="mt-8 grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-                <div className="space-y-6 text-stone-700">
-                  <div className="space-y-3">
-                    <p className="text-sm font-semibold uppercase tracking-[0.22em] text-amber-700">
-                      Advanced Radiation Care
+              <div className="rounded-[2rem] border border-stone-200 bg-[#faf8f3] p-6 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.28)] md:p-10">
+                <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+                  <div className="space-y-6 text-stone-700">
+                    <div className="space-y-3">
+                      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-amber-700">
+                        {selectedTechnique.eyebrow}
+                      </p>
+                      <h2 className="text-3xl font-bold leading-tight text-stone-900 md:text-4xl">
+                        {selectedTechnique.title}
+                      </h2>
+                    </div>
+
+                    <p className="max-w-2xl text-base leading-8 md:text-lg">
+                      {selectedTechnique.description}
                     </p>
-                    <h2 className="text-3xl font-bold leading-tight text-stone-900 md:text-4xl">
-                      Focused treatment planning with modern TrueBeam support
-                    </h2>
+
+                    <div className="grid gap-3 text-base md:text-lg">
+                      {selectedTechnique.points.map((point) => (
+                        <p key={point} className="flex items-start gap-3">
+                          <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
+                          <span>{point}</span>
+                        </p>
+                      ))}
+                    </div>
                   </div>
 
-                  <p className="max-w-2xl text-base leading-8 md:text-lg">
-                    Our radiation therapy unit combines accurate imaging, detailed planning, and
-                    dependable delivery systems to support safe and effective cancer care for every patient.
-                  </p>
-
-                  <div className="grid gap-3 text-base md:text-lg">
-                    <p className="flex items-start gap-3">
-                      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
-                      <span>Image-guided and intensity-modulated techniques help clinicians deliver better precision.</span>
-                    </p>
-                    <p className="flex items-start gap-3">
-                      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
-                      <span>Advanced planning supports Rapid-ARC, SRS, SBRT, Respiratory Gating, and DIBH workflows.</span>
-                    </p>
-                    <p className="flex items-start gap-3">
-                      <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
-                      <span>Specialized treatment pathways are also available for TSET and TBI where clinically required.</span>
-                    </p>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveImage(selectedTechnique.image)}
+                    className="group relative mx-auto block w-full max-w-[720px] overflow-hidden rounded-[1.75rem] bg-stone-100 p-4 shadow-2xl transition hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-amber-200"
+                  >
+                    <div className="relative overflow-hidden rounded-[1.2rem]">
+                      <Image
+                        src={selectedTechnique.image.src}
+                        alt={selectedTechnique.image.title}
+                        width={1200}
+                        height={900}
+                        className="h-[320px] w-full object-cover transition duration-300 group-hover:scale-[1.02] md:h-[420px] lg:h-[500px]"
+                      />
+                    </div>
+                  </button>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveImage(trueBeamImage)}
-                  // style={{backgroundColor: #ddd}}
-                  className="group relative mx-auto block w-full max-w-[720px] overflow-hidden rounded-[1.75rem] bg-stone-100 p-4 shadow-2xl transition hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-amber-200"
-                >
-                  <div className="relative overflow-hidden rounded-[1.2rem]">
-                    <Image
-                      src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
-                      alt="TrueBeam machine"
-                      width={1200}
-                      height={900}
-                      className="h-[320px] w-full object-cover transition duration-300 group-hover:scale-[1.02] md:h-[420px] lg:h-[500px]"
-                    />
-                  </div>
-                </button>
               </div>
             </div>
 

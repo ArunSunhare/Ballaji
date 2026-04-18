@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
         }
 
         const text = await res.text();
-        console.log("📊 RAW STATUS RESPONSE:", text);
+        // console.log("📊 RAW STATUS RESPONSE:", text);
 
         let jsonString = text;
         if (text.includes("<?xml")) {

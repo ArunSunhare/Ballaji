@@ -6,7 +6,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 /* ✅ moved outside (same as HealthPackages) */
@@ -20,6 +20,8 @@ export function PopularTests() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const visibleTests = 3;
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [translateX, setTranslateX] = useState(0);
 
   useEffect(() => {
     const fetchPopularTests = async () => {
@@ -91,19 +93,47 @@ export function PopularTests() {
 
   const maxStartIndex = Math.max(0, tests.length - visibleTests);
 
-  const handlePrev = () =>
-    setStartIndex((prev) => Math.max(prev - 1, 0));
+  const updateTranslate = useCallback((index: number) => {
+    const card = cardRefs.current[index];
 
-  const handleNext = () =>
-    setStartIndex((prev) =>
-      Math.min(prev + 1, maxStartIndex)
-    );
+    if (!card) {
+      return;
+    }
+
+    setTranslateX(card.offsetLeft);
+  }, []);
+
+  useEffect(() => {
+    const syncLayout = () => {
+      const nextIndex = Math.min(startIndex, maxStartIndex);
+      if (nextIndex !== startIndex) {
+        setStartIndex(nextIndex);
+      }
+      updateTranslate(nextIndex);
+    };
+
+    syncLayout();
+    window.addEventListener("resize", syncLayout);
+
+    return () => window.removeEventListener("resize", syncLayout);
+  }, [maxStartIndex, startIndex, tests.length, updateTranslate]);
+
+  const handlePrev = () => {
+    const nextIndex = Math.max(startIndex - 1, 0);
+    setStartIndex(nextIndex);
+    updateTranslate(nextIndex);
+  };
+
+  const handleNext = () => {
+    const nextIndex = Math.min(startIndex + 1, maxStartIndex);
+    setStartIndex(nextIndex);
+    updateTranslate(nextIndex);
+  };
 
   const handleBookClick = (test: any) => {
     router.push(`/tests/${test.slug}?id=${encodeURIComponent(test.id || "")}`);
   };
 
-  /* ---------------- LOADING ---------------- */
   if (loading) {
     return (
       <section className="py-16 bg-white">
@@ -162,85 +192,93 @@ export function PopularTests() {
         <div className="relative">
           <div className="overflow-hidden">
             <div
-              className="flex gap-6 transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${startIndex * (100 / visibleTests)}%)`
-              }}
+              className="flex gap-6 transition-transform duration-500 ease-in-out will-change-transform"
+              style={{ transform: `translateX(-${translateX}px)` }}
             >
               {tests.map((test, index) => (
                 <div
                   key={test.id || index}
+                  ref={(element) => {
+                    cardRefs.current[index] = element;
+                  }}
                   className="flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                 >
-                  <div
-                    className={`${test.bgColor} border border-gray-200 rounded-lg p-5 flex flex-col min-h-[320px]`}
-                  >
-                    <div>
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h3 className="text-gray-900 truncate" title={test.name}>
-                            {test.name}
-                          </h3>
-                          <p className="text-sm text-gray-600 mt-0.5">
-                            {test.subtitle}
-                          </p>
-                          <p className="text-xs text-gray-500 line-clamp-2 mt-1.5 min-h-[32px]">
-                            {test.description}
-                          </p>
-                        </div>
-
-                        <div className="bg-white p-2 rounded-lg shadow-sm">
-                          <TestTube className="w-6 h-6 text-orange-600" />
-                        </div>
+                <div
+                  className={`${test.bgColor} border border-gray-200 rounded-lg p-5 flex flex-col min-h-[320px]`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <h3 className="text-gray-900 truncate" title={test.name}>
+                          {test.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-0.5">
+                          {test.subtitle}
+                        </p>
+                        <p className="text-xs text-gray-500 line-clamp-2 mt-1.5 min-h-[32px]">
+                          {test.description}
+                        </p>
                       </div>
 
-                      <div className="space-y-1.5 mb-3 text-sm text-gray-700">
-                        <div className="flex items-center gap-2">
-                          <TestTube className="w-4 h-4 text-orange-500" />
-                          <span>{test.parameters} Parameters</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Activity className="w-4 h-4 text-orange-500" />
-                          <span>Report: {test.reportTat}</span>
-                        </div>
+                      <div className="bg-white p-2 rounded-lg shadow-sm">
+                        <TestTube className="w-6 h-6 text-orange-600" />
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 pt-3 border-t border-gray-200 mt-auto">
-                      <div className="text-orange-600 font-semibold text-lg">
-                        {test.price}
+                    <div className="space-y-1.5 mb-3 text-sm text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <TestTube className="w-4 h-4 text-orange-500" />
+                        <span>{test.parameters} Parameters</span>
                       </div>
 
-                      <button
-                        onClick={() => handleBookClick(test)}
-                        className="ml-auto bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
-                      >
-                        Book Now
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-orange-500" />
+                        <span>Report: {test.reportTat}</span>
+                      </div>
                     </div>
                   </div>
+
+                  <div className="flex items-center gap-4 pt-3 border-t border-gray-200 mt-auto">
+                    <div className="text-orange-600 font-semibold text-lg">
+                      {test.price}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleBookClick(test)}
+                      className="ml-auto bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
                 </div>
               ))}
             </div>
           </div>
 
           <button
+            type="button"
             onClick={handlePrev}
             disabled={startIndex === 0}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10
-              bg-white border border-gray-200 rounded-full p-2 shadow-md
-              disabled:opacity-40"
+            aria-label="Previous tests"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-10
+              bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
+              transition-all duration-200 hover:bg-gray-50 hover:shadow-lg
+              disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="w-5 h-5 text-gray-700" />
           </button>
 
           <button
+            type="button"
             onClick={handleNext}
             disabled={startIndex === maxStartIndex}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10
-              bg-white border border-gray-200 rounded-full p-2 shadow-md
-              disabled:opacity-40"
+            aria-label="Next tests"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-10
+              bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
+              transition-all duration-200 hover:bg-gray-50 hover:shadow-lg
+              disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronRight className="w-5 h-5 text-gray-700" />
           </button>

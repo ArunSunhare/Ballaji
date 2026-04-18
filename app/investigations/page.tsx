@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Search, TestTube, Activity, Loader2 } from "lucide-react";
@@ -12,6 +12,8 @@ import { MainNavbar } from "../componets/MainNavbar";
 
 export default function InvestigationsPage() {
   const router = useRouter();
+  const resultsRef = useRef<HTMLDivElement | null>(null);
+  const shouldScrollOnPageChangeRef = useRef(false);
 
   const [allInvestigations, setAllInvestigations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -103,6 +105,12 @@ export default function InvestigationsPage() {
   const totalItems = filteredInvestigations.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -114,10 +122,10 @@ export default function InvestigationsPage() {
       .replace(/\s+/g, "-")
       .replace(/[^\w-]+/g, "");
 
-  const getPageNumbers = useCallback(() => {
+  const getPageNumbers = useCallback((maxVisible: number) => {
     const pages = [];
-    const maxVisible = 7;
-    let start = Math.max(1, currentPage - 3);
+    const offset = Math.floor(maxVisible / 2);
+    let start = Math.max(1, currentPage - offset);
     let end = Math.min(totalPages, start + maxVisible - 1);
     if (end - start + 1 < maxVisible) {
       start = Math.max(1, end - maxVisible + 1);
@@ -127,6 +135,47 @@ export default function InvestigationsPage() {
     }
     return pages;
   }, [currentPage, totalPages]);
+
+  const mobilePageNumbers = getPageNumbers(3);
+  const desktopPageNumbers = getPageNumbers(7);
+
+  useEffect(() => {
+    if (!shouldScrollOnPageChangeRef.current || loading) {
+      return;
+    }
+
+    shouldScrollOnPageChangeRef.current = false;
+
+    const top = resultsRef.current
+      ? resultsRef.current.getBoundingClientRect().top + window.scrollY - 24
+      : 0;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: "smooth",
+    });
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }, [currentPage, loading]);
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      const nextPage = Math.min(Math.max(page, 1), totalPages);
+
+      if (!nextPage || nextPage === currentPage) {
+        return;
+      }
+
+      shouldScrollOnPageChangeRef.current = true;
+      setCurrentPage(nextPage);
+    },
+    [currentPage, totalPages]
+  );
+
+  const isPreviousDisabled = loading || totalPages <= 1 || currentPage <= 1;
+  const isNextDisabled = loading || totalPages <= 1 || currentPage >= totalPages;
 
   return (
     <div className="min-h-screen bg-white">
@@ -166,6 +215,7 @@ export default function InvestigationsPage() {
                   />
                 </div>
                 <button
+                  type="button"
                   className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
                 >
                   <Search className="w-5 h-5" />
@@ -177,7 +227,7 @@ export default function InvestigationsPage() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-6">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(9)].map((_, i) => (
@@ -199,6 +249,7 @@ export default function InvestigationsPage() {
           <div className="text-center bg-red-50 p-8 rounded-xl border border-red-100">
             <p className="text-red-600 text-lg">{error}</p>
             <button
+              type="button"
               onClick={fetchInvestigations}
               className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
             >
@@ -225,6 +276,7 @@ export default function InvestigationsPage() {
                 {["", "LSHHI3", "LSHHI7"].map((cat) => (
                   <button
                     key={cat}
+                    type="button"
                     onClick={() => setCategory(cat)}
                     className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${category === cat
                         ? "bg-orange-600 text-white"
@@ -292,6 +344,7 @@ export default function InvestigationsPage() {
                         </div>
                       )}
                       <button
+                        type="button"
                         onClick={() => router.push(`/tests/${slugify(item.ItemName)}`)}
                         className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-medium shadow-sm"
                       >
@@ -306,30 +359,57 @@ export default function InvestigationsPage() {
             {totalPages > 1 && investigationsToShow.length > 0 && (
               <div className="flex justify-center items-center gap-2 mt-12">
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
+                  type="button"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={isPreviousDisabled}
+                  aria-disabled={isPreviousDisabled}
+                  className="px-4 sm:px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
                 >
                   Previous
                 </button>
 
-                {getPageNumbers().map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-12 h-12 rounded-lg font-medium transition ${currentPage === page
-                        ? "bg-orange-600 text-white"
-                        : "border hover:bg-gray-50 text-gray-700"
-                      }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                <div className="flex items-center gap-2 sm:hidden">
+                  {mobilePageNumbers.map((page) => (
+                    <button
+                      key={`mobile-${page}`}
+                      type="button"
+                      onClick={() => handlePageChange(page)}
+                      disabled={currentPage === page}
+                      aria-current={currentPage === page ? "page" : undefined}
+                      className={`w-10 h-10 rounded-lg font-medium transition ${currentPage === page
+                          ? "bg-orange-600 text-white cursor-default"
+                          : "border hover:bg-gray-50 text-gray-700"
+                        }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="hidden sm:flex items-center gap-2">
+                  {desktopPageNumbers.map((page) => (
+                    <button
+                      key={`desktop-${page}`}
+                      type="button"
+                      onClick={() => handlePageChange(page)}
+                      disabled={currentPage === page}
+                      aria-current={currentPage === page ? "page" : undefined}
+                      className={`w-12 h-12 rounded-lg font-medium transition ${currentPage === page
+                          ? "bg-orange-600 text-white cursor-default"
+                          : "border hover:bg-gray-50 text-gray-700"
+                        }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
 
                 <button
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  className="px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
+                  type="button"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={isNextDisabled}
+                  aria-disabled={isNextDisabled}
+                  className="px-4 sm:px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
                 >
                   Next
                 </button>

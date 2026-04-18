@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TopHeader } from "../componets/top_header";
 import { TopNavbar } from "../componets/TopNavbar";
 import { MainNavbar } from "../componets/MainNavbar";
@@ -357,6 +357,7 @@ export default function HospitalFeedback() {
   const [tab, setTab] = useState<"submit" | "view">("submit");
   const [submitted, setSubmitted] = useState(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const dateInputRef = useRef<HTMLInputElement | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -599,7 +600,7 @@ const buildApiPayload = () => {
 
         </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-8">
+        <main className="max-w-5xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
           {/* <button 
             onClick={fetchPatientDetails}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -607,19 +608,26 @@ const buildApiPayload = () => {
             Fetch Patient Data
           </button> */}
           {/* Stats Row */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
             {[
               { label: "Total Reviews", value: feedbacks.length, icon: "💬", from: "from-blue-400", to: "to-blue-600" },
               { label: "Avg Satisfaction", value: avgRating.toFixed(1) + " / 5", icon: "⭐", from: "from-amber-400", to: "to-orange-500" },
               { label: "Patient Satisfaction", value: satisfaction + "%", icon: "✅", from: "from-emerald-400", to: "to-teal-500" },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl border border-slate-100 p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                <div className={`w-13 h-13 w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.from} ${stat.to} flex items-center justify-center text-2xl shadow-md`}>
+              <div
+                key={stat.label}
+                className="flex h-full min-w-0 items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:gap-4 sm:p-5"
+              >
+                <div className={`h-12 w-12 shrink-0 rounded-2xl bg-gradient-to-br ${stat.from} ${stat.to} flex items-center justify-center text-xl shadow-md sm:h-14 sm:w-14 sm:text-2xl`}>
                   {stat.icon}
                 </div>
-                <div>
-                  <p className="text-2xl font-extrabold text-slate-800">{stat.value}</p>
-                  <p className="text-xs text-slate-400 font-medium mt-0.5">{stat.label}</p>
+                <div className="min-w-0">
+                  <p className="break-words text-xl font-extrabold leading-tight text-slate-800 sm:text-2xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-1 text-[11px] font-medium leading-tight text-slate-400 sm:text-xs">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             ))}
@@ -663,8 +671,18 @@ const buildApiPayload = () => {
                 <div className="space-y-6">
                   {/* Patient Info */}
                   <SectionCard icon="👤" title="Patient Information" subtitle="Basic details for record" accent="orange">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
+                    <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
+                      <div className="md:order-2">
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number <span className="text-red-500">*</span></label>
+                        <input
+                          type="text"
+                          placeholder="e.g. SHB-00123"
+                          value={form.uhid}
+                          onChange={(e) => handleUHIDChange(e)}
+                          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+                        />
+                      </div>
+                      <div className="md:order-1">
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Patient Name <span className="text-red-500">*</span></label>
                         <input
                           type="text"
@@ -674,29 +692,6 @@ const buildApiPayload = () => {
                           className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.name ? "border-red-400 bg-red-50" : "border-slate-200"}`}
                         />
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-                      </div>
-
-                      {/* <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Mobile Number <span className="text-red-500">*</span></label>
-                        <input
-                          type="text"
-                          placeholder="e.g. 79XXXXXXXX "
-                          value={form.mobile}
-                          // onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
-                          onChange={handleMobileChange}
-                          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
-                        />
-                      </div> */}
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">UHID / Registration Number <span className="text-red-500">*</span></label>
-                        <input
-                          type="text"
-                          placeholder="e.g. SHB-00123"
-                          value={form.uhid}
-                          // onChange={(e) => setForm((f) => ({ ...f, uhid: e.target.value }))}
-                          onChange={(e) => handleUHIDChange(e)}
-                          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
-                        />
                       </div>
                       {/* <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Department Visited <span className="text-red-500">*</span></label>
@@ -718,12 +713,15 @@ const buildApiPayload = () => {
                         </div>
                         {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}
                       </div> */}
-                      <div>
+                      <div className="md:order-3">
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Visit <span className="text-red-500">*</span></label>
                         <input
+                          ref={dateInputRef}
                           type="date"
                           value={form.dateOfVisit}
                           onChange={(e) => { setForm((f) => ({ ...f, dateOfVisit: e.target.value })); setErrors((er) => ({ ...er, dateOfVisit: "" })); }}
+                          onClick={() => dateInputRef.current?.showPicker?.()}
+                          onFocus={() => dateInputRef.current?.showPicker?.()}
                           className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.dateOfVisit ? "border-red-400 bg-red-50" : "border-slate-200"}`}
                         />
                         {errors.dateOfVisit && <p className="text-red-500 text-xs mt-1">{errors.dateOfVisit}</p>}

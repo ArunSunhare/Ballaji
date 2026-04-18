@@ -3,6 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+const facilityLinks = [
+  { name: "Radiation Therapy", href: "/componets/facilites/pathology" },
+  { name: "Radiology", href: "/componets/facilites/ct-scan" },
+  { name: "Pathology", href: "/componets/facilites/x-ray" },
+  { name: "Dialysis", href: "/componets/facilites/ultrasound" },
+  { name: "Pharmacy", href: "/componets/facilites/pharmacy" },
+  { name: "F&B", href: "/componets/facilites/fnb" },
+];
+
 export function MainNavbar() {
   const router = useRouter();
   const [isFacilitiesOpen, setIsFacilitiesOpen] = useState(false);
@@ -13,10 +22,12 @@ export function MainNavbar() {
   const [popularTests, setPopularTests] = useState<any[]>([]);
   const [popularLoading, setPopularLoading] = useState(false);
   const [popularError, setPopularError] = useState("");
+  const [popularSearch, setPopularSearch] = useState("");
 
   const [healthPackages, setHealthPackages] = useState<any[]>([]);
   const [healthPackagesLoading, setHealthPackagesLoading] = useState(false);
   const [healthPackagesError, setHealthPackagesError] = useState("");
+  const [healthPackagesSearch, setHealthPackagesSearch] = useState("");
 
   const handleMouseEnter = (setter: (value: boolean) => void, closeOthers?: () => void) => {
     if (dropdownTimeout) {
@@ -84,6 +95,12 @@ export function MainNavbar() {
   }, [isFindTestOpen, popularLoading, popularTests.length]);
 
   useEffect(() => {
+    if (!isFindTestOpen) {
+      setPopularSearch("");
+    }
+  }, [isFindTestOpen]);
+
+  useEffect(() => {
     const loadHealthPackages = async () => {
       if (!isHealthPackagesOpen) return;
       if (healthPackagesLoading) return;
@@ -130,13 +147,37 @@ export function MainNavbar() {
     loadHealthPackages();
   }, [isHealthPackagesOpen, healthPackagesLoading, healthPackages.length]);
 
+  useEffect(() => {
+    if (!isHealthPackagesOpen) {
+      setHealthPackagesSearch("");
+    }
+  }, [isHealthPackagesOpen]);
+
+  const filteredPopularTests = popularTests.filter((item: any) => {
+    const query = popularSearch.trim().toLowerCase();
+    if (!query) return true;
+    return (
+      item.ItemName?.toLowerCase().includes(query) ||
+      item.Item_ID?.toLowerCase().includes(query)
+    );
+  });
+
+  const filteredHealthPackages = healthPackages.filter((pkg: any) => {
+    const query = healthPackagesSearch.trim().toLowerCase();
+    if (!query) return true;
+    return (
+      pkg.ItemName?.toLowerCase().includes(query) ||
+      pkg.itemID?.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="bg-white hidden lg:block">
       <nav className="w-full px-3 sm:px-4 lg:px-10 h-12 flex items-center justify-center gap-8 text-white font-medium">
         <a href="/" className="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
         <a href="/about-us" className="text-gray-700 hover:text-orange-600 transition-colors">About Us</a>
         <a href="/our-founder" className="text-gray-700 hover:text-orange-600 transition-colors">Our Founder</a>
-        <a href="#doctors" className="text-gray-700 hover:text-orange-600 transition-colors">Doctors</a>
+        <a href="/#doctors" className="text-gray-700 hover:text-orange-600 transition-colors">Doctors</a>
         <div 
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsFacilitiesOpen, () => {
@@ -146,7 +187,7 @@ export function MainNavbar() {
           onMouseLeave={() => handleMouseLeave(setIsFacilitiesOpen)}
         >
           <a 
-            href="#facilities" 
+            href="/#facilities" 
             className={`transition-colors ${
               isFacilitiesOpen 
                 ? "text-orange-600" 
@@ -161,15 +202,19 @@ export function MainNavbar() {
               onMouseEnter={() => handleMouseEnter(setIsFacilitiesOpen)}
               onMouseLeave={() => handleMouseLeave(setIsFacilitiesOpen)}
             >
-              <a href="#pathology" className="block px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors">Radiation Therapy
-</a>
-              <a href="#mri" className="block px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors">Radiology</a>
-              <a href="#pet-ct" className="block px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors">Pathology</a>
-              <a href="#ct-scan" className="block px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors">Dialysis</a>
-              <a href="#x-ray" className="block px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors">Pharmacy</a>
-              <a href="#ultrasound" className="block px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors">F &B
-</a>
-             
+              {facilityLinks.map((facility) => (
+                <button
+                  key={facility.name}
+                  type="button"
+                  onClick={() => {
+                    setIsFacilitiesOpen(false);
+                    router.push(facility.href);
+                  }}
+                  className="block w-full px-4 py-2 text-left text-gray-700 hover:text-orange-600 transition-colors"
+                >
+                  {facility.name}
+                </button>
+              ))}
             </div>
           )}
         </div>
@@ -194,7 +239,7 @@ export function MainNavbar() {
           </a>
           {isFindTestOpen && (
             <div 
-              className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-md py-2 w-36 z-50 mt-0"
+              className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-md py-2 w-72 z-50 mt-0"
               onMouseEnter={() => handleMouseEnter(setIsFindTestOpen)}
               onMouseLeave={() => handleMouseLeave(setIsFindTestOpen)}
             >
@@ -205,21 +250,36 @@ export function MainNavbar() {
               ) : popularTests.length === 0 ? (
                 <div className="px-4 py-2 text-gray-500 text-sm">No tests found</div>
               ) : (
-                <div className="max-h-64 overflow-auto">
-                  {popularTests.slice(0, 10).map((item: any) => (
-                    <button
-                      key={item.Item_ID}
-                      type="button"
-                      onClick={() => {
-                        setIsFindTestOpen(false);
-                        router.push(`/tests/${slugify(item.ItemName)}?id=${encodeURIComponent(item.Item_ID || "")}`);
-                      }}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors text-sm"
-                      title={item.ItemName}
-                    >
-                      <span className="block truncate">{item.ItemName}</span>
-                    </button>
-                  ))}
+                <div className="px-3 pb-2">
+                  <div className="mb-2">
+                    <input
+                      type="text"
+                      value={popularSearch}
+                      onChange={(e) => setPopularSearch(e.target.value)}
+                      placeholder="Search tests..."
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+                  <div className="max-h-64 overflow-auto">
+                    {filteredPopularTests.length === 0 ? (
+                      <div className="px-2 py-2 text-gray-500 text-sm">No matching tests found</div>
+                    ) : (
+                      filteredPopularTests.slice(0, 10).map((item: any) => (
+                        <button
+                          key={item.Item_ID}
+                          type="button"
+                          onClick={() => {
+                            setIsFindTestOpen(false);
+                            router.push(`/tests/${slugify(item.ItemName)}?id=${encodeURIComponent(item.Item_ID || "")}`);
+                          }}
+                          className="block w-full text-left px-3 py-2 text-gray-700 hover:text-orange-600 transition-colors text-sm"
+                          title={item.ItemName}
+                        >
+                          <span className="block truncate">{item.ItemName}</span>
+                        </button>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -245,7 +305,7 @@ export function MainNavbar() {
           </a>
           {isHealthPackagesOpen && (
             <div 
-              className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-md py-2 w-36 z-50 mt-0"
+              className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-md py-2 w-72 z-50 mt-0"
               onMouseEnter={() => handleMouseEnter(setIsHealthPackagesOpen)}
               onMouseLeave={() => handleMouseLeave(setIsHealthPackagesOpen)}
             >
@@ -256,21 +316,36 @@ export function MainNavbar() {
               ) : healthPackages.length === 0 ? (
                 <div className="px-4 py-2 text-gray-500 text-sm">No packages found</div>
               ) : (
-                <div className="max-h-64 overflow-auto">
-                  {healthPackages.slice(0, 10).map((pkg: any) => (
-                    <button
-                      key={pkg.itemID || pkg.ItemName}
-                      type="button"
-                      onClick={() => {
-                        setIsHealthPackagesOpen(false);
-                        router.push(`/health-packages/${slugify(pkg.ItemName)}?id=${encodeURIComponent(pkg.itemID || "")}`);
-                      }}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:text-orange-600 transition-colors text-sm"
-                      title={pkg.ItemName}
-                    >
-                      <span className="block truncate">{pkg.ItemName}</span>
-                    </button>
-                  ))}
+                <div className="px-3 pb-2">
+                  <div className="mb-2">
+                    <input
+                      type="text"
+                      value={healthPackagesSearch}
+                      onChange={(e) => setHealthPackagesSearch(e.target.value)}
+                      placeholder="Search packages..."
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+                  <div className="max-h-64 overflow-auto">
+                    {filteredHealthPackages.length === 0 ? (
+                      <div className="px-2 py-2 text-gray-500 text-sm">No matching packages found</div>
+                    ) : (
+                      filteredHealthPackages.slice(0, 10).map((pkg: any) => (
+                        <button
+                          key={pkg.itemID || pkg.ItemName}
+                          type="button"
+                          onClick={() => {
+                            setIsHealthPackagesOpen(false);
+                            router.push(`/health-packages/${slugify(pkg.ItemName)}?id=${encodeURIComponent(pkg.itemID || "")}`);
+                          }}
+                          className="block w-full text-left px-3 py-2 text-gray-700 hover:text-orange-600 transition-colors text-sm"
+                          title={pkg.ItemName}
+                        >
+                          <span className="block truncate">{pkg.ItemName}</span>
+                        </button>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
             </div>

@@ -29,7 +29,7 @@ const exploreItems = [
     color: "text-orange-600",
     bgColor: "bg-orange-100",
     accent: "blue",
-    router: "/#facilities",
+    router: "/componets/facilites/pharmacy",
   },
 ];
 
@@ -54,22 +54,7 @@ export function ExploreMore() {
                 key={index}
                 onClick={() => {
                   if (item.router) {
-                    if (item.router === "/#facilities") {
-                      // Handle facilities navigation with smooth scroll
-                      if (window.location.pathname === "/") {
-                        // Already on home page, just scroll
-                        const element = document.getElementById("facilities");
-                        if (element) {
-                          element.scrollIntoView({ behavior: "smooth" });
-                        }
-                      } else {
-                        // Navigate to home page with hash
-                        router.push("/#facilities");
-                      }
-                    } else {
-                      // Handle other routes normally
-                      router.push(item.router);
-                    }
+                    router.push(item.router);
                   }
                 }}
                 className={`group relative border-2 rounded-xl 

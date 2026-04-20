@@ -157,7 +157,7 @@ export default function RadiationTherapyPage() {
               Advanced Radiation Therapy Center
             </h1>
             <p className="text-white/90 text-lg md:text-xl">
-              Precision • Innovation • Compassionate Cancer Care
+              Precision â€¢ Innovation â€¢ Compassionate Cancer Care
             </p>
           </div>
         </div>
@@ -175,7 +175,7 @@ export default function RadiationTherapyPage() {
 
             <div className="bg-orange-50 border-l-4 border-orange-600 p-8 rounded-r-xl">
               <p className="text-xl font-semibold text-orange-800 italic text-center">
-                World-class diagnostics at subsidized cost – true charitable healthcare
+                World-class diagnostics at subsidized cost â€“ true charitable healthcare
               </p>
             </div>
 
@@ -266,7 +266,7 @@ export default function RadiationTherapyPage() {
 
             <div className="mt-12 bg-gradient-to-r from-orange-100 to-orange-50 p-10 rounded-xl text-center">
               <p className="text-2xl font-bold text-orange-700">
-                Precise Treatment • Advanced Technology • Compassionate Care
+                Precise Treatment â€¢ Advanced Technology â€¢ Compassionate Care
               </p>
               <p className="mt-4 text-gray-700">
                 Advanced radiation therapy services in service of humanity
@@ -286,7 +286,7 @@ export default function RadiationTherapyPage() {
             className="absolute top-6 right-6 text-white text-3xl font-bold"
             onClick={() => setActiveImage(null)}
           >
-            ✕
+            âœ•
           </button>
 
           <div

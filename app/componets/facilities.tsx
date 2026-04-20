@@ -22,22 +22,22 @@ const facilitiesData: Facility[] = [
   },
   {
     name: "Pathology",
-    image: "/assets/diagnostics/path_lab.jpg",
+    image: "/assets/pathology.jpeg",
     path: "/componets/facilites/x-ray",
   },
   {
     name: "Dialysis",
-    image: "/assets/banner/medical.png",
+    image: "/assets/dialysis.jpeg",
     path: "/componets/facilites/ultrasound",
   },
   {
     name: "Pharmacy",
-    image: "/assets/banner/Pharmacy.png",
+    image: "/assets/pharmacy/IMG_20260402_145124.jpg.jpeg",
     path: "/componets/facilites/pharmacy",
   },
   {
     name: "F&B",
-    image: "/assets/banner/Reception.png",
+    image: "/assets/kitchen/IMG-20260402-WA0032.jpg.jpeg",
     path: "/componets/facilites/fnb",
   },
 ];

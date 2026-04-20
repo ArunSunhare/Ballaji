@@ -4,29 +4,29 @@ import { FacilityLayout } from "./facility-layout";
 
 const pharmacyCards = [
   {
-    src: "/assets/banner/Pharmacy.png",
-    title: "Pharmacy Counter",
+    src: "/assets/pharmacy/IMG_20260402_145124.jpg.jpeg",
+    title: "Medicine Dispensing Counter",
     heading: "In-house Pharmacy",
     content: [
-      "Our in-house pharmacy supports patients with convenient medicine access within the centre.",
-      "The pharmacy team helps maintain a smooth handoff from consultation and diagnostics to medicine dispensing.",
+      "Provides quick access to prescribed medicines within the centre.",
+      "Ensures safe dispensing and availability of essential drugs.",
     ],
   },
   {
-    src: "/assets/banner/Reception.png",
+    src: "/assets/pharmacy/IMG20260201082517.jpg.jpeg",
     title: "Patient Assistance Desk",
-    heading: "Pharmacy Support Services",
+    heading: "Pharmacy Assistance",
     content: [
-      "The patient assistance desk works alongside the pharmacy flow to help visitors with guidance, queue support, and service coordination.",
-      "This setup helps patients and attendants move more easily through the centre experience.",
-    ],
+      "Guides patients with prescriptions, billing, and medicine queries.",
+      "Helps streamline the pharmacy process for a smoother experience.",
+    ]
   },
 ];
 
 export function PharmacyFacility() {
   return (
     <FacilityLayout
-      heroImage="/assets/banner/Pharmacy.png"
+      heroImage="/assets/pharmacy/IMG20260201082517.jpg.jpeg"
       heroAlt="Pharmacy facility"
       heroTitle="Accessible Pharmacy Services"
       heroSubtitle="Convenience • Availability • Everyday Patient Support"

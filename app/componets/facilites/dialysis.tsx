@@ -4,16 +4,20 @@ import { FacilityLayout } from "./facility-layout";
 
 const dialysisCards = [
   {
-    src: "/assets/banner/medical.png",
+    src: "/assets/dialysis.jpeg",
     title: "Dialysis Care Unit",
     heading: "Dialysis Facility",
+    content: [
+      "Equipped for routine dialysis with continuous patient monitoring.",
+      "Focused on comfort, hygiene, and safe treatment delivery.",
+    ],
   },
 ];
 
 export function DialysisFacility() {
   return (
     <FacilityLayout
-      heroImage="/assets/banner/medical.png"
+      heroImage="/assets/dialysis.jpeg"
       heroAlt="Dialysis care facility"
       heroTitle="Dedicated Dialysis Facility"
       heroSubtitle="Supportive Care • Safe Environment • Patient Comfort"

@@ -14,19 +14,7 @@ type DiagnosticItem = {
   content: string[];
 };
 
-const ctScanImages: DiagnosticItem[] = [
-  {
-    src: "/assets/diagnostics/CT.jpg",
-    title: "Philips CT Scanner",
-    heading: "CT: Computed Tomography",
-    content: [
-      "We are using one of the leading brand 16 Slice CT Scanner / 3.5 MHU Tube Access CT machine of Philips for CT (Computed Tomography). As computers have become more powerful and less expensive, CT systems have become a more efficient mode of inspection technology. Coupled with the use of Flat Panel Detectors, CT systems have drastically reduced scanning and image processing times.",
-      "CT, or CAT scans, are special X-ray tests that produce cross-sectional images of the body using X-rays and a computer. CT scans are also referred to as computerized axial tomography.",
-      "CT scanners first began to be installed in 1974. CT scanners have vastly improved patient comfort because a scan can be done quickly. Improvements have led to higher-resolution images, which assist the doctor in making a diagnosis. For example, the CT scan can help doctors to visualize small nodules or tumours, which they cannot see with a plain film X-ray.",
-      "CT scan images allow the doctor to look at the inside of the body just as one would look at the inside of a loaf of bread by slicing it. CT scans are frequently used to evaluate the brain, neck, spine, chest, abdomen, pelvis, and sinuses.",
-      "CT is non-invasive, safe, and well-tolerated. It provides a highly detailed look at many different parts of the body.",
-    ],
-  },
+const ctScanImages: DiagnosticItem[] = [  
   {
     src: "/assets/diagnostics/MRI.jpg",
     title: "MRI Scanner",
@@ -40,29 +28,17 @@ const ctScanImages: DiagnosticItem[] = [
     ],
   },
   {
-    src: "/assets/diagnostics/PET-CT.jpg",
-    title: "PET-CT Scanner (Siemens Biograph Horizon)",
-    heading: "Pathology",
+    src: "/assets/diagnostics/CT.jpg",
+    title: "Philips CT Scanner",
+    heading: "CT: Computed Tomography",
     content: [
-      "Shri Hanuman Balaji Charitable Diagnostic Centre is having in house Pathology Laboratory. We have following departments Pathology Lab.",
-      "BioChemistry – By Vitros 4600. At our centre we use most advance Biochemistry analyser Vitros 4600 by Johnson and Johnson. The machine works on the concept of dry chemistry without using water and no wastage of reagent. It has a capacity of performing 900 tests per hour.",
-      "The tests included in Biochemistry are: Electrolytes, Renal Function Test, Liver Function Test, Cardiac Markers, Minerals, Vitamins, Glucose, Hb1Ac, etc.",
-      "Immunology and Serology – By Vitros ECiQ. The VITROS ECiQ Immunodiagnostic System verifies and documents each step throughout processing. The machine has a capacity to perform 90 tests per hour.",
-      "Haematology – By Horiba 5 Parts Analyser. Clinical Pathology – By URIT 50. Cytology is the examination of cells from the body under a microscope by an experienced Pathologist.",
+      "We are using one of the leading brand 16 Slice CT Scanner / 3.5 MHU Tube Access CT machine of Philips for CT (Computed Tomography). As computers have become more powerful and less expensive, CT systems have become a more efficient mode of inspection technology. Coupled with the use of Flat Panel Detectors, CT systems have drastically reduced scanning and image processing times.",
+      "CT, or CAT scans, are special X-ray tests that produce cross-sectional images of the body using X-rays and a computer. CT scans are also referred to as computerized axial tomography.",
+      "CT scanners first began to be installed in 1974. CT scanners have vastly improved patient comfort because a scan can be done quickly. Improvements have led to higher-resolution images, which assist the doctor in making a diagnosis. For example, the CT scan can help doctors to visualize small nodules or tumours, which they cannot see with a plain film X-ray.",
+      "CT scan images allow the doctor to look at the inside of the body just as one would look at the inside of a loaf of bread by slicing it. CT scans are frequently used to evaluate the brain, neck, spine, chest, abdomen, pelvis, and sinuses.",
+      "CT is non-invasive, safe, and well-tolerated. It provides a highly detailed look at many different parts of the body.",
     ],
-  },
-  {
-    src: "/assets/diagnostics/X-RAY.jpg",
-    title: "Digital X-Ray System",
-    heading: "Dialysis",
-    content: [
-      "Satya Sheel Gupta Dialysis Hall. Under the aegis of Shri Hanuman Balaji Charitable Diagnostic Centre we run 8 Bedded Dialysis Centre where we are using best in class and technology, the latest technology Haemodialysis 710200A machine of B Braun Dialog + (German machines) with capacity of 32 dialysis per day with all machines.",
-      "People with failed or damaged kidneys may have difficulty eliminating waste and unwanted water from the blood. Dialysis is an artificial way of carrying out this process.",
-      "Dialysis substitutes the natural work of the kidneys, so it is also known as renal replacement therapy (RRT). Healthy kidneys regulate the body's levels of water and minerals and remove waste.",
-      "A healthy person's kidneys filter around 100 to 130 litres of blood each day. If the kidneys are not working correctly, waste builds up in the blood.",
-      "Dialysis prevents the waste products in the blood from reaching hazardous levels. It can also remove toxins or drugs from the blood in an emergency setting.",
-    ],
-  },
+  },  
   {
     src: "/assets/diagnostics/USG.jpg",
     title: "Ultrasound (USG) Machine",
@@ -88,6 +64,28 @@ const ctScanImages: DiagnosticItem[] = [
     ],
   },
   {
+    src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
+    title: "TrueBeam Radiotherapy Machine",
+    heading: "Multispeciality OPD",
+    content: [
+      "OPD consultation of various specialities and super specialities i.e. Medicine, Gynaecology, Paediatrics, Orthopaedics, ENT, Dermatology, Neurology, Gastroenterology, Oncology will be given at a nominal and highly subsidised consultation fees by the philanthropist specialists.",
+      "The centre provides affordable access to specialist consultations under one roof for patients who need follow-up, diagnosis support and expert medical advice.",
+      "This service is part of the charitable mission of the centre to make healthcare more accessible to all sections of society.",
+    ],
+  },
+   {
+    src: "/assets/diagnostics/X-RAY.jpg",
+    title: "Digital X-Ray System",
+    heading: "Dialysis",
+    content: [
+      "Satya Sheel Gupta Dialysis Hall. Under the aegis of Shri Hanuman Balaji Charitable Diagnostic Centre we run 8 Bedded Dialysis Centre where we are using best in class and technology, the latest technology Haemodialysis 710200A machine of B Braun Dialog + (German machines) with capacity of 32 dialysis per day with all machines.",
+      "People with failed or damaged kidneys may have difficulty eliminating waste and unwanted water from the blood. Dialysis is an artificial way of carrying out this process.",
+      "Dialysis substitutes the natural work of the kidneys, so it is also known as renal replacement therapy (RRT). Healthy kidneys regulate the body's levels of water and minerals and remove waste.",
+      "A healthy person's kidneys filter around 100 to 130 litres of blood each day. If the kidneys are not working correctly, waste builds up in the blood.",
+      "Dialysis prevents the waste products in the blood from reaching hazardous levels. It can also remove toxins or drugs from the blood in an emergency setting.",
+    ],
+  },  
+  {
     src: "/assets/diagnostics/OPG.jpeg",
     title: "OPG Dental X-Ray Machine",
     heading: "OPG – Ortho Pantomo Gram",
@@ -98,15 +96,19 @@ const ctScanImages: DiagnosticItem[] = [
     ],
   },
   {
-    src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-    title: "TrueBeam Radiotherapy Machine",
-    heading: "Multispeciality OPD",
+    src: "/assets/diagnostics/PET-CT.jpg",
+    title: "PET-CT Scanner (Siemens Biograph Horizon)",
+    heading: "Pathology",
     content: [
-      "OPD consultation of various specialities and super specialities i.e. Medicine, Gynaecology, Paediatrics, Orthopaedics, ENT, Dermatology, Neurology, Gastroenterology, Oncology will be given at a nominal and highly subsidised consultation fees by the philanthropist specialists.",
-      "The centre provides affordable access to specialist consultations under one roof for patients who need follow-up, diagnosis support and expert medical advice.",
-      "This service is part of the charitable mission of the centre to make healthcare more accessible to all sections of society.",
+      "Shri Hanuman Balaji Charitable Diagnostic Centre is having in house Pathology Laboratory. We have following departments Pathology Lab.",
+      "BioChemistry – By Vitros 4600. At our centre we use most advance Biochemistry analyser Vitros 4600 by Johnson and Johnson. The machine works on the concept of dry chemistry without using water and no wastage of reagent. It has a capacity of performing 900 tests per hour.",
+      "The tests included in Biochemistry are: Electrolytes, Renal Function Test, Liver Function Test, Cardiac Markers, Minerals, Vitamins, Glucose, Hb1Ac, etc.",
+      "Immunology and Serology – By Vitros ECiQ. The VITROS ECiQ Immunodiagnostic System verifies and documents each step throughout processing. The machine has a capacity to perform 90 tests per hour.",
+      "Haematology – By Horiba 5 Parts Analyser. Clinical Pathology – By URIT 50. Cytology is the examination of cells from the body under a microscope by an experienced Pathologist.",
     ],
   },
+ 
+  
 ];
 
 export default function CTScanPage() {

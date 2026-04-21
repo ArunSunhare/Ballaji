@@ -64,7 +64,7 @@ const ctScanImages: DiagnosticItem[] = [
     ],
   },
   {
-    src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
+    src: "/assets/banner/TMT (2).jpeg",
     title: "TrueBeam Radiotherapy Machine",
     heading: "Multispeciality OPD",
     content: [

@@ -3,12 +3,12 @@
 import { FacilityLayout } from "./facility-layout";
 
 const fnbCards = [
-  { src: "/assets/kitchen/IMG_20260328_160018823.jpg.jpeg", title: "Facility View 1" },
-  { src: "/assets/kitchen/IMG_20260328_160018823.jpg.jpeg", title: "Facility View 2" },
-  { src: "/assets/kitchen/IMG_20260402_145508.jpg.jpeg", title: "Facility View 3" },
-  { src: "/assets/kitchen/IMG_20260402_145648.jpg.jpeg", title: "Facility View 4" },
-  { src: "/assets/kitchen/IMG-20260402-WA0022.jpg.jpeg", title: "Facility View 5" },
-  { src: "/assets/kitchen/IMG-20260402-WA0032.jpg.jpeg", title: "Facility View 6" },
+  { src: "/assets/kitchen/IMG_20260328_160018823.jpg.jpeg", title: "" },
+  { src: "/assets/kitchen/IMG_20260328_160018823.jpg.jpeg", title: "" },
+  { src: "/assets/kitchen/IMG_20260402_145508.jpg.jpeg", title: "" },
+  { src: "/assets/kitchen/IMG_20260402_145648.jpg.jpeg", title: "" },
+  { src: "/assets/kitchen/IMG-20260402-WA0022.jpg.jpeg", title: "" },
+  { src: "/assets/kitchen/IMG-20260402-WA0032.jpg.jpeg", title: "" },
 ];
 
 export function FnbFacility() {

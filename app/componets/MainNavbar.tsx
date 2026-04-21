@@ -218,7 +218,7 @@ export function MainNavbar() {
             </div>
           )}
         </div>
-        <a href="/services" className="text-gray-700 hover:text-orange-600 transition-colors">Gallery</a>
+        <a href="/gallery" className="text-gray-700 hover:text-orange-600 transition-colors">Gallery</a>
         <div 
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsFindTestOpen, () => {

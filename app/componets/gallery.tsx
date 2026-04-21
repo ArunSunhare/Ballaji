@@ -16,64 +16,64 @@ const galleryImages = [
     id: 1,
     category: "hospital",
     title: "Hospital Building",
-    description: "Modern healthcare facility",
-    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    description: "Main building view of the diagnostic centre",
+    image: "/assets/Header.jpg"
   },
   {
     id: 2,
     category: "equipment",
-    title: "Advanced MRI Machine",
-    description: "State-of-the-art diagnostic equipment",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    title: "MRI Machine",
+    description: "Advanced MRI imaging facility",
+    image: "/assets/diagnostics/MRI.jpg"
   },
-  {
-    id: 3,
-    category: "staff",
-    title: "Medical Team",
-    description: "Expert healthcare professionals",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-  },
+  // {
+  //   id: 3,
+  //   category: "staff",
+  //   title: "Clinical Team",
+  //   description: "Dedicated medical professionals serving patients",
+  //   image: "/assets/DR. AMIT JAISWAL.png"
+  // },
   {
     id: 4,
     category: "patients",
-    title: "Patient Care",
-    description: "Compassionate medical care",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    title: "Reception Area",
+    description: "Welcoming patient support and registration desk",
+    image: "/assets/banner/Reception.png"
   },
   {
     id: 5,
     category: "hospital",
-    title: "Reception Area",
-    description: "Welcoming reception area",
-    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    title: "Diagnostic Centre",
+    description: "Clean and modern infrastructure for visitors",
+    image: "/assets/hero.jpg"
   },
   {
     id: 6,
     category: "equipment",
     title: "CT Scanner",
-    description: "Advanced CT scanning technology",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    description: "High-quality CT imaging technology",
+    image: "/assets/diagnostics/CT.jpg"
   },
-  {
-    id: 7,
-    category: "staff",
-    title: "Nursing Staff",
-    description: "Dedicated nursing team",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-  },
+  // {
+  //   id: 7,
+  //   category: "staff",
+  //   title: "Specialist Doctor",
+  //   description: "Expert-led diagnostic consultation and care",
+  //   image: "/assets/DR. SAURABH SUMAN.png"
+  // },
   {
     id: 8,
     category: "patients",
-    title: "Consultation Room",
-    description: "Private consultation facilities",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    title: "Patient Care Area",
+    description: "Supportive spaces built around patient comfort",
+    image: "/assets/dialysis.jpeg"
   },
   {
     id: 9,
-    category: "hospital",
-    title: "Laboratory",
-    description: "Modern diagnostic laboratory",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+    category: "equipment",
+    title: "Pathology Lab Equipment",
+    description: "Reliable pathology and lab diagnostics setup",
+    image: "/assets/diagnostics/path_lab.jpg"
   }
 ];
 
@@ -202,12 +202,6 @@ export function GallerySection() {
           </div>
         )}
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <button className="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors font-medium">
-            View Full Gallery
-          </button>
-        </div>
       </div>
     </section>
   );

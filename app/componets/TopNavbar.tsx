@@ -54,6 +54,7 @@ export function TopNavbar() {
   const navItems = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about-us" },
+    { name: "Gallery", href: "/gallery" },
     { name: "Find A Test", href: "/investigations" },
     { name: "Health Packages", href: "/health-packages" },
     { name: "Facilities", href: "/#facilities" },

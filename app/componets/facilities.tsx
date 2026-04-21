@@ -12,7 +12,7 @@ type Facility = {
 const facilitiesData: Facility[] = [
   {
     name: "Radiation Therapy",
-    image: "/assets/diagnostics/Ortho Clinical Diagnostics Vitros ECiQ immunodiagnostics.jpg",
+    image: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
     path: "/componets/facilites/pathology",
   },
   {

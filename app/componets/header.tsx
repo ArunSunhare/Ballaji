@@ -6,8 +6,8 @@ import { ChevronLeft, ChevronRight, ChevronDown, Menu, X } from "lucide-react";
 const slides = [
   { id: 1, backgroundImage: "/assets/banner/temp.png" },
   { id: 2, backgroundImage: "/assets/banner/banner_3.jpeg" },
-  { id: 3, backgroundImage: "/assets/banner/banner_4.jpeg" },///kuldeep
-  { id: 4, backgroundImage: "/assets/banner/banner5.jpeg" },
+  // { id: 3, backgroundImage: "/assets/banner/banner_4.jpeg" },
+  // { id: 4, backgroundImage: "/assets/banner/banner5.jpeg" },
   { id: 5, backgroundImage: "/assets/banner/banner_6.jpeg" },
   // { id: 6, backgroundImage: "/assets/banner/dialysis.png" },
   // { id: 7, backgroundImage: "/assets/banner/dialysis.png" }

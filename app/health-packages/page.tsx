@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Search, Activity, Loader2 } from "lucide-react";
@@ -14,12 +14,19 @@ export default function HealthPackagesPage() {
   const router = useRouter();
   const resultsRef = useRef<HTMLDivElement | null>(null);
   const shouldScrollOnPageChangeRef = useRef(false);
+  const searchWrapperRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const [allPackages, setAllPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [suggestionQuery, setSuggestionQuery] = useState("");
+  const [persistedSuggestions, setPersistedSuggestions] = useState<any[]>([]);
+  const [dropdownStyle, setDropdownStyle] = useState<CSSProperties>({});
 
   const itemsPerPage = 9;
 
@@ -27,12 +34,86 @@ export default function HealthPackagesPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedSearch(search);
+      const trimmedSearch = search.trim();
+      setDebouncedSearch(trimmedSearch);
+      setSuggestionQuery(trimmedSearch);
       setCurrentPage(1);
-    }, 400);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+    const query = suggestionQuery.trim().toLowerCase();
+
+    if (!query) {
+      return;
+    }
+
+    const nextSuggestions = allPackages
+      .filter((item) => {
+        return (
+          item.ItemName?.toLowerCase().includes(query) ||
+          item.itemID?.toLowerCase().includes(query)
+        );
+      })
+      .slice(0, 5);
+
+    if (nextSuggestions.length > 0) {
+      setPersistedSuggestions(nextSuggestions);
+    }
+  }, [allPackages, suggestionQuery]);
+
+  const updateDropdownPosition = useCallback(() => {
+    if (!searchInputRef.current) {
+      return;
+    }
+
+    const rect = searchInputRef.current.getBoundingClientRect();
+    setDropdownStyle({
+      top: rect.bottom + 8,
+      left: rect.left,
+      width: rect.width,
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      if (
+        !searchWrapperRef.current?.contains(target) &&
+        !dropdownRef.current?.contains(target)
+      ) {
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  useEffect(() => {
+    if (!isSearchFocused) {
+      return;
+    }
+
+    updateDropdownPosition();
+
+    window.addEventListener("resize", updateDropdownPosition);
+    window.addEventListener("scroll", updateDropdownPosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updateDropdownPosition);
+      window.removeEventListener("scroll", updateDropdownPosition, true);
+    };
+  }, [isSearchFocused, updateDropdownPosition]);
+
+  useEffect(() => {
+    if (isSearchFocused) {
+      updateDropdownPosition();
+    }
+  }, [isSearchFocused, search, updateDropdownPosition]);
 
   useEffect(() => {
     fetchHealthPackages();
@@ -164,6 +245,24 @@ export default function HealthPackagesPage() {
 
   const isPreviousDisabled = loading || totalPages <= 1 || currentPage <= 1;
   const isNextDisabled = loading || totalPages <= 1 || currentPage >= totalPages;
+  const showSuggestions =
+    isSearchFocused && persistedSuggestions.length > 0;
+
+  const applySearchImmediately = () => {
+    const trimmedSearch = search.trim();
+    setDebouncedSearch(trimmedSearch);
+    setSuggestionQuery(trimmedSearch);
+    setCurrentPage(1);
+    setIsSearchFocused(false);
+  };
+
+  const handleSuggestionSelect = (item: any) => {
+    setSearch(item.ItemName || "");
+    setDebouncedSearch(item.ItemName || "");
+    setSuggestionQuery(item.ItemName || "");
+    setCurrentPage(1);
+    setIsSearchFocused(false);
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -192,18 +291,54 @@ export default function HealthPackagesPage() {
                 Find the perfect health package for your needs!
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 relative">
+                <div
+                  ref={searchWrapperRef}
+                  className="flex-1 relative"
+                >
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
+                    ref={searchInputRef}
                     type="text"
                     placeholder="Search for packages (e.g. Diabetic, Cardiac)..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    onFocus={() => {
+                      setIsSearchFocused(true);
+                      updateDropdownPosition();
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        applySearchImmediately();
+                      }
+                    }}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-700 text-black"
                   />
+                  {showSuggestions && (
+                    <div
+                      ref={dropdownRef}
+                      style={dropdownStyle}
+                      className="fixed z-[9999] rounded-lg border border-gray-200 bg-white shadow-lg overflow-hidden"
+                    >
+                      {persistedSuggestions.map((item) => (
+                        <button
+                          key={item.itemID}
+                          type="button"
+                          onClick={() => handleSuggestionSelect(item)}
+                          className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left hover:bg-orange-50"
+                        >
+                          <span className="text-gray-900">{item.ItemName}</span>
+                          <span className="shrink-0 text-xs text-gray-500">
+                            {item.itemID}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button
                   type="button"
+                  onClick={applySearchImmediately}
                   className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
                 >
                   <Search className="w-5 h-5" />

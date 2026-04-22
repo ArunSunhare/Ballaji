@@ -2,11 +2,11 @@
 
 import { useCart } from "@/app/context/CartContext";
 import Link from "next/link";
-import {Trash2,Info,ArrowLeft,FileText} from "lucide-react";
-import { Navigation } from "../componets/navbar";
+import {Trash2,ArrowLeft,FileText} from "lucide-react";
 import { Footer } from "../componets/footer";
 import { Hero } from "../componets/hero";
 import { LoginModal } from "../componets/LoginModal";
+import { OrderContactModal } from "../componets/OrderContactModal";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TopHeader } from "../componets/top_header";
@@ -17,6 +17,7 @@ export default function CartPage() {
     const { items, removeFromCart, cartTotal } = useCart();
     const router = useRouter();
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showOrderHelpCard, setShowOrderHelpCard] = useState(false);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -138,12 +139,12 @@ export default function CartPage() {
                                     if (!storedUser) {
                                         setShowLoginModal(true);
                                     } else {
-                                        router.push("/select-date");
+                                        setShowOrderHelpCard(true);
                                     }
                                 }}
                                 className="w-full bg-orange-600 text-white text-center py-3 rounded-md font-semibold hover:bg-orange-700 transition"
                             >
-                                Proceed to select Date
+                                Proceed to Checkout
                             </button>
                         </div>
                     </div>
@@ -181,8 +182,14 @@ export default function CartPage() {
                 }}
                 onSuccess={() => {
                     setShowLoginModal(false);
-                    // User logged in, can proceed
+                    setShowOrderHelpCard(true);
                 }}
+            />
+
+            <OrderContactModal
+                isOpen={showOrderHelpCard}
+                onClose={() => setShowOrderHelpCard(false)}
+                description="Online checkout is not available right now. Please call the number below to place your order for your selected tests and packages."
             />
         </div>
     );

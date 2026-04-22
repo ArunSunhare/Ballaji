@@ -25,7 +25,7 @@ const techniqueCards = [
       "Well suited for cases where tumor position can shift between treatment sessions.",
     ],
     image: {
-      src: "/assets/diagnostics/CT.jpg",
+      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
       title: "IGRT imaging guidance reference",
     },
   },
@@ -57,7 +57,7 @@ const techniqueCards = [
       "Supports practical and effective radiation planning with controlled dose distribution.",
     ],
     image: {
-      src: "/assets/diagnostics/MRI.jpg",
+      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
       title: "3DCRT treatment support",
     },
   },
@@ -73,7 +73,7 @@ const techniqueCards = [
       "Designed to improve patient comfort through shorter and smoother treatment sessions.",
     ],
     image: {
-      src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
+      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
       title: "Rapid-ARC capable treatment platform",
     },
   },
@@ -89,7 +89,7 @@ const techniqueCards = [
       "Combines imaging guidance, planning detail, and strict safety workflow checks.",
     ],
     image: {
-      src: "/assets/diagnostics/PET-CT.jpg",
+      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
       title: "SRS-ready precision radiotherapy setup",
     },
   },
@@ -105,7 +105,7 @@ const techniqueCards = [
       "Helps deliver concentrated treatment with strong attention to nearby organ safety.",
     ],
     image: {
-      src: "/assets/diagnostics/USG.jpg",
+      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
       title: "SBRT treatment workflow support",
     },
   },
@@ -157,7 +157,7 @@ export default function RadiationTherapyPage() {
               Advanced Radiation Therapy Center
             </h1>
             <p className="text-white/90 text-lg md:text-xl">
-              Precision â€¢ Innovation â€¢ Compassionate Cancer Care
+              Precision • Innovation • Compassionate Cancer Care
             </p>
           </div>
         </div>

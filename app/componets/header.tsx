@@ -8,9 +8,7 @@ const slides = [
   { id: 2, backgroundImage: "/assets/banner/banner_3.jpeg" },
   // { id: 3, backgroundImage: "/assets/banner/banner_4.jpeg" },
   // { id: 4, backgroundImage: "/assets/banner/banner5.jpeg" },
-  { id: 5, backgroundImage: "/assets/banner/banner_6.jpeg" },
-  // { id: 6, backgroundImage: "/assets/banner/dialysis.png" },
-  // { id: 7, backgroundImage: "/assets/banner/dialysis.png" }
+  { id: 5, backgroundImage: "/assets/banner/banner_6.jpeg" }
 ];
 
 export default function App() {

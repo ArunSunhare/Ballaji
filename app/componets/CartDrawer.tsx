@@ -1,17 +1,17 @@
 "use client";
 
 import { useCart } from "../context/CartContext";
-import { X, Trash2, MapPin, ChevronLeft } from "lucide-react";
+import { Trash2, ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { LoginModal } from "./LoginModal";
+import { OrderContactModal } from "./OrderContactModal";
 
 export function CartDrawer() {
     const { items, removeFromCart, isOpen, closeCart } = useCart();
-    const router = useRouter();
     const [mounted, setMounted] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | null>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showOrderHelpCard, setShowOrderHelpCard] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -42,17 +42,13 @@ export function CartDrawer() {
             // User not logged in, show login modal
             setShowLoginModal(true);
         } else {
-            // User is logged in, proceed to cart
-            closeCart();
-            router.push('/cart');
+            setShowOrderHelpCard(true);
         }
     };
 
     const handleLoginSuccess = () => {
-        // After successful login, close modal and proceed to cart
         setShowLoginModal(false);
-        closeCart();
-        router.push('/cart');
+        setShowOrderHelpCard(true);
     };
 
     const itemToDeleteName = items.find(i => i.id === itemToDelete)?.name || "Item";
@@ -181,6 +177,12 @@ export function CartDrawer() {
                     onSuccess={handleLoginSuccess}
                 />
             )}
+
+            <OrderContactModal
+                isOpen={showOrderHelpCard}
+                onClose={() => setShowOrderHelpCard(false)}
+                description="Online checkout is not available right now. Please call the number below to confirm your tests and packages."
+            />
         </>
     );
 }

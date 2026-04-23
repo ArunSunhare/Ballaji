@@ -65,7 +65,7 @@ const ctScanImages: DiagnosticItem[] = [
   },
   {
     src: "/assets/banner/TMT (2).jpeg",
-    title: "TrueBeam Radiotherapy Machine",
+    title: "TMT Machine",
     heading: "Multispeciality OPD",
     content: [
       "OPD consultation of various specialities and super specialities i.e. Medicine, Gynaecology, Paediatrics, Orthopaedics, ENT, Dermatology, Neurology, Gastroenterology, Oncology will be given at a nominal and highly subsidised consultation fees by the philanthropist specialists.",

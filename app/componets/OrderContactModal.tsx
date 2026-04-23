@@ -53,10 +53,10 @@ export function OrderContactModal({
         <div className="mt-5 rounded-xl border border-orange-200 bg-orange-50 p-4 text-center">
           <p className="text-sm font-medium text-gray-600">Order Support Number</p>
           <a
-            href="tel:7985200684"
+            href="tel:9990867867"
             className="mt-2 block text-3xl font-bold tracking-wide text-orange-600"
           >
-            7985200684
+            9990867867
           </a>
         </div>
         <div className="mt-6 flex gap-3">
@@ -68,7 +68,7 @@ export function OrderContactModal({
             Close
           </button>
           <a
-            href="tel:7985200684"
+            href="tel:9990867867"
             className="flex-1 rounded-lg bg-orange-600 px-4 py-3 text-center font-medium text-white hover:bg-orange-700"
           >
             Call Now

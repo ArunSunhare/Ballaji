@@ -134,7 +134,7 @@ export default function CTScanPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-white mb-4 text-4xl md:text-5xl font-bold">
-              Advanced Diagnostic Imaging
+              Radiology
             </h1>
             <p className="text-white/90 text-lg md:text-xl">
               Precision • Speed • Compassionate Healthcare

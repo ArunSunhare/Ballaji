@@ -28,7 +28,7 @@ export function PharmacyFacility() {
     <FacilityLayout
       heroImage="/assets/pharmacy/IMG20260201082517.jpg.jpeg"
       heroAlt="Pharmacy facility"
-      heroTitle="24*7 Pharmacy"
+      heroTitle="Pharmacy"
       heroSubtitle="Cost to Cost Medicine"
       intro="24*7 pharmacy. All medicine sold to everyone at cost price to the pharmacy."
       highlight="Cost to cost medicine."

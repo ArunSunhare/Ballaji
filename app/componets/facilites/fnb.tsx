@@ -16,7 +16,7 @@ export function FnbFacility() {
     <FacilityLayout
       heroImage="/assets/kitchen/IMG-20260402-WA0032.jpg.jpeg"
       heroAlt="F and B facility"
-      heroTitle="F&B Facility Gallery"
+      heroTitle="F&B Facility"
       heroSubtitle="Clean Spaces • Supportive Service • Visual Overview"
       intro="This section presents the F&B facility through a simple visual gallery so visitors can browse the department environment in the same style as the other facility pages."
       highlight="A visual walk-through of the F&B facility space"

@@ -266,7 +266,7 @@ export default function RadiationTherapyPage() {
 
             <div className="mt-12 bg-gradient-to-r from-orange-100 to-orange-50 p-10 rounded-xl text-center">
               <p className="text-2xl font-bold text-orange-700">
-                Precise Treatment â€¢ Advanced Technology â€¢ Compassionate Care
+                Precise Treatment • Advanced Technology • Compassionate Care
               </p>
               <p className="mt-4 text-gray-700">
                 Advanced radiation therapy services in service of humanity

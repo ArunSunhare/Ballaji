@@ -103,17 +103,7 @@ export async function GET(req: NextRequest) {
     CACHE_DATA = allData;
     CACHE_TIME = now;
 
-    // 🔍 Filter data based on search query
-    // let filteredData = allData;
-    
-    // if (searchQuery) {
-    //   filteredData = allData.filter((item: any) => 
-    //     item.ItemName?.toLowerCase().includes(searchQuery) ||
-    //     item.categoryid?.toLowerCase().includes(searchQuery) ||
-    //     item.ItemCode?.toLowerCase().includes(searchQuery)
-    //   );
-    // }
-    // const categoryId = searchParams.get("categoryid") || "";
+   
     let filteredData = allData;
 
     // 🔹 Filter by categoryid
@@ -132,10 +122,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // 📊 Apply limit
+    //Apply limit
     const limitedData = filteredData.slice(0, limit);
 
-    /* ✅ Return filtered results */
+    /* Return filtered results */
     return NextResponse.json({
       status: "Success",
       message: searchQuery ? "Search results fetched" : "Data fetched successfully",

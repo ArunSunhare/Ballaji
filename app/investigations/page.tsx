@@ -189,7 +189,7 @@ export default function InvestigationsPage() {
 
       if (!res.ok) {
         const errorText = await res.text();
-        console.error("API Error Response:", errorText);
+        // console.error("API Error Response:", errorText);
         throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
       }
 
@@ -200,11 +200,11 @@ export default function InvestigationsPage() {
         setAllInvestigations(json.data || []);
         // console.log("Successfully loaded", json.data?.length || 0, "investigations");
       } else {
-        console.error("API returned error status:", json);
+        // console.error("API returned error status:", json);
         setError(json.message || "Failed to load investigations");
       }
     } catch (err) {
-      console.error("Fetch error:", err);
+      // console.error("Fetch error:", err);
       setError("An error occurred while fetching data");
     } finally {
       setLoading(false);
@@ -302,6 +302,17 @@ export default function InvestigationsPage() {
     },
     [currentPage, totalPages]
   );
+  const isDisabledTest = (item: any) => {
+    const name = item.ItemName?.toLowerCase() || "";
+    const labType = item.LabType?.toLowerCase() || "";
+
+    const isRadiation =
+      name.includes("radiation") || labType.includes("radiation");
+
+    const isDialysis = item.IsDialysis === 1;
+
+    return isRadiation || isDialysis;
+  };
 
   const isPreviousDisabled = loading || totalPages <= 1 || currentPage <= 1;
   const isNextDisabled = loading || totalPages <= 1 || currentPage >= totalPages;
@@ -330,7 +341,7 @@ export default function InvestigationsPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-16 overflow-hidden">
+      <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-10 sm:py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-40">
           <Image
             src="/assets/hero.jpg"
@@ -342,12 +353,12 @@ export default function InvestigationsPage() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl">
-            <h1 className="text-white mb-2 text-4xl font-bold">Find Your Test</h1>
-            <p className="text-white/90 mb-8 text-lg">
+            <h1 className="text-white mb-2 text-3xl sm:text-4xl font-bold leading-tight">Find Your Test</h1>
+            <p className="text-white/90 mb-5 sm:mb-8 text-sm sm:text-lg leading-relaxed">
               Search from our wide range of diagnostic tests
             </p>
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <p className="text-gray-700 mb-4">
+            <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+              <p className="text-sm sm:text-base text-gray-700 mb-4 leading-relaxed">
                 Can help you with the right test & lab contact!
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -372,7 +383,7 @@ export default function InvestigationsPage() {
                         applySearchImmediately();
                       }
                     }}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-700 text-black"
+                    className="w-full pl-10 pr-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-700 text-sm sm:text-base text-black"
                   />
                   {showSuggestions && (
                     <div
@@ -385,9 +396,9 @@ export default function InvestigationsPage() {
                           key={item.Item_ID}
                           type="button"
                           onClick={() => handleSuggestionSelect(item)}
-                          className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left hover:bg-orange-50"
+                          className="flex w-full items-start justify-between gap-3 px-3 sm:px-4 py-3 text-left hover:bg-orange-50"
                         >
-                          <span className="text-gray-900">{item.ItemName}</span>
+                          <span className="min-w-0 text-sm sm:text-base text-gray-900 break-words">{item.ItemName}</span>
                           <span className="shrink-0 text-xs text-gray-500">
                             {item.Item_ID}
                           </span>
@@ -399,7 +410,7 @@ export default function InvestigationsPage() {
                 <button
                   type="button"
                   onClick={applySearchImmediately}
-                  className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto bg-orange-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base font-medium"
                 >
                   <Search className="w-5 h-5" />
                   Search
@@ -410,7 +421,7 @@ export default function InvestigationsPage() {
         </div>
       </section>
 
-      <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-6">
+      <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-6">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(9)].map((_, i) => (
@@ -442,24 +453,24 @@ export default function InvestigationsPage() {
         ) : (
           <div className="space-y-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="w-full text-xl sm:text-2xl font-bold text-gray-900 leading-tight break-words">
                 {debouncedSearch
                   ? `Search Results for "${debouncedSearch}"`
                   : category
                     ? getCategoryLabel(category)
                     : "All Available Tests"}
-                <span className="text-gray-500 text-base font-normal ml-2">
+                <span className="mt-1 block sm:inline text-sm sm:text-base text-gray-500 font-normal sm:ml-2">
                   ({totalItems} tests)
                 </span>
               </h2>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex w-full sm:w-auto flex-wrap gap-2 sm:gap-3">
                 {categoryOptions.map((option) => (
                   <button
                     key={option.value || "all"}
                     type="button"
                     onClick={() => setCategory(option.value)}
-                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${category === option.value
+                    className={`px-3 sm:px-4 py-2 rounded-lg border text-xs sm:text-sm font-medium transition ${category === option.value
                         ? "bg-orange-600 text-white"
                         : "bg-white text-gray-700 hover:bg-gray-50"
                       }`}
@@ -483,9 +494,9 @@ export default function InvestigationsPage() {
                 investigationsToShow.map((item: any, idx: number) => (
                   <div
                     key={item.Item_ID}
-                    className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="flex-1 mb-4 md:mb-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-start gap-4">
                         <div className="bg-orange-50 p-3 rounded-lg hidden sm:block">
                           {matchesCategoryFilter(item, "LAB") ? (
@@ -494,11 +505,11 @@ export default function InvestigationsPage() {
                             <Activity className="w-6 h-6 text-orange-600" />
                           )}
                         </div>
-                        <div>
-                          <h3 className="text-lg  text-gray-900">
+                        <div className="min-w-0">
+                          <h3 className="text-base sm:text-lg font-semibold leading-snug text-gray-900 break-words">
                             {item.ItemName}
                           </h3>
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500 mt-1">
+                          <div className="flex flex-wrap gap-x-2 sm:gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-500 mt-1">
                             <span>ID: <span className="font-mono">{item.Item_ID}</span></span>
                             <span>•</span>
                             <span>{getDisplayCategory(item)}</span>
@@ -515,20 +526,50 @@ export default function InvestigationsPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-6">
+                    <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-6 md:w-auto">
                       {item.Rate && (
                         <div className="text-right hidden sm:block">
                           <p className="text-xs text-gray-500">Price</p>
                           <p className="text-2xl font-bold text-orange-600">₹ {item.Rate}</p>
                         </div>
                       )}
-                      <button
+                      {/* <button
                         type="button"
                         onClick={() => router.push(`/tests/${slugify(item.ItemName)}?id=${encodeURIComponent(item.Item_ID || "")}`)}
                         className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-medium shadow-sm"
                       >
                         Book Now
+                      </button> */}
+                      <button
+                        type="button"
+                        disabled={isDisabledTest(item)}
+                        onClick={() =>
+                          !isDisabledTest(item) &&
+                          router.push(`/tests/${slugify(item.ItemName)}?id=${encodeURIComponent(item.Item_ID || "")}`)
+                        }
+                        className={`w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium shadow-sm transition
+                          ${
+                            isDisabledTest(item)
+                              ? "pointer-events-none opacity-100"
+                              : "bg-orange-500 hover:bg-orange-600 text-white"
+                          }`}
+                      >
+                        Book Now
                       </button>
+                      {/* {!matchesCategoryFilter(item, "RADIATION") &&
+                      !matchesCategoryFilter(item, "DIALYSIS") && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            router.push(
+                              `/tests/${slugify(item.ItemName)}?id=${encodeURIComponent(item.Item_ID || "")}`
+                            )
+                          }
+                          className="w-full sm:w-auto bg-orange-500 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-orange-600 transition text-sm sm:text-base font-medium shadow-sm"
+                        >
+                          Book Now
+                        </button>
+                      )} */}
                     </div>
                   </div>
                 ))

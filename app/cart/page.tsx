@@ -144,7 +144,7 @@ export default function CartPage() {
                                 }}
                                 className="w-full bg-orange-600 text-white text-center py-3 rounded-md font-semibold hover:bg-orange-700 transition"
                             >
-                                Proceed to Checkout
+                                Proceed to Checkout test 2
                             </button>
                         </div>
                     </div>

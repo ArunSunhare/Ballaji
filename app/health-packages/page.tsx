@@ -194,10 +194,10 @@ export default function HealthPackagesPage() {
       .replace(/\s+/g, "-")
       .replace(/[^\w-]+/g, "");
 
-  const getPageNumbers = useCallback(() => {
+  const getPageNumbers = useCallback((maxVisible = 7) => {
     const pages = [];
-    const maxVisible = 7;
-    let start = Math.max(1, currentPage - 3);
+    const offset = Math.floor(maxVisible / 2);
+    let start = Math.max(1, currentPage - offset);
     let end = Math.min(totalPages, start + maxVisible - 1);
     if (end - start + 1 < maxVisible) {
       start = Math.max(1, end - maxVisible + 1);
@@ -207,6 +207,9 @@ export default function HealthPackagesPage() {
     }
     return pages;
   }, [currentPage, totalPages]);
+
+  const mobilePageNumbers = getPageNumbers(3);
+  const desktopPageNumbers = getPageNumbers(7);
 
   useEffect(() => {
     if (!shouldScrollOnPageChangeRef.current || loading) {
@@ -270,7 +273,7 @@ export default function HealthPackagesPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-16 overflow-hidden">
+      <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-10 sm:py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-40">
           <Image
             src="/assets/hero.jpg"
@@ -282,12 +285,12 @@ export default function HealthPackagesPage() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl">
-            <h1 className="text-white mb-2 text-4xl font-bold">Health Packages</h1>
-            <p className="text-white/90 mb-8 text-lg">
+            <h1 className="text-white mb-2 text-3xl sm:text-4xl font-bold leading-tight">Health Packages</h1>
+            <p className="text-white/90 mb-5 sm:mb-8 text-sm sm:text-lg leading-relaxed">
               Choose from our comprehensive health checkup packages
             </p>
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <p className="text-gray-700 mb-4">
+            <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+              <p className="text-sm sm:text-base text-gray-700 mb-4 leading-relaxed">
                 Find the perfect health package for your needs!
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -312,7 +315,7 @@ export default function HealthPackagesPage() {
                         applySearchImmediately();
                       }
                     }}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-700 text-black"
+                    className="w-full pl-10 pr-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-700 text-sm sm:text-base text-black"
                   />
                   {showSuggestions && (
                     <div
@@ -325,9 +328,9 @@ export default function HealthPackagesPage() {
                           key={item.itemID}
                           type="button"
                           onClick={() => handleSuggestionSelect(item)}
-                          className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left hover:bg-orange-50"
+                          className="flex w-full items-start justify-between gap-3 px-3 sm:px-4 py-3 text-left hover:bg-orange-50"
                         >
-                          <span className="text-gray-900">{item.ItemName}</span>
+                          <span className="min-w-0 text-sm sm:text-base text-gray-900 break-words">{item.ItemName}</span>
                           <span className="shrink-0 text-xs text-gray-500">
                             {item.itemID}
                           </span>
@@ -339,7 +342,7 @@ export default function HealthPackagesPage() {
                 <button
                   type="button"
                   onClick={applySearchImmediately}
-                  className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto bg-orange-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base font-medium"
                 >
                   <Search className="w-5 h-5" />
                   Search
@@ -350,7 +353,7 @@ export default function HealthPackagesPage() {
         </div>
       </section>
 
-      <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-6">
+      <div ref={resultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-6">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(9)].map((_, i) => (
@@ -382,11 +385,11 @@ export default function HealthPackagesPage() {
         ) : (
           <div className="space-y-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="w-full text-xl sm:text-2xl font-bold text-gray-900 leading-tight break-words">
                 {debouncedSearch
                   ? `Search Results for "${debouncedSearch}"`
                   : "All Health Packages"}
-                <span className="text-gray-500 text-base font-normal ml-2">
+                <span className="mt-1 block sm:inline text-sm sm:text-base text-gray-500 font-normal sm:ml-2">
                   ({totalItems} packages)
                 </span>
               </h2>
@@ -405,18 +408,18 @@ export default function HealthPackagesPage() {
                 packagesToShow.map((item: any, idx: number) => (
                   <div
                     key={item.itemID || idx}
-                    className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="flex-1 mb-4 md:mb-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-start gap-4">
                         <div className="bg-orange-50 p-3 rounded-lg hidden sm:block">
                           <Activity className="w-6 h-6 text-orange-600" />
                         </div>
-                        <div>
-                          <h3 className="text-lg text-gray-900">
+                        <div className="min-w-0">
+                          <h3 className="text-base sm:text-lg font-semibold leading-snug text-gray-900 break-words">
                             {item.ItemName}
                           </h3>
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500 mt-1">
+                          <div className="flex flex-wrap gap-x-2 sm:gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-500 mt-1">
                             <span>ID: <span className="font-mono">{item.itemID}</span></span>
                             <span>•</span>
                             <span>{item.PackageCount} Tests Included</span>
@@ -430,7 +433,7 @@ export default function HealthPackagesPage() {
                             )}
                           </div>
                           {item.PackageItem && (
-                            <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                            <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed line-clamp-2 break-words">
                               {item.PackageItem.split(',').slice(0, 3).join(', ')}
                               {item.PackageItem.split(',').length > 3 ? '...' : ''}
                             </p>
@@ -439,7 +442,7 @@ export default function HealthPackagesPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-6">
+                    <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-6 md:w-auto">
                       {item.Rate && (
                         <div className="text-right hidden sm:block">
                           <p className="text-xs text-gray-500">Price</p>
@@ -449,7 +452,7 @@ export default function HealthPackagesPage() {
                       <button
                         type="button"
                         onClick={() => router.push(`/health-packages/${slugify(item.ItemName)}`)}
-                        className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-medium shadow-sm"
+                        className="w-full sm:w-auto bg-orange-500 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-orange-600 transition text-sm sm:text-base font-medium shadow-sm"
                       >
                         View Details
                       </button>
@@ -466,34 +469,55 @@ export default function HealthPackagesPage() {
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={isPreviousDisabled}
                   aria-disabled={isPreviousDisabled}
-                  className="px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
+                  className="px-4 sm:px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 text-sm sm:text-base font-medium"
                 >
                   Previous
                 </button>
 
-                {getPageNumbers().map((page) => (
-                  <button
-                    key={page}
-                    type="button"
-                    onClick={() => handlePageChange(page)}
-                    disabled={currentPage === page}
-                    aria-current={currentPage === page ? "page" : undefined}
-                    className={`w-12 h-12 rounded-lg font-medium transition ${
-                      currentPage === page
-                        ? "bg-orange-600 text-white cursor-default"
-                        : "border hover:bg-gray-50 text-gray-700"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                <div className="flex items-center gap-2 sm:hidden">
+                  {mobilePageNumbers.map((page) => (
+                    <button
+                      key={`mobile-${page}`}
+                      type="button"
+                      onClick={() => handlePageChange(page)}
+                      disabled={currentPage === page}
+                      aria-current={currentPage === page ? "page" : undefined}
+                      className={`w-10 h-10 rounded-lg text-sm font-medium transition ${
+                        currentPage === page
+                          ? "bg-orange-600 text-white cursor-default"
+                          : "border hover:bg-gray-50 text-gray-700"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="hidden sm:flex items-center gap-2">
+                  {desktopPageNumbers.map((page) => (
+                    <button
+                      key={`desktop-${page}`}
+                      type="button"
+                      onClick={() => handlePageChange(page)}
+                      disabled={currentPage === page}
+                      aria-current={currentPage === page ? "page" : undefined}
+                      className={`w-12 h-12 rounded-lg font-medium transition ${
+                        currentPage === page
+                          ? "bg-orange-600 text-white cursor-default"
+                          : "border hover:bg-gray-50 text-gray-700"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
 
                 <button
                   type="button"
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={isNextDisabled}
                   aria-disabled={isNextDisabled}
-                  className="px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 font-medium"
+                  className="px-4 sm:px-5 py-3 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 text-sm sm:text-base font-medium"
                 >
                   Next
                 </button>

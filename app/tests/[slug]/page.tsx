@@ -255,24 +255,24 @@ export default function TestDetailPage() {
             <div className="lg:col-span-2 space-y-4 sm:space-y-6 min-w-0">
               {/* Header */}
               <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0 overflow-hidden">
-                <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 break-words">{test.name}</h1>
+                <h1 className="text-xl sm:text-3xl font-bold leading-tight text-blue-900 mb-1 break-words">{test.name}</h1>
                 <p className="text-gray-600 text-sm mb-4">{test.subtitle}</p>
 
                 <div className="lg:hidden mb-4">
                   <span className="text-gray-400 line-through text-sm mr-2">
                     {test.originalPrice}
                   </span>
-                  <span className="text-3xl font-bold text-orange-600">{test.price}</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-orange-600">{test.price}</span>
                 </div>
 
                 {test.alsoKnownAs?.length > 0 && (
-                  <div className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-900 mb-2">Also Known As:</h3>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="mb-4 min-w-0">
+                    <h3 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">Also Known As:</h3>
+                    <div className="flex max-w-full flex-wrap gap-2">
                       {test.alsoKnownAs.map((item: string, idx: number) => (
                         <span
                           key={idx}
-                          className="max-w-full px-3 py-1.5 text-sm border border-orange-500 text-orange-600 rounded-full break-words"
+                          className="inline-flex max-w-full px-3 py-1.5 text-xs sm:text-sm leading-snug border border-orange-500 text-orange-600 rounded-md break-words whitespace-normal"
                         >
                           {item}
                         </span>
@@ -281,7 +281,7 @@ export default function TestDetailPage() {
                   </div>
                 )}
 
-                <p className="text-gray-700 leading-relaxed text-justify">{test.description}</p>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-left sm:text-justify break-words">{test.description}</p>
               </div>
 
               {/* Parameters */}
@@ -291,10 +291,10 @@ export default function TestDetailPage() {
                 </h2>
                 <button
                   onClick={() => setShowParams(!showParams)}
-                  className="w-full min-w-0 flex justify-between items-center gap-2 px-3 sm:px-4 py-3 text-left hover:bg-gray-200 transition cursor-pointer rounded-md bg-gray-100 font-bold text-gray-900"
+                  className="w-full min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 px-3 sm:px-4 py-3 text-left hover:bg-gray-200 transition cursor-pointer rounded-md bg-gray-100 font-bold text-gray-900"
                 >
-                  <span className="min-w-0 truncate">{test.name}</span>
-                  <div className="flex items-center md:gap-4 gap-2 flex-shrink-0">
+                  <span className="min-w-0 w-full sm:w-auto text-sm sm:text-base leading-snug break-words sm:truncate">{test.name}</span>
+                  <div className="flex w-full sm:w-auto items-center justify-between sm:justify-end md:gap-4 gap-2 flex-shrink-0">
                     <span className="text-orange-600 text-sm font-medium whitespace-nowrap">
                       {test.parameters} Parameter{test.parameters !== 1 ? "s" : ""}
                     </span>

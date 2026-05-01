@@ -1,8 +1,8 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { Activity, ArrowLeft, Phone, MapPin, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Activity, ArrowLeft, Phone, ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/app/context/CartContext";
 import { Navigation } from "@/app/componets/navbar";
 import { Footer } from "@/app/componets/footer";
@@ -20,6 +20,8 @@ export default function PackageDetailPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showParams, setShowParams] = useState(false);
   const [selectedCentre, setSelectedCentre] = useState(STATIC_CENTRES[0] || "");
+  const [bookingDropdown, setBookingDropdown] = useState<"centres" | "package" | null>(null);
+  const bookingDropdownAreaRef = useRef<HTMLDivElement | null>(null);
 
   const [dynamicPackage, setDynamicPackage] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,6 +29,17 @@ export default function PackageDetailPage() {
 
   const slug = (Array.isArray(params.slug) ? params.slug[0] : params.slug) || "";
   const itemId = searchParams.get("id") || "";
+
+  useEffect(() => {
+    const handleOutsideClick = (event: PointerEvent) => {
+      if (!bookingDropdownAreaRef.current?.contains(event.target as Node)) {
+        setBookingDropdown(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsideClick);
+    return () => document.removeEventListener("pointerdown", handleOutsideClick);
+  }, []);
 
   const slugify = (text: string) => {
     return (text || "")
@@ -172,8 +185,8 @@ export default function PackageDetailPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <section className="bg-gray-100 py-6 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="bg-gray-100 py-4 sm:py-6 min-h-screen overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 min-w-0">
           <button
             onClick={() => router.back()}
             className="flex items-center gap-2 text-gray-700 mb-6 hover:text-orange-600 transition-colors"
@@ -182,12 +195,12 @@ export default function PackageDetailPage() {
             <span className="font-medium">Back</span>
           </button>
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 min-w-0">
             {/* LEFT CONTENT */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6 min-w-0">
               {/* Package Header */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h1 className="text-3xl font-bold text-blue-900 mb-1">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0 overflow-hidden">
+                <h1 className="text-xl sm:text-3xl font-bold leading-tight text-blue-900 mb-1 break-words">
                   {pkg.name}
                 </h1>
                 <p className="text-gray-600 text-sm mb-4">{pkg.subtitle}</p>
@@ -196,27 +209,27 @@ export default function PackageDetailPage() {
                   <span className="text-gray-400 line-through text-sm mr-2">
                     {pkg.originalPrice}
                   </span>
-                  <span className="text-3xl font-bold text-orange-600">
+                  <span className="text-2xl sm:text-3xl font-bold text-orange-600">
                     {pkg.price}
                   </span>
                 </div>
 
-                <p className="text-gray-700 leading-relaxed text-justify">
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-left sm:text-justify break-words">
                   {pkg.description}
                 </p>
               </div>
 
               {/* Package Includes */}
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4">
+              <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 min-w-0">
                 <h2 className="font-bold text-sm md:text-lg text-black md:mb-4 mb-2">
                   Includes<span className="text-[#c74115]"> {pkg.parameters}</span> Tests
                 </h2>
                 <button
                   onClick={() => setShowParams(!showParams)}
-                  className="w-full flex justify-between items-center px-4 py-3 text-left hover:bg-gray-200 transition cursor-pointer rounded-md bg-gray-100 font-bold text-gray-900"
+                  className="w-full min-w-0 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 px-3 sm:px-4 py-3 text-left hover:bg-gray-200 transition cursor-pointer rounded-md bg-gray-100 font-bold text-gray-900"
                 >
-                  <span className="truncate pr-4">{pkg.name}</span>
-                  <div className="flex items-center md:gap-4 gap-2 flex-shrink-0">
+                  <span className="min-w-0 w-full sm:w-auto text-sm sm:text-base leading-snug break-words sm:truncate sm:pr-4">{pkg.name}</span>
+                  <div className="flex w-full sm:w-auto items-center justify-between sm:justify-end md:gap-4 gap-2 flex-shrink-0">
                     <span className="text-orange-600 text-sm font-medium whitespace-nowrap">
                       {pkg.parameters} Test{pkg.parameters !== 1 ? 's' : ''}
                     </span>
@@ -230,11 +243,11 @@ export default function PackageDetailPage() {
                   <div className="mt-4">
                     <div className="grid gap-2 grid-cols-1 md:grid-cols-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                       {pkg.packageItems.map((item: string, idx: number) => (
-                        <div key={idx} className="flex items-center px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-100">
+                        <div key={idx} className="flex items-center px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-100 min-w-0">
                           <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className="w-4 h-4 text-orange-600 mr-2 flex-shrink-0" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M12 7a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7"></path>
                           </svg>
-                          <p className="text-gray-700 font-[var(--font-roboto-serif)] text-[13px] leading-tight">{item.trim().replace(/\*/g, '').trim()}</p>
+                          <p className="min-w-0 text-gray-700 font-[var(--font-roboto-serif)] text-[13px] leading-tight break-words">{item.trim().replace(/\*/g, '').trim()}</p>
                         </div>
                       ))}
                     </div>
@@ -243,7 +256,7 @@ export default function PackageDetailPage() {
               </div>
 
               {/* Reporting TAT */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
                 <h3 className="font-bold text-gray-900 mb-2">
                   Reporting TAT:
                 </h3>
@@ -252,70 +265,99 @@ export default function PackageDetailPage() {
             </div>
 
             {/* RIGHT BOOKING CARD */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-sm p-6 sticky top-6">
-                <h3 className="text-lg font-bold text-blue-900 mb-4">
+            <div className="lg:col-span-1 min-w-0">
+              <div className="w-full max-w-full min-w-0 overflow-visible bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:sticky lg:top-6">
+                <h3 className="text-base sm:text-lg font-bold text-blue-900 mb-4">
                   Visit Type
                 </h3>
 
-                <button className="w-full bg-orange-600 text-white py-3 rounded-lg mb-6 hover:bg-orange-700 transition-colors font-semibold">
+                <button className="w-full bg-orange-600 text-white py-2.5 sm:py-3 rounded-lg mb-5 sm:mb-6 hover:bg-orange-700 transition-colors text-sm sm:text-base font-semibold">
                   Visit Centre
                 </button>
 
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                    Centres
-                  </h4>
-                  <div className="relative">
-                    <select
-                      value={selectedCentre}
-                      onChange={(e) => setSelectedCentre(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-700 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    >
-                      {pkg.centres && pkg.centres.map((centre: string, idx: number) => (
-                        <option key={idx} value={centre}>
-                          {centre}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <div ref={bookingDropdownAreaRef}>
+                  <div className="mb-6 w-full max-w-full min-w-0">
+                    <h4 className="text-sm font-semibold text-blue-900 mb-2">
+                      Centres
+                    </h4>
+                    <div className="relative w-full min-w-0">
+                      <button
+                        type="button"
+                        onClick={() => setBookingDropdown(bookingDropdown === "centres" ? null : "centres")}
+                        className="flex w-full min-w-0 items-center rounded-lg border border-gray-300 bg-white px-3 py-2.5 pr-10 text-left text-sm text-gray-700 outline-none focus:ring-2 focus:ring-orange-500 sm:px-4 sm:py-3 sm:text-base"
+                      >
+                        <span className="min-w-0 flex-1 truncate">{selectedCentre || "Select centre"}</span>
+                      </button>
+                      <ChevronDown className={`absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none transition-transform ${bookingDropdown === "centres" ? "rotate-180" : ""}`} />
+                      {bookingDropdown === "centres" && (
+                        <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+                          {pkg.centres && pkg.centres.map((centre: string, idx: number) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                setSelectedCentre(centre);
+                                setBookingDropdown(null);
+                              }}
+                              className="block w-full px-3 py-2.5 text-left text-sm text-gray-700 hover:bg-orange-50 break-words"
+                            >
+                              {centre}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <button className="mt-2 text-orange-600 hover:text-orange-700 flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                  </button>
-                </div>
 
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                    Package
-                  </h4>
-                  <div className="relative">
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-700 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                      <option>{pkg.name}</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                  <div className="mb-6 w-full max-w-full min-w-0">
+                    <h4 className="text-sm font-semibold text-blue-900 mb-2">
+                      Package
+                    </h4>
+                    <div className="relative w-full min-w-0">
+                      <button
+                        type="button"
+                        onClick={() => setBookingDropdown(bookingDropdown === "package" ? null : "package")}
+                        className="flex w-full min-w-0 items-center rounded-lg border border-gray-300 bg-white px-3 py-2.5 pr-10 text-left text-sm text-gray-700 outline-none focus:ring-2 focus:ring-orange-500 sm:px-4 sm:py-3 sm:text-base"
+                      >
+                        <span className="min-w-0 flex-1 truncate" title={pkg.name}>
+                          {pkg.name}
+                        </span>
+                      </button>
+                      <ChevronDown className={`absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none transition-transform ${bookingDropdown === "package" ? "rotate-180" : ""}`} />
+                      {bookingDropdown === "package" && (
+                        <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+                          <button
+                            type="button"
+                            onClick={() => setBookingDropdown(null)}
+                            className="block w-full px-3 py-2.5 text-left text-sm text-gray-700 hover:bg-orange-50 break-words"
+                          >
+                            {pkg.name}
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <div className="mb-6 text-center">
-                  <div className="text-3xl font-bold text-orange-600">
+                  <div className="text-2xl sm:text-3xl font-bold leading-tight text-orange-600 break-words">
                     {pkg.price}
                   </div>
                 </div>
 
                 <button
                   onClick={handleBookNow}
-                  className="w-full bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition-colors mb-3 font-semibold"
+                  className="w-full bg-orange-600 text-white py-2.5 sm:py-3 rounded-lg hover:bg-orange-700 transition-colors mb-3 text-sm sm:text-base font-semibold"
                 >
                   Book Now
                 </button>
 
-                <button className="w-full border-2 border-orange-600 text-orange-600 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-orange-50 transition-colors font-semibold mb-3">
+                <button className="w-full min-w-0 border-2 border-orange-600 text-orange-600 px-3 py-2.5 sm:py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-orange-50 transition-colors text-sm sm:text-base font-semibold mb-3">
                   <Phone className="w-4 h-4" />
-                  Call {selectedCentre}
+                  <span className="min-w-0 break-words leading-snug">Call {selectedCentre}</span>
                 </button>
 
-                <button className="w-full border-2 border-orange-600 text-orange-600 py-3 rounded-lg hover:bg-orange-50 transition-colors font-semibold">
+                <button className="w-full border-2 border-orange-600 text-orange-600 px-3 py-2.5 sm:py-3 rounded-lg hover:bg-orange-50 transition-colors text-sm sm:text-base font-semibold">
                   Request A Callback
                 </button>
               </div>

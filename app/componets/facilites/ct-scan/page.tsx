@@ -65,12 +65,13 @@ const ctScanImages: DiagnosticItem[] = [
   },
   {
     src: "/assets/banner/TMT (2).jpeg",
-    title: "TMT Machine",
-    heading: "TMT Machine",
+    title: "TMT (Tread Mill Test)",
+    heading: "TMT (Tread Mill Test)",
     content: [
-      "OPD consultation of various specialities and super specialities i.e. Medicine, Gynaecology, Paediatrics, Orthopaedics, ENT, Dermatology, Neurology, Gastroenterology, Oncology will be given at a nominal and highly subsidised consultation fees by the philanthropist specialists.",
-      "The centre provides affordable access to specialist consultations under one roof for patients who need follow-up, diagnosis support and expert medical advice.",
-      "This service is part of the charitable mission of the centre to make healthcare more accessible to all sections of society.",
+      "We are using one of the leading brand Cardivision machine of Medicaid for TMT (Tread Mill Test).",
+      "Evaluates coronary artery disease by monitoring heart performance during controlled exercise stress.",
+      "Uses advanced algorithms to measure multiple cardiac risk factors simultaneously.",
+      "Helps assess the risk of sudden cardiac death for early detection and prevention.",
     ],
   },
    {

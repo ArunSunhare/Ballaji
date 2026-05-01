@@ -1,5 +1,5 @@
 import { Footer } from "../componets/footer";
-import GetFeedback from "../componets/getFeedback";
+import GetFeedback from "../componets/feedback";
 import { MainNavbar } from "../componets/MainNavbar";
 import { TopHeader } from "../componets/top_header";
 import { TopNavbar } from "../componets/TopNavbar";

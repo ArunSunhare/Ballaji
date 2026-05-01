@@ -35,7 +35,7 @@ export function TestBookingCard({ test }: TestBookingCardProps) {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm p-6 sticky top-6">
+        <div className="w-full max-w-full min-w-0 overflow-hidden bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:sticky lg:top-6">
             <h3 className="text-lg font-bold text-blue-900 mb-4">
                 Visit Type
             </h3>
@@ -53,7 +53,7 @@ export function TestBookingCard({ test }: TestBookingCardProps) {
                     <select
                         value={selectedCentre}
                         onChange={(e) => setSelectedCentre(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-700 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full min-w-0 px-3 sm:px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-700 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     >
                         {test.centres && test.centres.map((centre: string, idx: number) => (
                             <option key={idx} value={centre}>
@@ -73,8 +73,8 @@ export function TestBookingCard({ test }: TestBookingCardProps) {
                 <h4 className="text-sm font-semibold text-blue-900 mb-2">
                     Tests
                 </h4>
-                <div className="relative">
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-700 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <div className="relative min-w-0">
+                    <select className="w-full min-w-0 px-3 sm:px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white text-gray-700 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500">
                         <option>{test.name}</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
@@ -84,7 +84,7 @@ export function TestBookingCard({ test }: TestBookingCardProps) {
  
             <div className="mb-6 text-center">
           
-                <div className="text-3xl font-bold text-orange-600">
+                <div className="text-2xl sm:text-3xl font-bold text-orange-600 break-words">
                   
                     {test.price}
                 </div>
@@ -98,9 +98,9 @@ export function TestBookingCard({ test }: TestBookingCardProps) {
                 Book Now
             </button>
 
-            <button className="w-full border-2 border-orange-600 text-orange-600 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-orange-50 transition-colors font-semibold mb-3">
+            <button className="w-full min-w-0 border-2 border-orange-600 text-orange-600 px-3 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-orange-50 transition-colors font-semibold mb-3">
                 <Phone className="w-4 h-4" />
-                Call {selectedCentre}
+                <span className="min-w-0 break-words">Call {selectedCentre}</span>
             </button>
 
             <button className="w-full border-2 border-orange-600 text-orange-600 py-3 rounded-lg hover:bg-orange-50 transition-colors font-semibold">

@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const searchQuery = searchParams.get("search")?.toLowerCase().trim() || "";
+    const categoryId = searchParams.get("categoryid") || "";
     const limit = parseInt(searchParams.get("limit") || "10");
 
     const now = Date.now();
@@ -36,15 +37,29 @@ export async function GET(req: NextRequest) {
     /* ✅ Serve from cache if valid */
     if (CACHE_DATA && now - CACHE_TIME < CACHE_TTL) {
       // 🔍 Filter data based on search query
+      // const categoryId = searchParams.get("categoryid") || "";
       let filteredData = CACHE_DATA;
       
-      if (searchQuery) {
-        filteredData = CACHE_DATA.filter((item: any) => 
-          item.ItemName?.toLowerCase().includes(searchQuery) ||
-          item.categoryid?.toLowerCase().includes(searchQuery) ||
-          item.ItemCode?.toLowerCase().includes(searchQuery)
-        );
-      }
+      // if (searchQuery) {
+      //   filteredData = CACHE_DATA.filter((item: any) => 
+      //     item.ItemName?.toLowerCase().includes(searchQuery) ||
+      //     item.categoryid?.toLowerCase().includes(searchQuery) ||
+      //     item.ItemCode?.toLowerCase().includes(searchQuery)
+      //   );
+      // }
+       if (categoryId) {
+          filteredData = filteredData.filter(
+            (item: any) => item.categoryid === categoryId
+          );
+        }
+
+        // 🔹 Filter by search
+        if (searchQuery) {
+          filteredData = filteredData.filter((item: any) => 
+            item.ItemName?.toLowerCase().includes(searchQuery) ||
+            item.ItemCode?.toLowerCase().includes(searchQuery)
+          );
+        }
 
       // 📊 Apply limit
       const limitedData = filteredData.slice(0, limit);
@@ -68,6 +83,7 @@ export async function GET(req: NextRequest) {
 
     /* 🔴 SOAP XML → TEXT */
     const xmlText = await response.text();
+    // console.log("SOAP Response:", xmlText);
 
     /* 🔴 Extract JSON string from XML */
     const match = xmlText.match(/<string[^>]*>([\s\S]*?)<\/string>/);
@@ -88,12 +104,30 @@ export async function GET(req: NextRequest) {
     CACHE_TIME = now;
 
     // 🔍 Filter data based on search query
-    let filteredData = allData;
+    // let filteredData = allData;
     
+    // if (searchQuery) {
+    //   filteredData = allData.filter((item: any) => 
+    //     item.ItemName?.toLowerCase().includes(searchQuery) ||
+    //     item.categoryid?.toLowerCase().includes(searchQuery) ||
+    //     item.ItemCode?.toLowerCase().includes(searchQuery)
+    //   );
+    // }
+    // const categoryId = searchParams.get("categoryid") || "";
+    let filteredData = allData;
+
+    // 🔹 Filter by categoryid
+    if (categoryId) {
+      filteredData = filteredData.filter(
+        // (item: any) => item.categoryid === categoryId
+        (item: any) =>item.categoryid?.toLowerCase() === categoryId.toLowerCase()
+      );
+    }
+
+    // 🔹 Filter by search
     if (searchQuery) {
-      filteredData = allData.filter((item: any) => 
+      filteredData = filteredData.filter((item: any) => 
         item.ItemName?.toLowerCase().includes(searchQuery) ||
-        item.categoryid?.toLowerCase().includes(searchQuery) ||
         item.ItemCode?.toLowerCase().includes(searchQuery)
       );
     }

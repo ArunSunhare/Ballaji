@@ -10,6 +10,25 @@ import { TopHeader } from "../componets/top_header";
 import { TopNavbar } from "../componets/TopNavbar";
 import { MainNavbar } from "../componets/MainNavbar";
 
+const CATEGORY_MAP: Record<string, string> = {
+  LSHHI3: "LAB",
+  LSHHI7: "RADIOLOGY",
+  LSHHI17: "PACKAGE",
+  LSHHI6: "OTHER",
+  LSHHI45: "SPECIAL",
+};
+
+const categoryOptions = [
+  { value: "", label: "All Tests" },
+  { value: "LAB", label: "Lab Tests" },
+  { value: "RADIOLOGY", label: "Radiology Tests" },
+  { value: "RADIATION", label: "Radiation" },
+  { value: "DIALYSIS", label: "Dialysis" },
+];
+
+const getCategoryLabel = (value: string) =>
+  categoryOptions.find((option) => option.value === value)?.label || "All Available Tests";
+
 export default function InvestigationsPage() {
   const router = useRouter();
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -30,6 +49,32 @@ export default function InvestigationsPage() {
   const [dropdownStyle, setDropdownStyle] = useState<CSSProperties>({});
 
   const itemsPerPage = 9;
+
+  const matchesCategoryFilter = useCallback((item: any, selectedCategory: string) => {
+    if (!selectedCategory) return true;
+    const categoryId = item.categoryid || item.CategoryID;
+    const mappedCategory = CATEGORY_MAP[categoryId];
+    const isDialysis =
+      categoryId === "LSHHI17" &&
+      (item.IsDialysis === 1 || item.IsDialysis === "1" || item.IsDialysis === true);
+
+    if (selectedCategory === "LAB") return mappedCategory === "LAB";
+    if (selectedCategory === "RADIOLOGY") return mappedCategory === "RADIOLOGY";
+
+    if (selectedCategory === "RADIATION") return categoryId === "LSHHI45";
+
+    if (selectedCategory === "DIALYSIS") return isDialysis;
+
+    return false;
+  }, []);
+
+  const getDisplayCategory = (item: any) => {
+    if (matchesCategoryFilter(item, "LAB")) return "Lab Test";
+    if (matchesCategoryFilter(item, "RADIOLOGY")) return "Radiology Test";
+    if (matchesCategoryFilter(item, "RADIATION")) return "Radiation";
+    if (matchesCategoryFilter(item, "DIALYSIS")) return "Dialysis";
+    return "Diagnostic Test";
+  };
 
 
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -58,7 +103,7 @@ export default function InvestigationsPage() {
           item.ItemName?.toLowerCase().includes(query) ||
           item.Item_ID?.toLowerCase().includes(query);
 
-        const matchesCategory = !category || item.categoryid === category;
+        const matchesCategory = matchesCategoryFilter(item, category);
 
         return matchesSearch && matchesCategory;
       })
@@ -67,7 +112,7 @@ export default function InvestigationsPage() {
     if (nextSuggestions.length > 0) {
       setPersistedSuggestions(nextSuggestions);
     }
-  }, [allInvestigations, category, suggestionQuery]);
+  }, [allInvestigations, category, matchesCategoryFilter, suggestionQuery]);
 
   const updateDropdownPosition = useCallback(() => {
     if (!searchInputRef.current) {
@@ -173,11 +218,11 @@ export default function InvestigationsPage() {
         item.ItemName?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
         item.Item_ID?.toLowerCase().includes(debouncedSearch.toLowerCase());
 
-      const matchesCategory = !category || item.categoryid === category;
+      const matchesCategory = matchesCategoryFilter(item, category);
 
       return matchesSearch && matchesCategory;
     });
-  }, [allInvestigations, debouncedSearch, category]);
+  }, [allInvestigations, debouncedSearch, category, matchesCategoryFilter]);
 
   // Memoized paginated data
   const investigationsToShow = useMemo(() => {
@@ -400,28 +445,26 @@ export default function InvestigationsPage() {
               <h2 className="text-2xl font-bold text-gray-900">
                 {debouncedSearch
                   ? `Search Results for "${debouncedSearch}"`
-                  : category === "LSHHI3"
-                    ? "Lab Tests"
-                    : category === "LSHHI7"
-                      ? "Radiology Tests"
-                      : "All Available Tests"}
+                  : category
+                    ? getCategoryLabel(category)
+                    : "All Available Tests"}
                 <span className="text-gray-500 text-base font-normal ml-2">
                   ({totalItems} tests)
                 </span>
               </h2>
 
               <div className="flex flex-wrap gap-3">
-                {["", "LSHHI3", "LSHHI7"].map((cat) => (
+                {categoryOptions.map((option) => (
                   <button
-                    key={cat}
+                    key={option.value || "all"}
                     type="button"
-                    onClick={() => setCategory(cat)}
-                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${category === cat
+                    onClick={() => setCategory(option.value)}
+                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${category === option.value
                         ? "bg-orange-600 text-white"
                         : "bg-white text-gray-700 hover:bg-gray-50"
                       }`}
                   >
-                    {cat === "" ? "All Tests" : cat === "LSHHI3" ? "Lab Tests" : "Radiology Tests"}
+                    {option.label}
                   </button>
                 ))}
               </div>
@@ -445,7 +488,7 @@ export default function InvestigationsPage() {
                     <div className="flex-1 mb-4 md:mb-0">
                       <div className="flex items-start gap-4">
                         <div className="bg-orange-50 p-3 rounded-lg hidden sm:block">
-                          {item.categoryid === "LSHHI3" ? (
+                          {matchesCategoryFilter(item, "LAB") ? (
                             <TestTube className="w-6 h-6 text-orange-600" />
                           ) : (
                             <Activity className="w-6 h-6 text-orange-600" />
@@ -458,9 +501,7 @@ export default function InvestigationsPage() {
                           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500 mt-1">
                             <span>ID: <span className="font-mono">{item.Item_ID}</span></span>
                             <span>•</span>
-                            <span>
-                              {item.categoryid === "LSHHI3" ? "Lab Test" : "Radiology Test"}
-                            </span>
+                            <span>{getDisplayCategory(item)}</span>
                             {item.Rate && (
                               <>
                                 <span className="sm:hidden">•</span>
@@ -483,7 +524,7 @@ export default function InvestigationsPage() {
                       )}
                       <button
                         type="button"
-                        onClick={() => router.push(`/tests/${slugify(item.ItemName)}`)}
+                        onClick={() => router.push(`/tests/${slugify(item.ItemName)}?id=${encodeURIComponent(item.Item_ID || "")}`)}
                         className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-medium shadow-sm"
                       >
                         Book Now

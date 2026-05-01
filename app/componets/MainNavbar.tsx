@@ -173,7 +173,7 @@ export function MainNavbar() {
 
   return (
     <div className="bg-white hidden lg:block">
-      <nav className="w-full px-3 sm:px-4 lg:px-10 h-12 flex items-center justify-center gap-8 text-white font-medium">
+      <nav className="w-full px-3 sm:px-4 lg:px-6 min-[1207px]:px-10 h-12 flex items-center justify-center gap-3 min-[1207px]:gap-8 whitespace-nowrap text-[13px] min-[1207px]:text-base text-white font-medium">
         <a href="/" className="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
         <a href="/about-us" className="text-gray-700 hover:text-orange-600 transition-colors">About Us</a>
         <a href="/our-founder" className="text-gray-700 hover:text-orange-600 transition-colors">Our Founder</a>
@@ -228,7 +228,7 @@ export function MainNavbar() {
           onMouseLeave={() => handleMouseLeave(setIsFindTestOpen)}
         >
           <a 
-            href="#find-test" 
+            href="/investigations" 
             className={`transition-colors ${
               isFindTestOpen 
                 ? "text-orange-600" 
@@ -294,7 +294,7 @@ export function MainNavbar() {
           onMouseLeave={() => handleMouseLeave(setIsHealthPackagesOpen)}
         >
           <a 
-            href="#health-packages" 
+            href="/health-packages" 
             className={`transition-colors ${
               isHealthPackagesOpen 
                 ? "text-orange-600" 

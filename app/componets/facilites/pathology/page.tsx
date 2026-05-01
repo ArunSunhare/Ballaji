@@ -140,7 +140,7 @@ export default function RadiationTherapyPage() {
             <TopNavbar />
             <MainNavbar />
 
-      <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-16 overflow-hidden">
+      <section className="relative overflow-hidden bg-gradient-to-r from-gray-700 to-gray-600 py-12 md:py-16">
         <div className="absolute inset-0 opacity-40">
           <Image
             src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
@@ -153,34 +153,34 @@ export default function RadiationTherapyPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-white mb-4 text-4xl md:text-5xl font-bold">
+            <h1 className="mb-3 text-3xl font-bold leading-tight text-white md:mb-4 md:text-5xl">
               Advanced Radiation Therapy Center
             </h1>
-            <p className="text-white/90 text-lg md:text-xl">
+            <p className="text-base text-white/90 md:text-xl">
               Precision • Innovation • Compassionate Cancer Care
             </p>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="p-8 md:p-12 lg:p-16 space-y-10 text-gray-800 leading-relaxed text-lg">
+      <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8 md:py-16">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
+          <div className="space-y-8 p-5 text-base leading-7 text-gray-800 md:space-y-10 md:p-12 md:text-lg md:leading-relaxed lg:p-16">
 
-            <p className="text-justify">
+            <p className="text-left md:text-justify">
               The <strong>Radiation Therapy Center</strong> at{" "}
               <strong>Shri Hanuman Balaji Charitable Diagnostic Centre</strong>{" "}
               is equipped with cutting-edge radiation therapy technology and advanced treatment techniques. Our goal is to deliver precise radiation treatment with maximum effectiveness and minimal side effects for cancer patients.
             </p>
 
-            <div className="bg-orange-50 border-l-4 border-orange-600 p-8 rounded-r-xl">
-              <p className="text-xl font-semibold text-orange-800 italic text-center">
-                World-class diagnostics at subsidized cost â€“ true charitable healthcare
+            <div className="rounded-r-xl border-l-4 border-orange-600 bg-orange-50 p-5 md:p-8">
+              <p className="text-center text-lg font-semibold italic text-orange-800 md:text-xl">
+                World-class diagnostics at subsidized cost &ndash; true charitable healthcare
               </p>
             </div>
 
             <div className="space-y-8">
-              <div className="flex flex-wrap gap-x-8 gap-y-3 border-b border-stone-300 pb-5 text-sm font-semibold text-stone-500">
+              <div className="flex flex-wrap gap-x-4 gap-y-3 border-b border-stone-300 pb-4 text-xs font-semibold text-stone-500 sm:gap-x-6 sm:text-sm md:pb-5">
                 {spotlightTechniques.map((technique) => (
                   <button
                     key={technique}
@@ -197,23 +197,23 @@ export default function RadiationTherapyPage() {
                 ))}
               </div>
 
-              <div className="rounded-[2rem] border border-stone-200 bg-[#faf8f3] p-6 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.28)] md:p-10">
+              <div className="rounded-[2rem] border border-stone-200 bg-[#faf8f3] p-5 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.28)] md:p-10">
                 <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
                   <div className="space-y-6 text-stone-700">
                     <div className="space-y-3">
-                      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-amber-700">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 sm:text-sm sm:tracking-[0.22em]">
                         {selectedTechnique.eyebrow}
                       </p>
-                      <h2 className="text-3xl font-bold leading-tight text-stone-900 md:text-4xl">
+                      <h2 className="text-2xl font-bold leading-tight text-stone-900 md:text-4xl">
                         {selectedTechnique.title}
                       </h2>
                     </div>
 
-                    <p className="max-w-2xl text-base leading-8 md:text-lg">
+                    <p className="max-w-2xl text-sm leading-7 md:text-lg md:leading-8">
                       {selectedTechnique.description}
                     </p>
 
-                    <div className="grid gap-3 text-base md:text-lg">
+                    <div className="grid gap-3 text-sm md:text-lg">
                       {selectedTechnique.points.map((point) => (
                         <p key={point} className="flex items-start gap-3">
                           <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
@@ -242,7 +242,7 @@ export default function RadiationTherapyPage() {
               </div>
             </div>
 
-            <p className="text-justify">
+            <p className="text-left md:text-justify">
               Our advanced radiation therapy techniques include{" "}
               <strong>
                 IGRT (Image Guided Radiotherapy), IMRT (Intensity Modulated Radiation Therapy),
@@ -254,7 +254,7 @@ export default function RadiationTherapyPage() {
               All treatments are planned and delivered by skilled radiation oncologists and technologists under strict quality and safety protocols.
             </p>
 
-            <p className="text-justify">
+            <p className="text-left md:text-justify">
               We emphasize{" "}
               <strong>
                 treatment precision, patient safety, advanced imaging guidance,
@@ -264,11 +264,11 @@ export default function RadiationTherapyPage() {
               weaker sections with complete dignity and support throughout their cancer treatment journey.
             </p>
 
-            <div className="mt-12 bg-gradient-to-r from-orange-100 to-orange-50 p-10 rounded-xl text-center">
-              <p className="text-2xl font-bold text-orange-700">
+            <div className="mt-10 rounded-xl bg-gradient-to-r from-orange-100 to-orange-50 p-6 text-center md:mt-12 md:p-10">
+              <p className="text-xl font-bold leading-tight text-orange-700 md:text-2xl">
                 Precise Treatment • Advanced Technology • Compassionate Care
               </p>
-              <p className="mt-4 text-gray-700">
+              <p className="mt-3 text-sm text-gray-700 md:mt-4 md:text-base">
                 Advanced radiation therapy services in service of humanity
               </p>
             </div>

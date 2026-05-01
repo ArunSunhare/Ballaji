@@ -3,76 +3,62 @@
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 
-const galleryCategories = [
-  { id: "all", name: "All Photos" },
-  { id: "hospital", name: "Hospital" },
-  { id: "equipment", name: "Equipment" },
-  { id: "staff", name: "Staff" },
-  { id: "patients", name: "Patient Care" }
-];
+// const galleryCategories = [
+//   // { id: "all", name: "All Photos" },
+//   // { id: "hospital", name: "Hospital" },
+//   // { id: "equipment", name: "Equipment" },
+//   // { id: "staff", name: "Staff" },
+//   // { id: "patients", name: "Patient Care" }
+// ];
 
 const galleryImages = [
   {
     id: 1,
     category: "hospital",
     title: "Hospital Building",
-    description: "Main building view of the diagnostic centre",
+    // description: "Main building view of the diagnostic centre",
     image: "/assets/Header.jpg"
   },
   {
     id: 2,
     category: "equipment",
     title: "MRI Machine",
-    description: "Advanced MRI imaging facility",
+    // description: "Advanced MRI imaging facility",
     image: "/assets/diagnostics/MRI.jpg"
   },
-  // {
-  //   id: 3,
-  //   category: "staff",
-  //   title: "Clinical Team",
-  //   description: "Dedicated medical professionals serving patients",
-  //   image: "/assets/DR. AMIT JAISWAL.png"
-  // },
   {
-    id: 4,
+    id: 3,
     category: "patients",
     title: "Reception Area",
-    description: "Welcoming patient support and registration desk",
+    // description: "Welcoming patient support and registration desk",
     image: "/assets/banner/Reception.png"
   },
   {
-    id: 5,
+    id: 4,
     category: "hospital",
     title: "Diagnostic Centre",
-    description: "Clean and modern infrastructure for visitors",
+    // description: "Clean and modern infrastructure for visitors",
     image: "/assets/hero.jpg"
   },
   {
-    id: 6,
+    id: 5,
     category: "equipment",
     title: "CT Scanner",
-    description: "High-quality CT imaging technology",
+    // description: "High-quality CT imaging technology",
     image: "/assets/diagnostics/CT.jpg"
-  },
-  // {
-  //   id: 7,
-  //   category: "staff",
-  //   title: "Specialist Doctor",
-  //   description: "Expert-led diagnostic consultation and care",
-  //   image: "/assets/DR. SAURABH SUMAN.png"
-  // },
+  }, 
   {
-    id: 8,
+    id: 6,
     category: "patients",
     title: "Patient Care Area",
-    description: "Supportive spaces built around patient comfort",
+    // description: "Supportive spaces built around patient comfort",
     image: "/assets/dialysis.jpeg"
   },
   {
-    id: 9,
+    id: 7,
     category: "equipment",
     title: "Pathology Lab Equipment",
-    description: "Reliable pathology and lab diagnostics setup",
+    // description: "Reliable pathology and lab diagnostics setup",
     image: "/assets/diagnostics/path_lab.jpg"
   }
 ];
@@ -105,7 +91,7 @@ export function GallerySection() {
   };
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
@@ -118,7 +104,7 @@ export function GallerySection() {
         </div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
+        {/* <div className="flex flex-wrap justify-center gap-3 mb-8">
           {galleryCategories.map((category) => (
             <button
               key={category.id}
@@ -132,7 +118,7 @@ export function GallerySection() {
               {category.name}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

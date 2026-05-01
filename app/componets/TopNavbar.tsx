@@ -54,12 +54,15 @@ export function TopNavbar() {
   const navItems = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about-us" },
+    { name: "Our Founder", href: "/our-founder" },
+    { name: "Doctors", href: "/#doctors" },
     { name: "Gallery", href: "/gallery" },
     { name: "Find A Test", href: "/investigations" },
-    { name: "Health Packages", href: "/health-packages" },
     { name: "Facilities", href: "/#facilities" },
-    { name: "Doctors", href: "/#doctors" },
-    { name: "Contact Us", href: "/contact_us" },
+    { name: "Health Packages", href: "/health-packages" }, 
+    { name: "Our Location", href: "/our_locations" },
+    { name: "Feedback", href: "/feedback" },
+    { name: "Contact Us", href: "/contact_us" }
   ];
 
   // Animation Variants for Links
@@ -76,27 +79,30 @@ export function TopNavbar() {
     <>
       {/* --- MAIN NAVBAR (CSS Unchanged) --- */}
       <div className="bg-white border-b sticky top-0 z-50 w-full overflow-x-hidden shadow-sm">
-        <div className="w-full px-3 sm:px-4 lg:px-10 h-20 flex items-center justify-between gap-1 sm:gap-4">
-          <a href="/" className="flex-shrink-0 flex items-center gap-2">
-            <Image src={logo} alt="Logo" className="h-12 sm:h-15 w-auto" priority />
-            <Image src={personLeft} alt="Person Left" className="h-14 w-14 sm:h-18 sm:w-18 rounded-full border border-gray-100" priority />
-            <span className="text-[5px] sm:text-xs font-bold text-orange-600 whitespace-normal break-words max-w-[200px] sm:max-w-none">
+        <div className="w-full px-3 sm:px-4 lg:px-10 h-20 flex items-center justify-between gap-3">
+          <a href="/" className="flex w-full items-center justify-between gap-2 md:w-auto md:flex-shrink-0 md:justify-start">
+           <Image src={logo} alt="Logo" className="h-12 sm:h-15 w-auto" priority />
+            
+          <div className="flex items-center gap-2">
+           <Image src={personLeft} alt="Person Left" className="h-12 w-12 sm:h-18 sm:w-18 rounded-full border border-gray-100" priority />
+            <span className="text-center text-[8px] sm:text-xs font-bold leading-tight text-orange-600 whitespace-normal break-words max-w-[140px] sm:max-w-none md:text-left">
               Our Inpirer Honorable<br />
               Mahashay Dharampal <br />
               Gulati Ji
             </span>
-            <Image src={personRight} alt="Person Right" className="h-14 w-14 sm:h-18 sm:w-18 rounded-full border border-gray-100" priority />
+            </div>
+            <Image src={personRight} alt="Person Right" className="h-12 w-12 sm:h-18 sm:w-18 rounded-full border border-gray-100" priority />
           </a>
 
           <div className="hidden lg:block flex-1 max-w-lg">
             <Search_Bar />
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0">
+          <div className="hidden min-[481px]:flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0">
             <a
               href="https://shbcdc.in/online_his/design/online_lab/default.aspx"
               target="_blank"
-              className="hidden md:flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
+              className="hidden lg:flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
             >
               <Download className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="text-sm font-semibold">Download Reports</span>
@@ -111,7 +117,7 @@ export function TopNavbar() {
               )}
             </button>
 
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               {user ? (
                 <div className="flex items-center gap-2">
                   <button onClick={() => router.push("/patient_profile")} className="w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center">
@@ -126,15 +132,28 @@ export function TopNavbar() {
               )}
             </div>
 
-            <button className="lg:hidden p-2 text-gray-700" onClick={() => setIsMenuOpen(true)}>
-              <Menu className="w-6 h-6 sm:w-8 sm:h-8" />
+            <button className="lg:hidden p-2 text-gray-700 hover:text-orange-600 transition-colors" onClick={() => setIsMenuOpen(true)}>
+              <Menu className="w-7 h-7" />
             </button>
           </div>
         </div>
       </div>
 
-      <div className="lg:hidden bg-white border-b sticky top-20 z-40 w-full px-3 py-3">
-        <Search_Bar />
+      <div className="hidden max-[480px]:block bg-white border-b sticky top-20 z-40 w-full px-3 py-2.5">
+        <div className="flex items-center justify-end gap-3">
+          <button onClick={openCart} className="relative p-2 text-gray-700 hover:text-orange-600 transition-colors">
+            <ShoppingCart className="w-6 h-6" />
+            {items.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                {items.length}
+              </span>
+            )}
+          </button>
+
+          <button className="p-2 text-gray-700 hover:text-orange-600 transition-colors" onClick={() => setIsMenuOpen(true)}>
+            <Menu className="w-7 h-7" />
+          </button>
+        </div>
       </div>
 
       {/* --- ANIMATED MOBILE MENU --- */}
@@ -156,7 +175,7 @@ export function TopNavbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 h-full w-[85%] bg-white shadow-2xl flex flex-col"
+              className="absolute right-0 top-0 h-full w-[78%] max-w-[340px] bg-white shadow-2xl flex flex-col"
             >
               <div className="p-4 border-b flex items-center justify-between">
                 <Image src={logo} alt="Logo" className="h-10 w-auto" />

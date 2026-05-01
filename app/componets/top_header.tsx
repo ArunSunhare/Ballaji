@@ -9,10 +9,10 @@ export function TopHeader() {
     */
     <div className="hidden md:block bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 text-sm shadow-lg">
       <div className="w-full px-3 sm:px-4 lg:px-10">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div className="flex w-full flex-col sm:flex-row justify-around items-center gap-4 lg:gap-8">
 
           {/* Contact Information - Sabhi links aur icons intact hain */}
-          <div className="flex flex-wrap items-center gap-3 md:gap-4 text-xs sm:text-sm font-medium">
+          <div className="flex flex-1 flex-wrap items-center justify-around gap-3 md:gap-5 lg:gap-8 text-xs sm:text-sm font-medium">
 
             <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full hover:bg-white/30 transition-all duration-300">
               <Phone className="w-4 h-4" />
@@ -55,7 +55,7 @@ export function TopHeader() {
           </div>
 
           {/* Social Media Icons - Desktop style preserved */}
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center justify-end gap-2">
             {[
               { icon: Facebook, href: "https://www.facebook.com/share/1EWkwyum58/", label: "Facebook" },
               { icon: Instagram, href: "https://www.instagram.com/shb_mdhcancerhospital?utm_source=qr&igsh=b2t5MmdhMjJiOWs=", label: "Instagram" },

@@ -66,7 +66,7 @@ const ctScanImages: DiagnosticItem[] = [
   {
     src: "/assets/banner/TMT (2).jpeg",
     title: "TMT Machine",
-    heading: "Multispeciality OPD",
+    heading: "TMT Machine",
     content: [
       "OPD consultation of various specialities and super specialities i.e. Medicine, Gynaecology, Paediatrics, Orthopaedics, ENT, Dermatology, Neurology, Gastroenterology, Oncology will be given at a nominal and highly subsidised consultation fees by the philanthropist specialists.",
       "The centre provides affordable access to specialist consultations under one roof for patients who need follow-up, diagnosis support and expert medical advice.",
@@ -76,7 +76,7 @@ const ctScanImages: DiagnosticItem[] = [
    {
     src: "/assets/diagnostics/X-RAY.jpg",
     title: "Digital X-Ray System",
-    heading: "Dialysis",
+    heading: "Digital X-Ray System",
     content: [
       "Satya Sheel Gupta Dialysis Hall. Under the aegis of Shri Hanuman Balaji Charitable Diagnostic Centre we run 8 Bedded Dialysis Centre where we are using best in class and technology, the latest technology Haemodialysis 710200A machine of B Braun Dialog + (German machines) with capacity of 32 dialysis per day with all machines.",
       "People with failed or damaged kidneys may have difficulty eliminating waste and unwanted water from the blood. Dialysis is an artificial way of carrying out this process.",
@@ -98,7 +98,7 @@ const ctScanImages: DiagnosticItem[] = [
   {
     src: "/assets/diagnostics/PET-CT.jpg",
     title: "PET-CT Scanner (Siemens Biograph Horizon)",
-    heading: "Pathology",
+    heading: "PET-CT Scanner",
     content: [
       "Shri Hanuman Balaji Charitable Diagnostic Centre is having in house Pathology Laboratory. We have following departments Pathology Lab.",
       "BioChemistry – By Vitros 4600. At our centre we use most advance Biochemistry analyser Vitros 4600 by Johnson and Johnson. The machine works on the concept of dry chemistry without using water and no wastage of reagent. It has a capacity of performing 900 tests per hour.",
@@ -120,7 +120,7 @@ export default function CTScanPage() {
             <TopNavbar />
             <MainNavbar />
 
-      <section className="relative bg-gradient-to-r from-gray-700 to-gray-600 py-16 overflow-hidden">
+      <section className="relative overflow-hidden bg-gradient-to-r from-gray-700 to-gray-600 py-12 md:py-16">
         <div className="absolute inset-0 opacity-40">
           <Image
             src="/assets/diagnostics/CT.jpg"
@@ -133,21 +133,21 @@ export default function CTScanPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-white mb-4 text-4xl md:text-5xl font-bold">
+            <h1 className="mb-3 text-3xl font-bold leading-tight text-white md:mb-4 md:text-5xl">
               Radiology
             </h1>
-            <p className="text-white/90 text-lg md:text-xl">
+            <p className="text-base text-white/90 md:text-xl">
               Precision • Speed • Compassionate Healthcare
             </p>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="p-8 md:p-12 lg:p-16 space-y-10 text-gray-800 leading-relaxed text-lg">
+      <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8 md:py-16">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
+          <div className="space-y-8 p-5 text-base leading-7 text-gray-800 md:space-y-10 md:p-12 md:text-lg md:leading-relaxed lg:p-16">
 
-            <p className="text-justify">
+            <p className="text-left md:text-justify">
               The <strong>Diagnostic Imaging Facility</strong> at{" "}
               <strong>Shri Hanuman Balaji Charitable Diagnostic Centre</strong>{" "}
               is equipped with state-of-the-art imaging systems from globally
@@ -155,13 +155,13 @@ export default function CTScanPage() {
               with maximum patient safety and comfort.
             </p>
 
-            <div className="bg-orange-50 border-l-4 border-orange-600 p-8 rounded-r-xl">
-              <p className="text-xl font-semibold text-orange-800 italic text-center">
+            <div className="rounded-r-xl border-l-4 border-orange-600 bg-orange-50 p-5 md:p-8">
+              <p className="text-center text-lg font-semibold italic text-orange-800 md:text-xl">
                 World-class diagnostics at subsidized cost – true charitable healthcare
               </p>
             </div>
 
-            <p className="text-justify">
+            <p className="text-left md:text-justify">
               Our services include{" "}
               <strong>
                 CT Scan, MRI, PET-CT, Digital X-Ray, Ultrasound (USG),
@@ -172,11 +172,11 @@ export default function CTScanPage() {
             </p>
 
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <h2 className="mb-5 text-xl font-bold text-gray-900 md:mb-6 md:text-2xl">
                 Diagnostic Infrastructure
               </h2>
 
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
                 {ctScanImages.map((img, index) => (
                   <div
                     key={index}
@@ -191,7 +191,7 @@ export default function CTScanPage() {
                         className="object-cover"
                       />
                     </div>
-                    <div className="p-4 text-center text-sm font-semibold text-gray-700">
+                    <div className="p-4 text-center text-xs font-semibold leading-snug text-gray-700 sm:text-sm">
                       {img.title}
                     </div>
                   </div>
@@ -199,7 +199,7 @@ export default function CTScanPage() {
               </div>
             </div>
 
-            <p className="text-justify">
+            <p className="text-left md:text-justify">
               We emphasize{" "}
               <strong>
                 radiation dose optimization, fast reporting, diagnostic accuracy,
@@ -209,11 +209,11 @@ export default function CTScanPage() {
               weaker sections with complete dignity and support.
             </p>
 
-            <div className="mt-12 bg-gradient-to-r from-orange-100 to-orange-50 p-10 rounded-xl text-center">
-              <p className="text-2xl font-bold text-orange-700">
+            <div className="mt-10 rounded-xl bg-gradient-to-r from-orange-100 to-orange-50 p-6 text-center md:mt-12 md:p-10">
+              <p className="text-xl font-bold leading-tight text-orange-700 md:text-2xl">
                 Accurate Diagnosis • Compassionate Care • Affordable Access
               </p>
-              <p className="mt-4 text-gray-700">
+              <p className="mt-3 text-sm text-gray-700 md:mt-4 md:text-base">
                 Advanced diagnostics in service of humanity
               </p>
             </div>
@@ -247,17 +247,17 @@ export default function CTScanPage() {
               />
             </div>
 
-            <div className="p-6 md:p-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+            <div className="p-5 md:p-8">
+              <h2 className="mb-3 text-xl font-bold leading-tight text-gray-900 md:text-3xl">
                 {activeImage.heading}
               </h2>
-              <p className="text-orange-600 font-semibold mb-6">
+              <p className="mb-5 text-sm font-semibold text-orange-600 md:mb-6 md:text-base">
                 {activeImage.title}
               </p>
 
-              <div className="space-y-4 text-gray-700 leading-relaxed">
+              <div className="space-y-4 text-sm leading-7 text-gray-700 md:text-base md:leading-relaxed">
                 {activeImage.content.map((paragraph, index) => (
-                  <p key={index} className="text-justify">
+                  <p key={index} className="text-left md:text-justify">
                     {paragraph}
                   </p>
                 ))}

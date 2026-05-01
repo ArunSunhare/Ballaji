@@ -190,7 +190,9 @@ export function Footer() {
                 </a>
 
                 <a
-                  href="tel:+917827945641"
+                  href="https://wa.me/917827945641"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-start justify-start gap-2 w-full px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition font-semibold shadow-md"
                 >
                   <MessageCircle className="w-4 h-4" /> Contact on WhatsApp

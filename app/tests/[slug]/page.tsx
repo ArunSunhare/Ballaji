@@ -12,6 +12,53 @@ import { TopHeader } from "@/app/componets/top_header";
 
 const STATIC_CENTRES = ["Karkardooma Institutional Area"];
 
+const DUMMY_SPECIALITY_TESTS = [
+  {
+    Item_ID: "DUMMY-RADIATION-001",
+    ItemName: "Radiation Therapy Planning",
+    categoryid: "RADIATION",
+    Rate: 1500,
+    LabType: "RADIATION",
+    TAT: "24-48 Hours*",
+    TestPreparation: "Please carry previous reports and imaging records.",
+    observationName: "Clinical Review,Treatment Planning,Dose Assessment",
+    description: "Radiation Therapy Planning helps assess treatment requirements before radiotherapy.",
+  },
+  {
+    Item_ID: "DUMMY-RADIATION-002",
+    ItemName: "Radiation Oncology Consultation",
+    categoryid: "RADIATION",
+    Rate: 1000,
+    LabType: "RADIATION",
+    TAT: "Same Day*",
+    TestPreparation: "Please carry previous biopsy, scan, and treatment reports.",
+    observationName: "Oncology Review,Treatment Advice",
+    description: "Radiation Oncology Consultation is used for specialist review and treatment guidance.",
+  },
+  {
+    Item_ID: "DUMMY-DIALYSIS-001",
+    ItemName: "Hemodialysis Session",
+    categoryid: "DIALYSIS",
+    Rate: 1800,
+    LabType: "DIALYSIS",
+    TAT: "As scheduled",
+    TestPreparation: "Please follow the dialysis team's instructions before visit.",
+    observationName: "Vitals Check,Dialysis Session,Post Session Review",
+    description: "Hemodialysis Session supports kidney function through scheduled dialysis care.",
+  },
+  {
+    Item_ID: "DUMMY-DIALYSIS-002",
+    ItemName: "Dialysis Pre Assessment",
+    categoryid: "DIALYSIS",
+    Rate: 800,
+    LabType: "DIALYSIS",
+    TAT: "Same Day*",
+    TestPreparation: "Please carry recent kidney function and prescription records.",
+    observationName: "Clinical Assessment,Vascular Access Review",
+    description: "Dialysis Pre Assessment helps review readiness before a dialysis session.",
+  },
+];
+
 export default function TestDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -59,6 +106,15 @@ export default function TestDetailPage() {
       setError("");
 
       try {
+        const dummyMatch =
+          DUMMY_SPECIALITY_TESTS.find((item) => String(item.Item_ID) === itemId) ||
+          DUMMY_SPECIALITY_TESTS.find((item) => slugify(item.ItemName) === slugify(slug));
+
+        if (dummyMatch) {
+          setDynamicTest(mapTest(dummyMatch));
+          setLoading(false);
+          return;
+        }
         // ✅ FIX 3: If we have itemId, search by it directly first
         if (itemId) {
           const res = await fetch(
@@ -184,8 +240,8 @@ export default function TestDetailPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <section className="bg-gray-100 py-6 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="bg-gray-100 py-4 sm:py-6 min-h-screen overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 min-w-0">
           <button
             onClick={() => router.back()}
             className="flex items-center gap-2 text-gray-700 mb-6 hover:text-orange-600 transition-colors"
@@ -194,12 +250,12 @@ export default function TestDetailPage() {
             <span className="font-medium">Back</span>
           </button>
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 min-w-0">
             {/* LEFT CONTENT */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6 min-w-0">
               {/* Header */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h1 className="text-3xl font-bold text-blue-900 mb-1">{test.name}</h1>
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0 overflow-hidden">
+                <h1 className="text-2xl sm:text-3xl font-bold text-blue-900 mb-1 break-words">{test.name}</h1>
                 <p className="text-gray-600 text-sm mb-4">{test.subtitle}</p>
 
                 <div className="lg:hidden mb-4">
@@ -216,7 +272,7 @@ export default function TestDetailPage() {
                       {test.alsoKnownAs.map((item: string, idx: number) => (
                         <span
                           key={idx}
-                          className="px-3 py-1.5 text-sm border border-orange-500 text-orange-600 rounded-full"
+                          className="max-w-full px-3 py-1.5 text-sm border border-orange-500 text-orange-600 rounded-full break-words"
                         >
                           {item}
                         </span>
@@ -229,15 +285,15 @@ export default function TestDetailPage() {
               </div>
 
               {/* Parameters */}
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4">
+              <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4 min-w-0">
                 <h2 className="font-bold text-sm md:text-lg text-black md:mb-4 mb-2">
                   Includes <span className="text-[#c74115]">{test.parameters}</span> Test Parameters
                 </h2>
                 <button
                   onClick={() => setShowParams(!showParams)}
-                  className="w-full flex justify-between items-center px-4 py-3 text-left hover:bg-gray-200 transition cursor-pointer rounded-md bg-gray-100 font-bold text-gray-900"
+                  className="w-full min-w-0 flex justify-between items-center gap-2 px-3 sm:px-4 py-3 text-left hover:bg-gray-200 transition cursor-pointer rounded-md bg-gray-100 font-bold text-gray-900"
                 >
-                  <span className="truncate pr-4">{test.name}</span>
+                  <span className="min-w-0 truncate">{test.name}</span>
                   <div className="flex items-center md:gap-4 gap-2 flex-shrink-0">
                     <span className="text-orange-600 text-sm font-medium whitespace-nowrap">
                       {test.parameters} Parameter{test.parameters !== 1 ? "s" : ""}
@@ -270,19 +326,19 @@ export default function TestDetailPage() {
                                 d="M12 7a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7"
                               />
                             </svg>
-                            <p className="text-gray-700 text-[13px] leading-tight">
+                            <p className="min-w-0 text-gray-700 text-[13px] leading-tight break-words">
                               {param.trim().replace(/\*/g, "").trim()}
                             </p>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 rounded-lg">
-                        <div className="flex items-center gap-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-0">
+                        <div className="flex items-center gap-3 min-w-0">
                           <TestTube className="w-5 h-5 text-orange-600" />
-                          <span className="text-gray-800 font-medium">{test.name}</span>
+                          <span className="min-w-0 text-gray-800 font-medium break-words">{test.name}</span>
                         </div>
-                        <span className="text-orange-600 text-sm font-medium">
+                        <span className="text-orange-600 text-sm font-medium shrink-0">
                           {test.parameters} Parameter{test.parameters > 1 ? "s" : ""}
                         </span>
                       </div>
@@ -292,21 +348,21 @@ export default function TestDetailPage() {
               </div>
 
               {/* Test Preparation */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0 overflow-hidden">
                 <h3 className="font-bold text-gray-900 mb-3">Test Preparation:</h3>
-                <p className="text-gray-700 leading-relaxed text-sm">{test.testPreparation}</p>
+                <p className="text-gray-700 leading-relaxed text-sm break-words">{test.testPreparation}</p>
               </div>
 
               {/* TAT */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0 overflow-hidden">
                 <h3 className="font-bold text-gray-900 mb-2">Reporting TAT:</h3>
-                <p className="text-gray-700">{test.reportTat}</p>
+                <p className="text-gray-700 break-words">{test.reportTat}</p>
               </div>
 
               {/* Specialization */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-w-0 overflow-hidden">
                 <h3 className="font-bold text-gray-900 mb-3">Specializations:</h3>
-                <span className="inline-block bg-orange-50 text-orange-600 px-4 py-2 rounded-full text-sm border border-orange-200">
+                <span className="inline-block max-w-full bg-orange-50 text-orange-600 px-4 py-2 rounded-full text-sm border border-orange-200 break-words">
                   {test.specialization}
                 </span>
               </div>
@@ -342,7 +398,7 @@ export default function TestDetailPage() {
             </div>
 
             {/* RIGHT BOOKING CARD */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 min-w-0">
               <TestBookingCard test={test} />
             </div>
           </div>

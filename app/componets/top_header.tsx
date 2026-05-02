@@ -9,11 +9,11 @@ export function TopHeader() {
     760px se bade screens par wapas dikhayegi.
     */
     <div className="hidden min-[760px]:block bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 text-sm shadow-lg">
-      <div className="w-full px-3 sm:px-4 lg:px-10">
-        <div className="flex w-full flex-col sm:flex-row justify-between items-center gap-4 lg:gap-8">
+      <div className="w-full px-3 sm:px-4 min-[1090px]:px-10">
+        <div className="flex w-full flex-col sm:flex-row justify-between items-center gap-4 min-[1090px]:gap-8">
 
           {/* Contact Information - Sabhi links aur icons intact hain */}
-          <div className="flex flex-1 flex-wrap min-[760px]:max-[989px]:flex-nowrap min-[1024px]:max-[1089px]:flex-nowrap items-center justify-between min-[760px]:max-[989px]:justify-between min-[1024px]:max-[1089px]:justify-between lg:justify-around gap-3 md:gap-5 min-[760px]:max-[989px]:gap-2 min-[1024px]:max-[1089px]:gap-2 lg:gap-8 text-xs sm:text-sm min-[760px]:max-[989px]:text-[11px] min-[1024px]:max-[1089px]:text-[11px] font-medium">
+          <div className="flex flex-1 flex-wrap min-[760px]:max-[989px]:flex-nowrap min-[1024px]:max-[1089px]:flex-nowrap items-center justify-around min-[760px]:max-[989px]:justify-between min-[1024px]:max-[1089px]:justify-between gap-3 md:gap-5 min-[760px]:max-[989px]:gap-2 min-[1024px]:max-[1089px]:gap-2 min-[1090px]:gap-8 text-xs sm:text-sm min-[760px]:max-[989px]:text-[11px] min-[1024px]:max-[1089px]:text-[11px] font-medium">
 
             <div className="flex items-center gap-2 min-[760px]:max-[989px]:gap-1.5 min-[1024px]:max-[1089px]:gap-1.5 bg-white/20 px-3 min-[760px]:max-[989px]:px-2 min-[1024px]:max-[1089px]:px-2 py-1 rounded-full hover:bg-white/30 transition-all duration-300">
               <Phone className="w-4 h-4 min-[760px]:max-[989px]:h-3.5 min-[1024px]:max-[1089px]:h-3.5 min-[760px]:max-[989px]:w-3.5 min-[1024px]:max-[1089px]:w-3.5" />
@@ -56,7 +56,7 @@ export function TopHeader() {
           </div>
 
           {/* Social Media Icons - Desktop style preserved */}
-          <div className="hidden shrink-0 items-center justify-end gap-2 min-[990px]:flex">
+          <div className="hidden shrink-0 items-center justify-end gap-2 min-[990px]:max-[1023px]:flex min-[1090px]:flex">
             {[
               { icon: Facebook, href: "https://www.facebook.com/share/1EWkwyum58/", label: "Facebook" },
               { icon: Instagram, href: "https://www.instagram.com/shb_mdhcancerhospital?utm_source=qr&igsh=b2t5MmdhMjJiOWs=", label: "Instagram" },

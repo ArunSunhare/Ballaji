@@ -1,5 +1,5 @@
-try {
-  require("dotenv").config();
+ try {
+ require("dotenv").config();
 } catch {
   // dotenv is optional when the host injects PORT/HOSTNAME directly.
 }

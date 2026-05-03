@@ -44,7 +44,7 @@ export function FacilityLayout({
   calloutSubtitle,
 }: FacilityLayoutProps) {
   const [activeCard, setActiveCard] = useState<FacilityCard | null>(null);
-
+   
   return (
     <div className="min-h-screen bg-white">
       <TopHeader />

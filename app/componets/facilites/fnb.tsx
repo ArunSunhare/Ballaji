@@ -4,7 +4,7 @@ import { FacilityLayout } from "./facility-layout";
 
 const fnbCards = [
   { src: "/assets/kitchen/IMG_20260328_160018823.jpg.jpeg", title: "" },
-  { src: "/assets/kitchen/IMG_20260328_160018823.jpg.jpeg", title: "" },
+  { src: "/assets/kitchen/IMG_20260328_155223475.jpg.jpeg", title: "" },
   { src: "/assets/kitchen/IMG_20260402_145508.jpg.jpeg", title: "" },
   { src: "/assets/kitchen/IMG_20260402_145648.jpg.jpeg", title: "" },
   { src: "/assets/kitchen/IMG-20260402-WA0022.jpg.jpeg", title: "" },

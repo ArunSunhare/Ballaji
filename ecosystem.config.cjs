@@ -1,3 +1,9 @@
+try {
+  require("dotenv").config();
+} catch {
+  // dotenv is optional in standalone deployments; hosting/PM2 can provide env vars.
+}
+
 module.exports = {
   apps: [
     {
@@ -6,8 +12,8 @@ module.exports = {
       cwd: "/var/www/hanuman-app",
       env: {
         NODE_ENV: "production",
-        PORT: 3000,
-        HOSTNAME: "0.0.0.0",
+        HOSTNAME: process.env.HOSTNAME || "0.0.0.0",
+        PORT: process.env.PORT || "3000",
       },
     },
   ],

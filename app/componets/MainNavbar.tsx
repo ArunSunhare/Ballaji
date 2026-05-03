@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
 
 const facilityLinks = [
   { name: "Radiation Therapy", href: "/componets/facilites/pathology" },
@@ -14,6 +15,7 @@ const facilityLinks = [
 
 export function MainNavbar() {
   const router = useRouter();
+  const [isDoctorsOpen, setIsDoctorsOpen] = useState(false);
   const [isFacilitiesOpen, setIsFacilitiesOpen] = useState(false);
   const [isFindTestOpen, setIsFindTestOpen] = useState(false);
   const [isHealthPackagesOpen, setIsHealthPackagesOpen] = useState(false);
@@ -177,10 +179,53 @@ export function MainNavbar() {
         <a href="/" className="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
         <a href="/about-us" className="text-gray-700 hover:text-orange-600 transition-colors">About Us</a>
         <a href="/our-founder" className="text-gray-700 hover:text-orange-600 transition-colors">Our Founder</a>
-        <a href="/#doctors" className="text-gray-700 hover:text-orange-600 transition-colors">Doctors</a>
+        <div
+          className="relative"
+          onMouseEnter={() => handleMouseEnter(setIsDoctorsOpen, () => {
+            setIsFacilitiesOpen(false);
+            setIsFindTestOpen(false);
+            setIsHealthPackagesOpen(false);
+          })}
+          onMouseLeave={() => handleMouseLeave(setIsDoctorsOpen)}
+        >
+          <a
+            href="/#doctors"
+            className={`transition-colors ${
+              isDoctorsOpen
+                ? "text-orange-600"
+                : "text-gray-700 hover:text-orange-600"
+            }`}
+          >
+            Doctors
+          </a>
+          {isDoctorsOpen && (
+            <div
+              className="absolute top-full left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-md py-2 w-52 z-50 mt-0"
+              onMouseEnter={() => handleMouseEnter(setIsDoctorsOpen)}
+              onMouseLeave={() => handleMouseLeave(setIsDoctorsOpen)}
+            >
+              <div className="max-h-72 overflow-auto">
+                {doctorSpecialties.map((specialty) => (
+                  <button
+                    key={specialty}
+                    type="button"
+                    onClick={() => {
+                      setIsDoctorsOpen(false);
+                      router.push(`/doctors/${slugifySpecialty(specialty)}`);
+                    }}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:text-orange-600 transition-colors whitespace-normal"
+                  >
+                    {specialty}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
         <div 
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsFacilitiesOpen, () => {
+            setIsDoctorsOpen(false);
             setIsFindTestOpen(false);
             setIsHealthPackagesOpen(false);
           })}
@@ -221,6 +266,7 @@ export function MainNavbar() {
         <div 
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsFindTestOpen, () => {
+            setIsDoctorsOpen(false);
             setIsFacilitiesOpen(false);
             setIsHealthPackagesOpen(false);
           })}
@@ -287,6 +333,7 @@ export function MainNavbar() {
         <div 
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsHealthPackagesOpen, () => {
+            setIsDoctorsOpen(false);
             setIsFacilitiesOpen(false);
             setIsFindTestOpen(false);
           })}

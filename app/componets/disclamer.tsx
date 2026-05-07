@@ -1,15 +1,29 @@
 "use client";
-import React from "react";
+
+import React, {useMemo} from "react";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export function Disclaimer() {
-  const hindiText = "सनातनी शपथ लेने पर चिकित्सा सेवाओं पर 10-20% की छूट प्राप्त करें";
-  const englishText = "Avail 10–20% discount on medical services by taking the Sanatani Oath";
+  const { t } = useLanguage();
+  const hindiText = t.home?.disclaimerHindi || "";
+  const englishText = t.home?.disclaimerEnglish || "";
+  const repeatCount=4;
+  const items = useMemo(() => Array.from({ length: repeatCount }), []);
 
   return (
     <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 marquee-wrapper">
+      {/* Accessible version (read once) */}
+      <p className="sr-only">
+        {hindiText} {englishText}
+      </p>
+
       <div className="marquee-track">
-        {[...Array(4)].map((_, index) => (
-          <div key={index} className="marquee-item md:text-base font-medium">
+        {items.map((_, index) => (
+          <div 
+          key={`marquee-${index}`} 
+          className="marquee-item md:text-base font-medium"
+          aria-hidden="true"
+          >
             <div className="flex gap-5">
               <div>{hindiText}</div>
               <div>{englishText}</div>

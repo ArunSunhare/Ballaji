@@ -2,6 +2,7 @@
 
 import { Search, Home, Package } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 const exploreItems = [
   {
@@ -35,19 +36,42 @@ const exploreItems = [
 
 export function ExploreMore() {
   const router = useRouter();
+  const { t } = useLanguage();
+  const localizedItems = exploreItems.map((item) => {
+    const labels = {
+      "Health Packages": {
+        title: t.home.healthPackages,
+        subtitle: t.home.healthPackagesSubtitle,
+      },
+      "Find a Test": {
+        title: t.home.findTest,
+        subtitle: t.home.findTestSubtitle,
+      },
+      Pharmacy: {
+        title: t.home.pharmacy,
+        subtitle: t.home.pharmacySubtitle,
+      },
+    }[item.title];
+
+    return {
+      ...item,
+      title: labels?.title || item.title,
+      subtitle: labels?.subtitle || item.subtitle,
+    };
+  });
   
   return (
     <section className="py-8 md:py-12 bg-white text-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center mb-8">
           <h2 className="flex flex-col items-center text-gray-900 text-xl md:text-2xl font-semibold">
-            Explore More
+            {t.home.exploreMore}
             <span className="w-16 md:w-20 h-1 bg-red-600 mt-2 rounded-full"></span>
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-6 justify-items-center px-2">
-          {exploreItems.map((item, index) => {
+          {localizedItems.map((item, index) => {
             const Icon = item.icon;
             return (
               <div

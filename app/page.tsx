@@ -16,7 +16,7 @@ import { DoctorsSection } from "./componets/doctors";
 // import { GallerySection } from "./componets/gallery";
 // import { OnlineReportsSection } from "./componets/online_reports";
 // import { SocialFollowSection } from "./componets/social_follow";
-import { Disclaimer } from "./componets/disclamer";
+import { Disclaimer } from "./componets/disclaimer";
 import { TopNavbar } from "./componets/TopNavbar";
 import { MainNavbar } from "./componets/MainNavbar";
 export default function App() {

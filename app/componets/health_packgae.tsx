@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 const slugify = (text: string) => {
   return text
@@ -18,6 +19,7 @@ const slugify = (text: string) => {
 
 export function HealthPackages() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [startIndex, setStartIndex] = useState(0);
   const [packages, setPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,7 +69,7 @@ export function HealthPackages() {
             originalPrice: `₹ ${Math.round(pkg.Rate * 1.2)}`,
             parameters: pkg.PackageCount || 0,
             reportTat: "24-48 Hours",
-            includes: `${pkg.PackageCount} Tests Included`,
+            includes: `${pkg.PackageCount} ${t.home.testsIncluded}`,
             packageItems: pkg.PackageItem || "",
             packagitemID: pkg.PackagitemID || "",
             CategoryID: pkg.CategoryID || "",
@@ -80,10 +82,10 @@ export function HealthPackages() {
         console.error("Failed to fetch health packages", err);
         const message =
           err instanceof Error && err.name === "AbortError"
-            ? "Request timed out"
+            ? t.home.requestTimedOut
             : err instanceof Error
               ? err.message
-              : "Failed to fetch health packages";
+              : t.home.fetchHealthPackagesFailed;
         setError(message);
       } finally {
         setLoading(false);
@@ -91,7 +93,7 @@ export function HealthPackages() {
     };
 
     fetchHealthPackages();
-  }, []);
+  }, [t.home.fetchHealthPackagesFailed, t.home.requestTimedOut, t.home.testsIncluded]);
 
   const maxStartIndex = Math.max(0, packages.length - visiblePackages);
 
@@ -141,7 +143,7 @@ export function HealthPackages() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Popular Health Packages
+            {t.home.popularHealthPackages}
           </h2>
           <div className="w-20 h-1 bg-red-600 mb-8"></div>
           <div className="h-[420px] flex items-center justify-center">
@@ -157,7 +159,7 @@ export function HealthPackages() {
       <section className="py-3 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Popular Health Packages
+            {t.home.popularHealthPackages}
           </h2>
           <div className="w-20 h-1 bg-red-600 mb-8"></div>
           <div className="border border-red-200 bg-red-50 text-red-700 rounded-lg p-4 text-sm">
@@ -173,11 +175,11 @@ export function HealthPackages() {
       <section className="py-3 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Popular Health Packages
+            {t.home.popularHealthPackages}
           </h2>
           <div className="w-20 h-1 bg-red-600 mb-8"></div>
           <div className="border border-gray-200 bg-gray-50 text-gray-700 rounded-lg p-4 text-sm">
-            No health packages available right now.
+            {t.home.noHealthPackages}
           </div>
         </div>
       </section>
@@ -189,7 +191,7 @@ export function HealthPackages() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Popular Health Packages
+          {t.home.popularHealthPackages}
         </h2>
         <div className="w-20 h-1 bg-red-600 mb-8"></div>
 
@@ -219,7 +221,7 @@ export function HealthPackages() {
                           {pkg.name}
                         </h3>
                         <span className="inline-block bg-white border border-red-200 text-red-600 px-3 py-1 text-xs rounded-full">
-                          NABL Certified
+                          {t.common.nablCertified}
                         </span>
                       </div>
 
@@ -232,11 +234,11 @@ export function HealthPackages() {
                     <div className="space-y-2 mb-4 text-sm flex-1">
                       <div className="flex items-center gap-2 text-gray-700">
                         <TestTube className="w-4 h-4 text-orange-500" />
-                        <span>{pkg.parameters} Tests</span>
+                        <span>{pkg.parameters} {t.common.tests}</span>
                       </div>
                       <div className="flex items-center gap-2 text-gray-700">
                         <Activity className="w-4 h-4 text-orange-500" />
-                        <span>Report: {pkg.reportTat}</span>
+                        <span>{t.common.report}: {pkg.reportTat}</span>
                       </div>
                       <div className="flex items-center gap-2 text-gray-700">
                         <Activity className="w-4 h-4 text-orange-500" />
@@ -255,7 +257,7 @@ export function HealthPackages() {
                         onClick={() => handleBookClick(pkg)}
                         className="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
                       >
-                        Book Now
+                        {t.common.bookNow}
                       </button>
                     </div>
                   </div>
@@ -269,7 +271,7 @@ export function HealthPackages() {
             type="button"
             onClick={handlePrev}
             disabled={startIndex === 0}
-            aria-label="Previous packages"
+            aria-label={t.common.previousPackages}
             className="absolute left-3 top-1/2 -translate-y-1/2 z-10
               bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
               transition-all duration-200 hover:bg-gray-50 hover:shadow-lg
@@ -283,7 +285,7 @@ export function HealthPackages() {
             type="button"
             onClick={handleNext}
             disabled={startIndex >= maxStartIndex}
-            aria-label="Next packages"
+            aria-label={t.common.nextPackages}
             className="absolute right-3 top-1/2 -translate-y-1/2 z-10
               bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
               transition-all duration-200 hover:bg-gray-50 hover:shadow-lg

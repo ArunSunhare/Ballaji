@@ -5,21 +5,24 @@ import { Trash2, ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { LoginModal } from "./LoginModal";
 import { OrderContactModal } from "./OrderContactModal";
+type CartDrawerProps = {
+  phone: string;
+  displayPhone: string;
+};
 
-export function CartDrawer() {
-    const { items, removeFromCart, isOpen, closeCart } = useCart();
+export function CartDrawer({ phone, displayPhone }: CartDrawerProps) {
+    const { items, removeFromCart, isOpen, closeCart, cartTotal } = useCart();
     const [mounted, setMounted] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | null>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showOrderHelpCard, setShowOrderHelpCard] = useState(false);
 
+    // SSR Fix - Don't render cart on server to avoid hydration mismatch
     useEffect(() => {
         setMounted(true);
     }, []);
 
     if (!mounted) return null;
-
-    const total = items.reduce((sum, item) => sum + item.price, 0);
 
     const handleDelete = (id: string) => {
         setItemToDelete(id);
@@ -74,90 +77,59 @@ export function CartDrawer() {
                         </button>
                     </div>
                     <div className="flex-1 overflow-y-auto bg-gray-50 p-4 space-y-4">
-                        {/* <div className="bg-white rounded-b-lg shadow-sm">
+                      
+                        <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
                             {items.length === 0 ? (
                                 <div className="p-8 text-center text-gray-500 text-sm">
                                     Your cart is empty
                                 </div>
                             ) : (
                                 items.map((item, idx) => (
-                                    <div key={idx} className="p-4 flex justify-between items-start group">
-                                        <div className="pr-4">
-                                            <h4 className="font-bold text-gray-800 text-sm mb-1">{item.name}</h4>
-                                            <div className="flex items-center gap-2 text-sm">
-                                                <span className="font-bold text-gray-900">₹{item.price}</span>
-                                            </div>
+                                    // console.log("Rendering cart item:", item), // Debug log to check item data??
+                                    <div
+                                        key={item.id}
+                                        className="p-4 flex justify-between items-start group hover:bg-gray-50 transition"
+                                    >
+                                        {/* LEFT SIDE */}
+                                        <div className="pr-3 flex-1">
+                                            <h4 className="font-semibold text-gray-800 text-sm leading-tight">
+                                                {item.name}
+                                            </h4>
+
+                                            {/* subtle meta */}
+                                            <p className="text-xs text-gray-400 mt-1">
+                                                Test ID: {item.id}
+                                            </p>
                                         </div>
-                                        <button
-                                            onClick={() => handleDelete(item.id)}
-                                            className="text-red-500 hover:text-red-700 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
+
+                                        {/* RIGHT SIDE */}
+                                        <div className="flex flex-col items-end gap-2">
+                                            <span className="text-base font-bold text-gray-900">
+                                                ₹{item.price}
+                                            </span>
+
+                                            <button
+                                                onClick={() => handleDelete(item.id)}
+                                                className="text-red-500 hover:text-red-700 p-1 opacity-0 group-hover:opacity-100 transition"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))
                             )}
-                        </div> */}
-                        <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
-  {items.length === 0 ? (
-    <div className="p-8 text-center text-gray-500 text-sm">
-      Your cart is empty
-    </div>
-  ) : (
-    items.map((item, idx) => (
-      <div
-        key={idx}
-        className="p-4 flex justify-between items-start group hover:bg-gray-50 transition"
-      >
-        {/* LEFT SIDE */}
-        <div className="pr-3 flex-1">
-          <h4 className="font-semibold text-gray-800 text-sm leading-tight">
-            {item.name}
-          </h4>
-
-          {/* subtle meta */}
-          <p className="text-xs text-gray-400 mt-1">
-            Test ID: {item.id}
-          </p>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className="flex flex-col items-end gap-2">
-          <span className="text-base font-bold text-gray-900">
-            ₹{item.price}
-          </span>
-
-          <button
-            onClick={() => handleDelete(item.id)}
-            className="text-red-500 hover:text-red-700 p-1 opacity-0 group-hover:opacity-100 transition"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    ))
-  )}
-</div>
-{/* Total and Checkout */}
-                        {/* <div className="bg-white rounded-lg shadow-sm p-4 text-sm space-y-2">
-                            <div className="flex justify-between text-gray-600">
+                        </div>
+                        <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                            <div className="flex justify-between text-gray-500 text-sm mb-2">
+                                <span>Subtotal</span>
+                                <span>₹{cartTotal}</span>
                             </div>
-                            <div className="flex justify-between font-bold text-gray-900 pt-2 mt-2">
+
+                            <div className="border-t pt-3 flex justify-between font-bold text-lg text-gray-900">
                                 <span>Total</span>
-                                <span>₹{total}</span>
+                                <span className="text-orange-600">₹{cartTotal}</span>
                             </div>
-                        </div> */}
-                    <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
-                    <div className="flex justify-between text-gray-500 text-sm mb-2">
-                        <span>Subtotal</span>
-                        <span>₹{total}</span>
-                    </div>
-
-                    <div className="border-t pt-3 flex justify-between font-bold text-lg text-gray-900">
-                        <span>Total</span>
-                        <span className="text-orange-600">₹{total}</span>
-                    </div>
-                    </div>
+                        </div>
                     </div>
                     <div className="p-4 bg-white border-t">
                         <button
@@ -233,6 +205,8 @@ export function CartDrawer() {
                 isOpen={showOrderHelpCard}
                 onClose={() => setShowOrderHelpCard(false)}
                 description="Online checkout is not available right now. Please call the number below to confirm your tests and packages."
+                phone={phone}
+                displayPhone={displayPhone}
             />
         </>
     );

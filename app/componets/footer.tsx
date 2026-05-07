@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Facebook,
   Youtube,
@@ -8,21 +9,20 @@ import {
   Phone,
   MapPin,
   Droplet,
-  MessageCircle
+  MessageCircle,
 } from "lucide-react";
-
 import Image from "next/image";
 import logo from "@/public/assets/logo_main.png";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-[#2f3b43] text-gray-200">
-      {/* Main Footer */}
       <div className="py-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-
-            {/* Brand & Description */}
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="border border-orange-500 p-1 bg-white rounded-sm">
@@ -36,11 +36,9 @@ export function Footer() {
               </div>
 
               <p className="text-gray-300 leading-relaxed">
-                Dedicated to providing high-quality, affordable diagnostic and medical services 
-                to all sections of society with compassion and excellence.
+                {t.footer.description}
               </p>
 
-              {/* Social Icons */}
               <div className="flex items-center gap-4 pt-2">
                 <a
                   href="https://www.facebook.com/share/1EWkwyum58/"
@@ -50,7 +48,6 @@ export function Footer() {
                 >
                   <Facebook className="w-5 h-5" />
                 </a>
-
                 <a
                   href="https://www.linkedin.com/in/shb-mdh-cancer-multispeciality-charitable-hospital-742933361"
                   target="_blank"
@@ -59,7 +56,6 @@ export function Footer() {
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
-
                 <a
                   href="https://www.youtube.com/channel/UCo8lav-ndM3QRULU716zORA"
                   target="_blank"
@@ -68,7 +64,6 @@ export function Footer() {
                 >
                   <Youtube className="w-5 h-5" />
                 </a>
-
                 <a
                   href="https://www.instagram.com/shb_mdhcancerhospital"
                   target="_blank"
@@ -80,12 +75,11 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Reach Out */}
             <div>
-              <h4 className="text-white text-xl font-semibold mb-6">Reach Out</h4>
+              <h4 className="text-white text-xl font-semibold mb-6">
+                {t.footer.reachOut}
+              </h4>
               <ul className="space-y-4 text-gray-300">
-
-                {/* Address */}
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
                   <p className="text-sm">
@@ -94,24 +88,18 @@ export function Footer() {
                     New Delhi-110092
                   </p>
                 </li>
-
-                {/* Main Call */}
                 <li className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
                   <a href="tel:+919990867867" className="hover:text-white transition-colors">
                     +91-9990867867
                   </a>
                 </li>
-
-                {/* Lab - Blood Drop Icon */}
                 <li className="flex items-start gap-3">
                   <Droplet className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
                   <a href="tel:+917827945651" className="hover:text-white transition-colors">
                     +91-7827945651
                   </a>
                 </li>
-
-                {/* WhatsApp */}
                 <li className="flex items-start gap-3">
                   <MessageCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
                   <a
@@ -123,8 +111,6 @@ export function Footer() {
                     +91-7827945641
                   </a>
                 </li>
-
-                {/* Email */}
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-orange-500 flex-shrink-0" />
                   <a
@@ -134,81 +120,74 @@ export function Footer() {
                     info@hanumanbalajicharitable.com
                   </a>
                 </li>
-
               </ul>
             </div>
 
-            {/* Useful Links */}
             <div>
-              <h4 className="text-white text-xl font-semibold mb-6">Useful Links</h4>
+              <h4 className="text-white text-xl font-semibold mb-6">
+                {t.footer.usefulLinks}
+              </h4>
               <ul className="space-y-3 text-gray-300">
-                <li><a href="/about-us" className="hover:text-white">› About Us</a></li>
-                <li><a href="/investigations" className="hover:text-white">› Find A Test</a></li>
-                <li><a href="/health-packages" className="hover:text-white">› Health Packages</a></li>
-                <li><a href="/contact_us" className="hover:text-white">› Contact Us</a></li>
-                <li><a href="/T&P" className="hover:text-white">› Terms & Conditions</a></li>
-                <li><a href="/Privacy_policy" className="hover:text-white">› Privacy Policy</a></li>
+                <li><a href="/about-us" className="hover:text-white">› {t.nav.about}</a></li>
+                <li><a href="/investigations" className="hover:text-white">› {t.nav.findTest}</a></li>
+                <li><a href="/health-packages" className="hover:text-white">› {t.nav.healthPackages}</a></li>
+                <li><a href="/contact_us" className="hover:text-white">› {t.nav.contact}</a></li>
+                <li><a href="/T&P" className="hover:text-white">› {t.footer.terms}</a></li>
+                <li><a href="/Privacy_policy" className="hover:text-white">› {t.footer.privacy}</a></li>
               </ul>
             </div>
 
-            {/* Hospital Timings */}
             <div>
-              <h4 className="text-white text-xl font-semibold mb-6">Hospital Timings</h4>
-
+              <h4 className="text-white text-xl font-semibold mb-6">
+                {t.footer.timings}
+              </h4>
               <div className="w-full max-w-xs border border-gray-500 rounded-sm overflow-hidden mb-6">
                 <div className="grid grid-cols-2 divide-x divide-gray-500">
                   <div className="p-3 border-b border-gray-500 bg-[#253037]">
-                    <p className="text-gray-300 text-sm">Mon - Sun</p>
+                    <p className="text-gray-300 text-sm">{t.footer.monSun}</p>
                   </div>
                   <div className="p-3 border-b border-gray-500">
                     <p className="text-orange-500 text-center font-bold">24 × 7</p>
                   </div>
                   <div className="p-3 bg-[#253037]">
-                    <p className="text-gray-300 text-xs">Services</p>
+                    <p className="text-gray-300 text-xs">{t.footer.services}</p>
                   </div>
                   <div className="p-3">
-                    <p className="text-gray-300 text-xs text-center">Open All Days</p>
+                    <p className="text-gray-300 text-xs text-center">{t.footer.openAllDays}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Buttons */}
               <div className="space-y-4">
-
                 <a
                   href="tel:+919990867867"
                   className="flex items-start justify-start gap-2 w-full px-4 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition font-bold shadow-lg"
                 >
-                  <Phone className="w-4 h-4" /> Call For Appointment
+                  <Phone className="w-4 h-4" /> {t.footer.callAppointment}
                 </a>
-
                 <a
                   href="tel:+917827945651"
                   className="flex items-start justify-start gap-2 w-full px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-semibold shadow-md"
                 >
-                  <Droplet className="w-4 h-4" /> Home Blood Collection
+                  <Droplet className="w-4 h-4" /> {t.footer.homeBloodCollection}
                 </a>
-
                 <a
                   href="https://wa.me/917827945641"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start justify-start gap-2 w-full px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition font-semibold shadow-md"
                 >
-                  <MessageCircle className="w-4 h-4" /> Contact on WhatsApp
+                  <MessageCircle className="w-4 h-4" /> {t.footer.whatsapp}
                 </a>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="bg-[#1f292e] py-6 border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center text-gray-400 text-sm">
-          © {new Date().getFullYear()} Shri Hanuman Balaji Charitable Diagnostic Centre. All rights reserved.
+          © {new Date().getFullYear()} Shri Hanuman Balaji Charitable Diagnostic Centre. {t.footer.copyright}
         </div>
       </div>
     </footer>

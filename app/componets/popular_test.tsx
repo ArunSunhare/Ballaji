@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 /* ✅ moved outside (same as HealthPackages) */
 const slugify = (text: string) =>
@@ -15,6 +16,7 @@ const slugify = (text: string) =>
 
 export function PopularTests() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [startIndex, setStartIndex] = useState(0);
   const [tests, setTests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,13 +64,13 @@ export function PopularTests() {
             id: item.Item_ID,
             slug: slugify(item.ItemName),
             name: item.ItemName,
-            subtitle: item.categoryid || "Diagnostic Test",
+            subtitle: item.categoryid || t.home.diagnosticTest,
             price: `₹ ${item.Rate}`,
             originalPrice: `₹ ${Math.round(item.Rate * 1.2)}`,
             parameters: observationCount,
             reportTat: "24-48 Hours",
             bgColor: "bg-blue-50",
-            description: item.description || `Diagnostic test for ${item.ItemName}`,
+            description: item.description || `${t.home.diagnosticDescription} ${item.ItemName}`,
             specialization: "General Pathology"
           };
         });
@@ -78,10 +80,10 @@ export function PopularTests() {
         console.error("Failed to fetch popular tests", err);
         const message =
           err instanceof Error && err.name === "AbortError"
-            ? "Request timed out"
+            ? t.home.requestTimedOut
             : err instanceof Error
               ? err.message
-              : "Failed to fetch popular tests";
+              : t.home.fetchPopularTestsFailed;
         setError(message);
       } finally {
         setLoading(false);
@@ -89,7 +91,7 @@ export function PopularTests() {
     };
 
     fetchPopularTests();
-  }, []);
+  }, [t.home.diagnosticDescription, t.home.diagnosticTest, t.home.fetchPopularTestsFailed, t.home.requestTimedOut]);
 
   const maxStartIndex = Math.max(0, tests.length - visibleTests);
 
@@ -152,7 +154,7 @@ export function PopularTests() {
       <section className="py-5 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Popular Health Test
+            {t.home.popularHealthTest}
           </h2>
           <div className="w-20 h-1 bg-red-600 mb-8"></div>
           <div className="border border-red-200 bg-red-50 text-red-700 rounded-lg p-4 text-sm">
@@ -169,11 +171,11 @@ export function PopularTests() {
       <section className="py-5 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Popular Health Test
+            {t.home.popularHealthTest}
           </h2>
           <div className="w-20 h-1 bg-red-600 mb-8"></div>
           <div className="border border-gray-200 bg-gray-50 text-gray-700 rounded-lg p-4 text-sm">
-            No popular tests available right now.
+            {t.home.noPopularTests}
           </div>
         </div>
       </section>
@@ -185,7 +187,7 @@ export function PopularTests() {
     <section className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Popular Health Test
+          {t.home.popularHealthTest}
         </h2>
         <div className="w-20 h-1 bg-red-600 mb-8"></div>
 
@@ -228,12 +230,12 @@ export function PopularTests() {
                     <div className="space-y-1.5 mb-3 text-sm text-gray-700">
                       <div className="flex items-center gap-2">
                         <TestTube className="w-4 h-4 text-orange-500" />
-                        <span>{test.parameters} Parameters</span>
+                        <span>{test.parameters} {t.common.parameters}</span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <Activity className="w-4 h-4 text-orange-500" />
-                        <span>Report: {test.reportTat}</span>
+                        <span>{t.common.report}: {test.reportTat}</span>
                       </div>
                     </div>
                   </div>
@@ -248,7 +250,7 @@ export function PopularTests() {
                       onClick={() => handleBookClick(test)}
                       className="ml-auto bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
                     >
-                      Book Now
+                      {t.common.bookNow}
                     </button>
                   </div>
                 </div>
@@ -261,7 +263,7 @@ export function PopularTests() {
             type="button"
             onClick={handlePrev}
             disabled={startIndex === 0}
-            aria-label="Previous tests"
+            aria-label={t.common.previousTests}
             className="absolute left-3 top-1/2 -translate-y-1/2 z-10
               bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
               transition-all duration-200 hover:bg-gray-50 hover:shadow-lg
@@ -274,7 +276,7 @@ export function PopularTests() {
             type="button"
             onClick={handleNext}
             disabled={startIndex === maxStartIndex}
-            aria-label="Next tests"
+            aria-label={t.common.nextTests}
             className="absolute right-3 top-1/2 -translate-y-1/2 z-10
               bg-white/95 border border-gray-200 rounded-full p-2.5 shadow-md
               transition-all duration-200 hover:bg-gray-50 hover:shadow-lg

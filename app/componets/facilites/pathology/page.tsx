@@ -3,185 +3,96 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Footer } from "@/app/componets/footer";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 import { TopHeader } from "../../top_header";
 import { TopNavbar } from "../../TopNavbar";
 import { MainNavbar } from "../../MainNavbar";
 
-const trueBeamImage = {
-  src: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
-  title: "TrueBeam Radiotherapy Machine",
+type TechniqueCard = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  points: readonly string[];
+  image: {
+    src: string;
+    title: string;
+  };
 };
 
-const techniqueCards = [
-  {
-    id: "IGRT",
-    eyebrow: "Advanced Radiation Care",
-    title: "IGRT with image-guided precision for confident daily positioning",
-    description:
-      "Image Guided Radiotherapy supports accurate treatment delivery by verifying patient positioning and target alignment before each session.",
-    points: [
-      "Daily imaging helps clinicians correct setup variations before radiation delivery.",
-      "Precise targeting helps protect nearby healthy organs while maintaining treatment accuracy.",
-      "Well suited for cases where tumor position can shift between treatment sessions.",
-    ],
-    image: {
-      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-      title: "IGRT imaging guidance reference",
-    },
-  },
-  {
-    id: "IMRT",
-    eyebrow: "Advanced Radiation Care",
-    title: "IMRT for highly shaped dose delivery around complex tumor volumes",
-    description:
-      "Intensity Modulated Radiation Therapy uses advanced planning to vary beam intensity, helping deliver radiation closely to the tumor shape.",
-    points: [
-      "Supports dose sculpting around sensitive nearby structures and critical organs.",
-      "Useful for complex treatment areas that require greater dose conformity.",
-      "Helps improve treatment balance between tumor coverage and normal tissue protection.",
-    ],
-    image: {
-      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-      title: "IMRT planning and delivery support",
-    },
-  },
-  {
-    id: "3DCRT",
-    eyebrow: "Advanced Radiation Care",
-    title: "3DCRT planning for dependable conformal treatment pathways",
-    description:
-      "3D Conformal Radiation Therapy uses three-dimensional imaging and planning to shape treatment beams according to the target volume.",
-    points: [
-      "Treatment fields are planned using anatomical detail from modern imaging workflows.",
-      "Delivers dependable conformal coverage for a wide range of cancer treatment indications.",
-      "Supports practical and effective radiation planning with controlled dose distribution.",
-    ],
-    image: {
-      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-      title: "3DCRT treatment support",
-    },
-  },
-  {
-    id: "Rapid-ARC",
-    eyebrow: "Advanced Radiation Care",
-    title: "Rapid-ARC delivery for efficient arc-based treatment sessions",
-    description:
-      "Rapid-ARC enables rotational treatment delivery that combines speed, precision, and advanced dose shaping in a streamlined workflow.",
-    points: [
-      "Arc-based delivery can reduce treatment time while maintaining planning quality.",
-      "Supports efficient execution of advanced plans with consistent machine performance.",
-      "Designed to improve patient comfort through shorter and smoother treatment sessions.",
-    ],
-    image: {
-      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-      title: "Rapid-ARC capable treatment platform",
-    },
-  },
-  {
-    id: "SRS",
-    eyebrow: "Advanced Radiation Care",
-    title: "SRS for focused high-precision treatment of selected small targets",
-    description:
-      "Stereotactic Radiosurgery is intended for highly precise radiation delivery to carefully selected targets using advanced planning and immobilization support.",
-    points: [
-      "Built for sharp targeting accuracy where millimetric precision is essential.",
-      "Supports focused dose delivery for carefully selected intracranial indications.",
-      "Combines imaging guidance, planning detail, and strict safety workflow checks.",
-    ],
-    image: {
-      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-      title: "SRS-ready precision radiotherapy setup",
-    },
-  },
-  {
-    id: "SBRT",
-    eyebrow: "Advanced Radiation Care",
-    title: "SBRT for ablative precision in carefully planned body treatments",
-    description:
-      "Stereotactic Body Radiation Therapy supports highly focused treatment for selected body sites using detailed planning, motion management, and image guidance.",
-    points: [
-      "Designed for high-precision body treatments where target motion must be considered carefully.",
-      "Integrates well with image guidance and respiratory management workflows when required.",
-      "Helps deliver concentrated treatment with strong attention to nearby organ safety.",
-    ],
-    image: {
-      src: "/assets/diagnostics/TRUEBEAM MACHINE.jpeg",
-      title: "SBRT treatment workflow support",
-    },
-  },
-];
-
-const radiationTechniques = [
-  "IGRT (Image Guided Radiotherapy)",
-  "IMRT (Intensity Modulated Radiation Therapy)",
-  "3DCRT (3D Conformal Radiation Therapy)",
-  "Rapid-ARC",
-  "SRS",
-  "SBRT",
-  "Respiratory Gating",
-  "DIBH",
-  "TSET",
-  "TBI",
-];
-
-const spotlightTechniques = ["IGRT", "IMRT", "3DCRT", "Rapid-ARC", "SRS", "SBRT"];
+const trueBeamSrc = "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg";
+const techniqueIds = ["IGRT", "IMRT", "3DCRT", "Rapid-ARC", "SRS", "SBRT"] as const;
+const techniqueImageSrc = "/assets/diagnostics/TRUEBEAM MACHINE.jpeg";
 
 export default function RadiationTherapyPage() {
-  const [activeImage, setActiveImage] = useState<null | typeof trueBeamImage>(null);
+  const [activeImage, setActiveImage] = useState<null | TechniqueCard["image"]>(null);
   const [activeTechnique, setActiveTechnique] = useState("IGRT");
+  const { t } = useLanguage();
+  const copy = t.facilities.radiation;
+
+  const techniqueCards = useMemo(
+    () =>
+      techniqueIds.map((id, index) => ({
+        id,
+        ...copy.cards[index],
+        image: {
+          src: techniqueImageSrc,
+          title: copy.cards[index].imageTitle,
+        },
+      })),
+    [copy.cards]
+  );
+
   const selectedTechnique = useMemo(
     () => techniqueCards.find((technique) => technique.id === activeTechnique) ?? techniqueCards[0],
-    [activeTechnique]
+    [activeTechnique, techniqueCards]
   );
 
   return (
     <div className="min-h-screen bg-white">
       <TopHeader />
-            <TopNavbar />
-            <MainNavbar />
+      <TopNavbar />
+      <MainNavbar />
 
       <section className="relative overflow-hidden bg-gradient-to-r from-gray-700 to-gray-600 py-12 md:py-16">
         <div className="absolute inset-0 opacity-40">
           <Image
-            src="/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg"
-            alt="Radiation Therapy Facility"
+            src={trueBeamSrc}
+            alt={copy.heroAlt}
             fill
-            priority            
+            priority
             className="object-cover"
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <h1 className="mb-3 text-3xl font-bold leading-tight text-white md:mb-4 md:text-5xl">
-              Advanced Radiation Therapy Center
+              {copy.heroTitle}
             </h1>
-            <p className="text-base text-white/90 md:text-xl">
-              Precision • Innovation • Compassionate Cancer Care
-            </p>
+            <p className="text-base text-white/90 md:text-xl">{copy.heroSubtitle}</p>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8 md:py-16">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-16 lg:px-8">
         <div className="overflow-hidden rounded-2xl bg-white shadow-lg">
           <div className="space-y-8 p-5 text-base leading-7 text-gray-800 md:space-y-10 md:p-12 md:text-lg md:leading-relaxed lg:p-16">
-
             <p className="text-left md:text-justify">
-              The <strong>Radiation Therapy Center</strong> at{" "}
-              <strong>Shri Hanuman Balaji Charitable Diagnostic Centre</strong>{" "}
-              is equipped with cutting-edge radiation therapy technology and advanced treatment techniques. Our goal is to deliver precise radiation treatment with maximum effectiveness and minimal side effects for cancer patients.
+              {copy.introStart} <strong>{copy.introFacility}</strong>{" "}
+              {copy.introMiddle ? `${copy.introMiddle} ` : ""}
+              <strong>{copy.introCentre}</strong> {copy.introEnd}
             </p>
 
             <div className="rounded-r-xl border-l-4 border-orange-600 bg-orange-50 p-5 md:p-8">
               <p className="text-center text-lg font-semibold italic text-orange-800 md:text-xl">
-                World-class diagnostics at subsidized cost &ndash; true charitable healthcare
+                {copy.highlight}
               </p>
             </div>
 
             <div className="space-y-8">
               <div className="flex flex-wrap gap-x-4 gap-y-3 border-b border-stone-300 pb-4 text-xs font-semibold text-stone-500 sm:gap-x-6 sm:text-sm md:pb-5">
-                {spotlightTechniques.map((technique) => (
+                {techniqueIds.map((technique) => (
                   <button
                     key={technique}
                     type="button"
@@ -243,65 +154,43 @@ export default function RadiationTherapyPage() {
             </div>
 
             <p className="text-left md:text-justify">
-              Our advanced radiation therapy techniques include{" "}
-              <strong>
-                IGRT (Image Guided Radiotherapy), IMRT (Intensity Modulated Radiation Therapy),
-                3DCRT (3D Conformal Radiation Therapy), Rapid-ARC,
-                SRS (Stereotactic Radiosurgery), SBRT (Stereotactic Body Radiation Therapy),
-                Respiratory Gating, DIBH (Deep Inspiration Breath Hold),
-                TSET (Total Skin Electron Therapy), and TBI (Total Body Irradiation)
-              </strong>.
-              All treatments are planned and delivered by skilled radiation oncologists and technologists under strict quality and safety protocols.
+              {copy.servicesStart} <strong>{copy.techniques.join(", ")}</strong>. {copy.servicesEnd}
             </p>
 
             <p className="text-left md:text-justify">
-              We emphasize{" "}
-              <strong>
-                treatment precision, patient safety, advanced imaging guidance,
-                and compassionate care
-              </strong>.
-              Special care is provided to elderly patients and economically
-              weaker sections with complete dignity and support throughout their cancer treatment journey.
+              {copy.closingStart} <strong>{copy.closingStrong}</strong>. {copy.closingEnd}
             </p>
 
             <div className="mt-10 rounded-xl bg-gradient-to-r from-orange-100 to-orange-50 p-6 text-center md:mt-12 md:p-10">
               <p className="text-xl font-bold leading-tight text-orange-700 md:text-2xl">
-                Precise Treatment • Advanced Technology • Compassionate Care
+                {copy.calloutTitle}
               </p>
               <p className="mt-3 text-sm text-gray-700 md:mt-4 md:text-base">
-                Advanced radiation therapy services in service of humanity
+                {copy.calloutSubtitle}
               </p>
             </div>
-
           </div>
         </div>
       </div>
 
-      {activeImage && (
+      {activeImage ? (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
           onClick={() => setActiveImage(null)}
         >
           <button
-            className="absolute top-6 right-6 text-white text-3xl font-bold"
+            type="button"
+            className="absolute right-6 top-6 text-3xl font-bold text-white"
             onClick={() => setActiveImage(null)}
           >
-            âœ•
+            x
           </button>
 
-          <div
-            className="relative w-[90vw] h-[90vh]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={activeImage.src}
-              alt={activeImage.title}
-              fill
-              className="object-contain"
-            />
+          <div className="relative h-[90vh] w-[90vw]" onClick={(event) => event.stopPropagation()}>
+            <Image src={activeImage.src} alt={activeImage.title} fill className="object-contain" />
           </div>
         </div>
-      )}
+      ) : null}
 
       <Footer />
     </div>

@@ -2,6 +2,7 @@
 import { ImageWithFallback } from "./figma/callbackimgs";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 const testimonials = [
   {
@@ -43,6 +44,7 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const { t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -58,7 +60,7 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Patient Review.
+            {t.home.patientReview}
           </h2>
           <div className="w-24 h-1 bg-orange-600 mx-auto" />
         </div>
@@ -80,7 +82,7 @@ export function Testimonials() {
               </div>
 
               <p className="text-gray-600 max-w-3xl leading-relaxed">
-                {testimonials[currentIndex].feedback}
+                {t.home.testimonials[currentIndex] || testimonials[currentIndex].feedback}
               </p>
             </div>
           </div>

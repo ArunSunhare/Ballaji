@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/app/i18n/LanguageContext";
 import { FacilityLayout } from "./facility-layout";
 
 const fnbCards = [
@@ -12,18 +13,21 @@ const fnbCards = [
 ];
 
 export function FnbFacility() {
+  const { t } = useLanguage();
+  const copy = t.facilities.fnb;
+
   return (
     <FacilityLayout
       heroImage="/assets/kitchen/IMG-20260402-WA0032.jpg.jpeg"
-      heroAlt="F and B facility"
-      heroTitle="F&B Facility"
-      heroSubtitle="Clean Spaces • Supportive Service • Visual Overview"
-      intro="This section presents the F&B facility through a simple visual gallery so visitors can browse the department environment in the same style as the other facility pages."
-      highlight="A visual walk-through of the F&B facility space"
-      sectionTitle="F&B Gallery"
+      heroAlt={copy.heroAlt}
+      heroTitle={copy.heroTitle}
+      heroSubtitle={copy.heroSubtitle}
+      intro={copy.intro}
+      highlight={copy.highlight}
+      sectionTitle={copy.sectionTitle}
       cards={fnbCards}
-      calloutTitle="Facility Views • Smooth Browsing • Consistent Experience"
-      calloutSubtitle="Explore the F&B facility through a clean six-image gallery"
+      calloutTitle={copy.calloutTitle}
+      calloutSubtitle={copy.calloutSubtitle}
     />
   );
 }

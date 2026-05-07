@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export type CartItem = {
-    id: string; // or slug
+    id: string; 
     name: string;
     price: number;
     originalPrice?: number;
@@ -48,13 +48,18 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     // Save cart to local storage whenever it changes
     useEffect(() => {
-        localStorage.setItem("cart_items", JSON.stringify(items));
+        if (items.length) {
+            localStorage.setItem("cart_items", JSON.stringify(items));
+        } else {
+            localStorage.removeItem("cart_items");
+        }
     }, [items]);
 
     const addToCart = (item: CartItem) => {
         // Check if already in cart
         if (!items.find((i) => i.id === item.id)) {
-            setItems((prev) => [...prev, item]);
+            // setItems((prev) => [...prev, item]);
+            setItems(prev => prev.some(i => i.id === item.id) ? prev : [...prev, item]);
         }
         setIsOpen(true); // Auto open cart
     };

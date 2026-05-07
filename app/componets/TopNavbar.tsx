@@ -11,6 +11,8 @@ import { useCart } from "@/app/context/CartContext";
 import { LoginModal } from "./LoginModal";
 import { Search_Bar } from "./search_bar";
 import { motion, AnimatePresence } from "framer-motion"; 
+import { LanguageToggle } from "./LanguageToggle";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 type UserType = {
   name: string;
@@ -18,6 +20,7 @@ type UserType = {
 };
 
 export function TopNavbar() {
+  const { t } = useLanguage();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,17 +55,17 @@ export function TopNavbar() {
   };
 
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "/about-us" },
-    { name: "Our Founder", href: "/our-founder" },
-    { name: "Doctors", href: "/#doctors" },
-    { name: "Gallery", href: "/gallery" },
-    { name: "Find A Test", href: "/investigations" },
-    { name: "Facilities", href: "/#facilities" },
-    { name: "Health Packages", href: "/health-packages" }, 
-    { name: "Our Location", href: "/our_locations" },
-    { name: "Feedback", href: "/feedback" },
-    { name: "Contact Us", href: "/contact_us" }
+    { name: t.nav.home, href: "/" },
+    { name: t.nav.about, href: "/about-us" },
+    { name: t.nav.founder, href: "/our-founder" },
+    { name: t.nav.doctors, href: "/#doctors" },
+    { name: t.nav.gallery, href: "/gallery" },
+    { name: t.nav.findTest, href: "/investigations" },
+    { name: t.nav.facilities, href: "/#facilities" },
+    { name: t.nav.healthPackages, href: "/health-packages" }, 
+    { name: t.nav.location, href: "/our_locations" },
+    { name: t.nav.feedback, href: "/feedback" },
+    { name: t.nav.contact, href: "/contact_us" }
   ];
 
   // Animation Variants for Links
@@ -86,9 +89,9 @@ export function TopNavbar() {
           <div className="flex items-center gap-2">
            <Image src={personLeft} alt="Person Left" className="h-12 w-12 sm:h-18 sm:w-18 rounded-full border border-gray-100" priority />
             <span className="text-center text-[8px] sm:text-xs font-bold leading-tight text-orange-600 whitespace-normal break-words max-w-[140px] sm:max-w-none md:text-left">
-              Our Inpirer Honorable<br />
-              Mahashay Dharampal <br />
-              Gulati Ji
+              {t.nav.inspirer}<br />
+              {t.nav.inspirerName} <br />
+              {t.nav.inspirerLast}
             </span>
             </div>
             <Image src={personRight} alt="Person Right" className="h-12 w-12 sm:h-18 sm:w-18 rounded-full border border-gray-100" priority />
@@ -99,13 +102,15 @@ export function TopNavbar() {
           </div>
 
           <div className="hidden min-[481px]:flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0">
+            <LanguageToggle />
+
             <a
               href="https://shbcdc.in/online_his/design/online_lab/default.aspx"
               target="_blank"
               className="hidden lg:flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
             >
               <Download className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="text-sm font-semibold">Download Reports</span>
+              <span className="text-sm font-semibold">{t.nav.downloadReports}</span>
             </a>
 
             <button onClick={openCart} className="relative p-1.5 sm:p-2 text-gray-700 hover:text-orange-600 transition-colors">
@@ -127,7 +132,7 @@ export function TopNavbar() {
                 </div>
               ) : (
                 <button onClick={() => setShowLoginModal(true)} className="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-orange-600 transition-all">
-                  Login
+                  {t.nav.login}
                 </button>
               )}
             </div>
@@ -141,6 +146,8 @@ export function TopNavbar() {
 
       <div className="hidden max-[480px]:block bg-white border-b sticky top-20 z-40 w-full px-3 py-2.5">
         <div className="flex items-center justify-end gap-3">
+          <LanguageToggle />
+
           <button onClick={openCart} className="relative p-2 text-gray-700 hover:text-orange-600 transition-colors">
             <ShoppingCart className="w-6 h-6" />
             {items.length > 0 && (
@@ -191,7 +198,7 @@ export function TopNavbar() {
               <div className="flex-1 overflow-y-auto p-4 space-y-8">
                 {/* Nav Links with Stagger Animation */}
                 <nav className="space-y-1">
-                  <p className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">Main Menu</p>
+                  <p className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">{t.nav.mainMenu}</p>
                   {navItems.map((item, i) => (
                     <motion.button
                       key={item.name}
@@ -215,7 +222,7 @@ export function TopNavbar() {
                   transition={{ delay: 0.5 }}
                   className="pt-6 border-t border-gray-100"
                 >
-                  <p className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">Patient Portal</p>
+                  <p className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">{t.nav.patientPortal}</p>
                   <div className="grid gap-4">
                     <motion.a
                       whileHover={{ scale: 1.02 }}
@@ -227,7 +234,7 @@ export function TopNavbar() {
                       <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-md">
                         <FileText className="w-7 h-7 text-orange-600" />
                       </div>
-                      <span className="text-lg">View Reports</span>
+                      <span className="text-lg">{t.nav.viewReports}</span>
                     </motion.a>
 
                     {user ? (
@@ -241,12 +248,12 @@ export function TopNavbar() {
                             {getInitial(user.name)}
                           </div>
                           <div className="text-left">
-                            <p className="text-xs text-gray-400 font-medium tracking-tight">Logged in as</p>
+                            <p className="text-xs text-gray-400 font-medium tracking-tight">{t.nav.loggedInAs}</p>
                             <p className="text-gray-800 truncate max-w-[150px]">{user.name}</p>
                           </div>
                         </motion.button>
                         <button onClick={logout} className="w-full py-4 text-red-500 font-bold flex items-center justify-center gap-2 hover:bg-red-50 rounded-2xl transition-all">
-                          <LogOut className="w-5 h-5" /> Logout
+                          <LogOut className="w-5 h-5" /> {t.nav.logout}
                         </button>
                       </div>
                     ) : (
@@ -259,7 +266,7 @@ export function TopNavbar() {
                         <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center shadow-inner">
                           <User className="w-7 h-7 text-white" />
                         </div>
-                        <span className="text-lg">Login / Sign Up</span>
+                        <span className="text-lg">{t.nav.loginSignup}</span>
                       </motion.button>
                     )}
                   </div>

@@ -3,8 +3,10 @@
 import { Search } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 export function Search_Bar() {
+    const { t } = useLanguage();
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -142,7 +144,7 @@ export function Search_Bar() {
                     <input
                         ref={inputRef}
                         type="text"
-                        placeholder="Search for tests... "
+                        placeholder={t.nav.searchForTests}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onFocus={handleInputFocus}
@@ -192,7 +194,7 @@ export function Search_Bar() {
                     className="fixed z-[9999] bg-white border border-gray-200 rounded-lg shadow-xl"
                 >
                     <div className="px-4 py-3 text-gray-500 text-sm">
-                        No tests found for "{search}"
+                        {t.common.noTestsFound} "{search}"
                     </div>
                 </div>
             )}

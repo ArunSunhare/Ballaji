@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ImageWithFallback } from "./figma/callbackimgs";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 type Facility = {
   name: string;
@@ -44,11 +45,20 @@ const facilitiesData: Facility[] = [
 
 export function Facilities() {
   const router = useRouter();
+  const { t } = useLanguage();
+  const facilityNames: Record<string, string> = {
+    "Radiation Therapy": t.home.radiationTherapy,
+    Radiology: t.home.radiology,
+    Pathology: t.home.pathology,
+    Dialysis: t.home.dialysis,
+    Pharmacy: t.home.pharmacy,
+    "F&B": t.home.fnb,
+  };
 
   return (
     <section id="facilities" className="bg-white py-8 md:py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-2 text-center text-xl font-bold text-gray-900 md:text-2xl">Facilities</h2>
+        <h2 className="mb-2 text-center text-xl font-bold text-gray-900 md:text-2xl">{t.home.facilities}</h2>
         <div className="mx-auto mb-6 h-1 w-16 bg-red-600 md:mb-8 md:w-20" />
 
         <div className="mx-auto grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:gap-6">
@@ -61,14 +71,14 @@ export function Facilities() {
                 <div className="relative aspect-[4/3]">
                   <ImageWithFallback
                     src={facility.image}
-                    alt={facility.name}
+                    alt={facilityNames[facility.name] || facility.name}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-2 md:p-4">
                   <h3 className="text-center text-xs font-semibold leading-snug text-white sm:text-sm md:text-base lg:text-lg">
-                    {facility.name}
+                    {facilityNames[facility.name] || facility.name}
                   </h3>
                 </div>
               </div>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Footer } from "@/app/componets/footer";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 import { TopHeader } from "../top_header";
 import { TopNavbar } from "../TopNavbar";
 import { MainNavbar } from "../MainNavbar";
@@ -11,7 +12,7 @@ type FacilityCard = {
   src: string;
   title: string;
   heading?: string;
-  content?: string[];
+  content?: readonly string[];
 };
 
 type FacilityLayoutProps = {
@@ -44,6 +45,7 @@ export function FacilityLayout({
   calloutSubtitle,
 }: FacilityLayoutProps) {
   const [activeCard, setActiveCard] = useState<FacilityCard | null>(null);
+  const { t } = useLanguage();
    
   return (
     <div className="min-h-screen bg-white">
@@ -144,7 +146,7 @@ export function FacilityLayout({
                 </div>
               ) : (
                 <p className="text-left text-sm text-gray-700 md:text-base md:text-justify">
-                  This facility image is part of our department gallery.
+                  {t.facilities.defaultImageDescription}
                 </p>
               )}
             </div>

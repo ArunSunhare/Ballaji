@@ -7,18 +7,29 @@ type OrderContactModalProps = {
   isOpen: boolean;
   onClose: () => void;
   description: string;
+  phone: string;
+  displayPhone: string;
 };
 
 export function OrderContactModal({
   isOpen,
   onClose,
   description,
+  phone,
+  displayPhone
 }: OrderContactModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -52,11 +63,18 @@ export function OrderContactModal({
         <p className="mt-3 text-gray-600">{description}</p>
         <div className="mt-5 rounded-xl border border-orange-200 bg-orange-50 p-4 text-center">
           <p className="text-sm font-medium text-gray-600">Order Support Number</p>
-          <a
+          {/* <a
             href="tel:9990867867"
             className="mt-2 block text-3xl font-bold tracking-wide text-orange-600"
           >
             9990867867
+          </a> */}
+          <a
+            href={`tel:${phone}`}
+            className="mt-2 block text-3xl font-bold tracking-wide text-orange-600"
+            aria-label={`Call support at ${displayPhone}`}
+          >
+            {displayPhone}
           </a>
         </div>
         <div className="mt-6 flex gap-3">

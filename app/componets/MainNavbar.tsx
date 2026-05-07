@@ -3,17 +3,19 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 const facilityLinks = [
-  { name: "Radiation Therapy", href: "/componets/facilites/pathology" },
-  { name: "Radiology", href: "/componets/facilites/ct-scan" },
-  { name: "Pathology", href: "/componets/facilites/x-ray" },
-  { name: "Dialysis", href: "/componets/facilites/ultrasound" },
-  { name: "Pharmacy", href: "/componets/facilites/pharmacy" },
-  { name: "F&B", href: "/componets/facilites/fnb" },
-];
+  { labelKey: "radiationTherapy", href: "/componets/facilites/pathology" },
+  { labelKey: "radiology", href: "/componets/facilites/ct-scan" },
+  { labelKey: "pathology", href: "/componets/facilites/x-ray" },
+  { labelKey: "dialysis", href: "/componets/facilites/ultrasound" },
+  { labelKey: "pharmacy", href: "/componets/facilites/pharmacy" },
+  { labelKey: "fnb", href: "/componets/facilites/fnb" },
+] as const;
 
 export function MainNavbar() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [isDoctorsOpen, setIsDoctorsOpen] = useState(false);
   const [isFacilitiesOpen, setIsFacilitiesOpen] = useState(false);
@@ -73,7 +75,7 @@ export function MainNavbar() {
         const json = await res.json();
 
         if (!res.ok || !json?.success) {
-          setPopularError(json?.message || "Failed to load tests");
+          setPopularError(json?.message || t.common.noTestsFound);
           setPopularTests([]);
           return;
         }
@@ -86,7 +88,7 @@ export function MainNavbar() {
         const list = Array.isArray(parsed?.data) ? parsed.data : [];
         setPopularTests(list);
       } catch {
-        setPopularError("Failed to load tests");
+        setPopularError(t.common.noTestsFound);
         setPopularTests([]);
       } finally {
         setPopularLoading(false);
@@ -116,7 +118,7 @@ export function MainNavbar() {
         const json = await res.json();
 
         if (!res.ok) {
-          setHealthPackagesError(json?.message || "Failed to load packages");
+          setHealthPackagesError(json?.message || t.common.noPackagesFound);
           setHealthPackages([]);
           return;
         }
@@ -139,7 +141,7 @@ export function MainNavbar() {
 
         setHealthPackages(list);
       } catch {
-        setHealthPackagesError("Failed to load packages");
+        setHealthPackagesError(t.common.noPackagesFound);
         setHealthPackages([]);
       } finally {
         setHealthPackagesLoading(false);
@@ -176,9 +178,9 @@ export function MainNavbar() {
   return (
     <div className="bg-white hidden lg:block">
       <nav className="w-full px-3 sm:px-4 lg:px-6 min-[1207px]:px-10 h-12 flex items-center justify-around gap-3 min-[1207px]:gap-8 whitespace-nowrap text-[13px] min-[1207px]:text-base text-white font-medium">
-        <a href="/" className="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
-        <a href="/about-us" className="text-gray-700 hover:text-orange-600 transition-colors">About Us</a>
-        <a href="/our-founder" className="text-gray-700 hover:text-orange-600 transition-colors">Our Founder</a>
+        <a href="/" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.home}</a>
+        <a href="/about-us" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.about}</a>
+        <a href="/our-founder" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.founder}</a>
         <div
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsDoctorsOpen, () => {
@@ -196,7 +198,7 @@ export function MainNavbar() {
                 : "text-gray-700 hover:text-orange-600"
             }`}
           >
-            Doctors
+            {t.nav.doctors}
           </a>
           {isDoctorsOpen && (
             <div
@@ -239,7 +241,7 @@ export function MainNavbar() {
                 : "text-gray-700 hover:text-orange-200"
             }`}
           >
-            Facilities
+            {t.nav.facilities}
           </a>
           {isFacilitiesOpen && (
             <div 
@@ -249,20 +251,20 @@ export function MainNavbar() {
             >
               {facilityLinks.map((facility) => (
                 <button
-                  key={facility.name}
+                  key={facility.href}
                   type="button"
                   onClick={() => {
                     setIsFacilitiesOpen(false);
                     router.push(facility.href);
                   }}
                   className="block w-full px-4 py-2 text-left text-gray-700 hover:text-orange-600 transition-colors whitespace-normal pr-6">
-                  {facility.name}
+                  {t.home[facility.labelKey]}
                 </button>
               ))}
             </div>
           )}
         </div>
-        <a href="/gallery" className="text-gray-700 hover:text-orange-600 transition-colors">Gallery</a>
+        <a href="/gallery" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.gallery}</a>
         <div 
           className="relative"
           onMouseEnter={() => handleMouseEnter(setIsFindTestOpen, () => {
@@ -280,7 +282,7 @@ export function MainNavbar() {
                 : "text-gray-700 hover:text-orange-200"
             }`}
           >
-            Find A Test
+            {t.nav.findTest}
           </a>
           {isFindTestOpen && (
             <div 
@@ -289,11 +291,11 @@ export function MainNavbar() {
               onMouseLeave={() => handleMouseLeave(setIsFindTestOpen)}
             >
               {popularLoading ? (
-                <div className="px-4 py-2 text-gray-500 text-sm">Loading...</div>
+                <div className="px-4 py-2 text-gray-500 text-sm">{t.common.loading}</div>
               ) : popularError ? (
                 <div className="px-4 py-2 text-red-600 text-sm">{popularError}</div>
               ) : popularTests.length === 0 ? (
-                <div className="px-4 py-2 text-gray-500 text-sm">No tests found</div>
+                <div className="px-4 py-2 text-gray-500 text-sm">{t.common.noTestsFound}</div>
               ) : (
                 <div className="px-3 pb-2">
                   <div className="mb-2">
@@ -301,13 +303,13 @@ export function MainNavbar() {
                       type="text"
                       value={popularSearch}
                       onChange={(e) => setPopularSearch(e.target.value)}
-                      placeholder="Search tests..."
+                      placeholder={t.nav.searchTests}
                       className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   <div className="max-h-64 overflow-auto">
                     {filteredPopularTests.length === 0 ? (
-                      <div className="px-2 py-2 text-gray-500 text-sm">No matching tests found</div>
+                      <div className="px-2 py-2 text-gray-500 text-sm">{t.common.noMatchingTests}</div>
                     ) : (
                       filteredPopularTests.slice(0, 10).map((item: any) => (
                         <button
@@ -347,7 +349,7 @@ export function MainNavbar() {
                 : "text-gray-700 hover:text-orange-200"
             }`}
           >
-            Health Packages
+            {t.nav.healthPackages}
           </a>
           {isHealthPackagesOpen && (
             <div 
@@ -356,11 +358,11 @@ export function MainNavbar() {
               onMouseLeave={() => handleMouseLeave(setIsHealthPackagesOpen)}
             >
               {healthPackagesLoading ? (
-                <div className="px-4 py-2 text-gray-500 text-sm">Loading...</div>
+                <div className="px-4 py-2 text-gray-500 text-sm">{t.common.loading}</div>
               ) : healthPackagesError ? (
                 <div className="px-4 py-2 text-red-600 text-sm">{healthPackagesError}</div>
               ) : healthPackages.length === 0 ? (
-                <div className="px-4 py-2 text-gray-500 text-sm">No packages found</div>
+                <div className="px-4 py-2 text-gray-500 text-sm">{t.common.noPackagesFound}</div>
               ) : (
                 <div className="px-3 pb-2">
                   <div className="mb-2">
@@ -368,13 +370,13 @@ export function MainNavbar() {
                       type="text"
                       value={healthPackagesSearch}
                       onChange={(e) => setHealthPackagesSearch(e.target.value)}
-                      placeholder="Search packages..."
+                      placeholder={t.nav.searchPackages}
                       className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   <div className="max-h-64 overflow-auto">
                     {filteredHealthPackages.length === 0 ? (
-                      <div className="px-2 py-2 text-gray-500 text-sm">No matching packages found</div>
+                      <div className="px-2 py-2 text-gray-500 text-sm">{t.common.noMatchingPackages}</div>
                     ) : (
                       filteredHealthPackages.slice(0, 10).map((pkg: any) => (
                         <button
@@ -397,10 +399,10 @@ export function MainNavbar() {
             </div>
           )}
         </div>
-        <a href="/our_locations" className="text-gray-700 hover:text-orange-600 transition-colors">Our Location</a>
+        <a href="/our_locations" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.location}</a>
         {/* <a href="/feedback" className="text-gray-700 hover:text-orange-600 transition-colors">last Feedback</a> */}
-        <a href="/getfeedback" className="text-gray-700 hover:text-orange-600 transition-colors">Feedback</a>
-        <a href="/contact_us" className="text-gray-700 hover:text-orange-600 transition-colors">Contact Us</a>       
+        <a href="/getfeedback" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.feedback}</a>
+        <a href="/contact_us" className="text-gray-700 hover:text-orange-600 transition-colors">{t.nav.contact}</a>       
       </nav>
     </div>
   );

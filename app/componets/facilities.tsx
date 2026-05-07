@@ -48,10 +48,10 @@ export function Facilities() {
   const { t } = useLanguage();
   const facilityNames: Record<string, string> = {
     "Radiation Therapy": t.home.radiationTherapy,
-    Radiology: t.home.radiology,
-    Pathology: t.home.pathology,
-    Dialysis: t.home.dialysis,
-    Pharmacy: t.home.pharmacy,
+    "Radiology": t.home.radiology,
+    "Pathology": t.home.pathology,
+    "Dialysis": t.home.dialysis,
+    "Pharmacy": t.home.pharmacy,
     "F&B": t.home.fnb,
   };
 

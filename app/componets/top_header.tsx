@@ -10,7 +10,7 @@ export function TopHeader() {
     */
     <div className="hidden min-[760px]:block bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 text-sm shadow-lg">
       <div className="w-full px-3 sm:px-4 min-[1090px]:px-10">
-        <div className="flex w-full flex-col sm:flex-row justify-between items-center gap-4 min-[1090px]:gap-8">
+        <div className="flex w-full flex-col sm:flex-row items-center gap-4 min-[1090px]:gap-8">
 
           {/* Contact Information - Sabhi links aur icons intact hain */}
           <div className="flex flex-1 flex-wrap min-[760px]:max-[989px]:flex-nowrap min-[1024px]:max-[1089px]:flex-nowrap items-center justify-around min-[760px]:max-[989px]:justify-between min-[1024px]:max-[1089px]:justify-between gap-3 md:gap-5 min-[760px]:max-[989px]:gap-2 min-[1024px]:max-[1089px]:gap-2 min-[1090px]:gap-8 text-xs sm:text-sm min-[760px]:max-[989px]:text-[11px] min-[1024px]:max-[1089px]:text-[11px] font-medium">

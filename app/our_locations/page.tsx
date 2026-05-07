@@ -1,9 +1,11 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 import { TopHeader } from '../componets/top_header';
 import { TopNavbar } from '../componets/TopNavbar';
 import { MainNavbar } from '../componets/MainNavbar';
 import { Footer } from "@/app/componets/footer";
+import { locationPages } from "./locationData";
 
 export default function OurLocations() {
     const locations = [
@@ -45,7 +47,13 @@ export default function OurLocations() {
         },
     ];
 
-    const locationFilters = ["All Locations", "Delhi / NCR", "Uttar Pradesh", "Haryana", "Rajasthan"];
+    const locationFilters = [
+        { label: "All Locations", href: "/our_locations" },
+        ...locationPages.map((location) => ({
+            label: location.name,
+            href: `/our_locations/${location.slug}`,
+        })),
+    ];
 
     return (
         <div className="min-h-screen bg-white">
@@ -69,16 +77,17 @@ export default function OurLocations() {
                     {/* 1. Tabs/Filters Section */}
                     <div className="flex items-center space-x-8 border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
                         {locationFilters.map((filter, index) => (
-                            <button
-                                key={index}
+                            <Link
+                                key={filter.href}
+                                href={filter.href}
                                 className={`pb-3 text-sm font-medium whitespace-nowrap transition-colors ${
                                     index === 0
                                         ? 'text-orange-700 border-b-2 border-orange-600'
                                         : 'text-gray-500 hover:text-orange-600'
                                 }`}
                             >
-                                {filter}
-                            </button>
+                                {filter.label}
+                            </Link>
                         ))}
                     </div>
 

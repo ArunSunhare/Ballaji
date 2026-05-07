@@ -13,6 +13,7 @@ import { Search_Bar } from "./search_bar";
 import { motion, AnimatePresence } from "framer-motion"; 
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "@/app/i18n/LanguageContext";
+import { doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
 
 type UserType = {
   name: string;
@@ -24,6 +25,7 @@ export function TopNavbar() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDoctorsOpen, setIsDoctorsOpen] = useState(false);
 
   const router = useRouter();
   const { items, openCart } = useCart();
@@ -199,20 +201,80 @@ export function TopNavbar() {
                 {/* Nav Links with Stagger Animation */}
                 <nav className="space-y-1">
                   <p className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">{t.nav.mainMenu}</p>
-                  {navItems.map((item, i) => (
-                    <motion.button
-                      key={item.name}
-                      custom={i}
-                      initial="closed"
-                      animate="open"
-                      variants={linkVariants as any}
-                      onClick={() => { router.push(item.href); setIsMenuOpen(false); }}
-                      className="flex items-center justify-between w-full p-4 text-gray-800 font-bold hover:bg-orange-50 rounded-2xl group"
-                    >
-                      {item.name}
-                      <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
-                    </motion.button>
-                  ))}
+                  {navItems.map((item, i) => {
+                    const isDoctorsItem = item.href === "/#doctors";
+
+                    if (isDoctorsItem) {
+                      return (
+                        <motion.div
+                          key={item.name}
+                          custom={i}
+                          initial="closed"
+                          animate="open"
+                          variants={linkVariants as any}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setIsDoctorsOpen((current) => !current)}
+                            className="flex items-center justify-between w-full p-4 text-gray-800 font-bold hover:bg-orange-50 rounded-2xl group"
+                          >
+                            {item.name}
+                            <ChevronRight
+                              className={`w-5 h-5 text-gray-300 group-hover:text-orange-500 transition-all ${
+                                isDoctorsOpen ? "rotate-90 text-orange-500" : "group-hover:translate-x-1"
+                              }`}
+                            />
+                          </button>
+
+                          {isDoctorsOpen ? (
+                            <div className="ml-4 mt-1 max-h-72 overflow-y-auto rounded-2xl border border-orange-100 bg-orange-50/60 p-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  router.push("/#doctors");
+                                  setIsMenuOpen(false);
+                                  setIsDoctorsOpen(false);
+                                }}
+                                className="block w-full rounded-xl px-3 py-3 text-left text-sm font-bold text-orange-700 hover:bg-white"
+                              >
+                                View All Doctors
+                              </button>
+
+                              {doctorSpecialties.map((specialty) => (
+                                <button
+                                  key={specialty}
+                                  type="button"
+                                  onClick={() => {
+                                    router.push(`/doctors/${slugifySpecialty(specialty)}`);
+                                    setIsMenuOpen(false);
+                                    setIsDoctorsOpen(false);
+                                  }}
+                                  className="block w-full rounded-xl px-3 py-3 text-left text-sm font-semibold text-gray-700 hover:bg-white hover:text-orange-600"
+                                >
+                                  {specialty}
+                                </button>
+                              ))}
+                            </div>
+                          ) : null}
+                        </motion.div>
+                      );
+                    }
+
+                    return (
+                      <motion.button
+                        key={item.name}
+                        custom={i}
+                        initial="closed"
+                        animate="open"
+                        variants={linkVariants as any}
+                        onClick={() => { router.push(item.href); setIsMenuOpen(false); }}
+                        className="flex items-center justify-between w-full p-4 text-gray-800 font-bold hover:bg-orange-50 rounded-2xl group"
+                      >
+                        {item.name}
+                        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+                      </motion.button>
+                    );
+                  })}
                 </nav>
 
                 {/* Patient Portal Section */}

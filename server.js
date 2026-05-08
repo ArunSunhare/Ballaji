@@ -1,7 +1,11 @@
- try {
- require("dotenv").config();
+try {
+  require("dotenv").config();
 } catch {
   // dotenv is optional when the host injects PORT/HOSTNAME directly.
+}
+
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = "production";
 }
 
 const { createServer } = require("http");

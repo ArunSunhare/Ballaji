@@ -114,12 +114,18 @@ export function FacilityLayout({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
           onClick={() => setActiveCard(null)}
         >
-          <button
+          {/* <button
             type="button"
-            className="absolute right-6 top-6 text-3xl font-bold text-white"
+            className="absolute right-6 top-6 z-[100] text-3xl font-bold text-white"
             onClick={() => setActiveCard(null)}
           >
             x
+          </button> */}
+          <button
+            type="button"
+            className="absolute right-4 top-4 z-[100] text-3xl font-bold text-white md:right-6 md:top-6"
+          >
+            ×
           </button>
 
           <div

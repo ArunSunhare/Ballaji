@@ -63,10 +63,10 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
                       Our Location
                     </p>
                     <h1 className="text-2xl font-bold leading-tight text-stone-900 md:text-3xl">
-                      {activeLocation.name}
+                      {activeLocation.subtitle}                      
                     </h1>
                     <p className="text-sm font-semibold text-orange-700 md:text-base">
-                      {activeLocation.subtitle}
+                      {activeLocation.address}
                     </p>
                   </div>
 

@@ -11,40 +11,28 @@ export default function OurLocations() {
     const locations = [
         {
             id: 1,
-            name: "Shri Hanuman Balaji Charitable Diagnostic Centre – Vivek Vihar",
-            image: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=600&h=400&fit=crop",
+            name: "Shri Hanuman Balaji Charitable Diagnostic centre (SHBCDC), Delhi",
+            image: "/assets/banner/banner_3.jpeg",
             rating: 4.8,
         },
         {
             id: 2,
-            name: "Balaji Diagnostic – Noida, Sector 18",
-            image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&h=400&fit=crop",
+            name: "SHB-MDH cancer & Multi - Speciality Charitable Hospital, Delhi,",
+            image: "/assets/cancer_hospital.jpeg",
             rating: 4.6,
         },
         {
             id: 3,
-            name: "Balaji Diagnostic – Ghaziabad, Raj Nagar",
-            image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&h=400&fit=crop",
+            name: "Shri Hanuman Balaji Bhartiya Chikitsa Charitable Swasthyavardhak Sansthan, Ghaziabad",
+            image: "/assets/modi_nagar.jpeg",
             rating: 4.5,
         },
         {
             id: 4,
-            name: "Balaji Diagnostic – Greater Noida, Alpha-1",
-            image: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=600&h=400&fit=crop",
+            name: "Shri Hanuman balance Aashrit Rogi Sewa Grah, Gurugram",
+            image: "/assets/gurugram/main.jpeg",
             rating: 4.4,
-        },
-        {
-            id: 5,
-            name: "Balaji Diagnostic – Gurgaon, Sector 14",
-            image: "https://images.unsplash.com/photo-1580281657702-257584239a55?w=600&h=400&fit=crop",
-            rating: 4.5,
-        },
-        {
-            id: 6,
-            name: "Balaji Diagnostic – Mehndipur Balaji, Rajasthan",
-            image: "https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?w=600&h=400&fit=crop",
-            rating: 4.3,
-        },
+        }
     ];
 
     const locationFilters = [
@@ -61,15 +49,6 @@ export default function OurLocations() {
             <TopNavbar />
             <MainNavbar />
 
-            {/* Hero Section */}
-            {/* <div className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-10">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-4xl font-bold mb-2">Our Locations</h1>
-                    <p className="text-orange-100 text-lg">
-                        Serving Delhi, Noida, Gurgaon, Greater Noida &amp; Ghaziabad
-                    </p>
-                </div>
-            </div> */}
 
             <div className="bg-white py-12 px-4 md:px-10">
                 <div className="max-w-7xl mx-auto">

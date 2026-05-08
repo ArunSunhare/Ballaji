@@ -13,6 +13,9 @@ import { TopHeader } from "../componets/top_header";
 import { TopNavbar } from "../componets/TopNavbar";
 import { MainNavbar } from "../componets/MainNavbar";
 
+const phone = "+919990867867";
+const displayPhone = "+91 99908 67867";
+
 export default function CartPage() {
     const { items, removeFromCart, cartTotal } = useCart();
     const router = useRouter();
@@ -190,6 +193,8 @@ export default function CartPage() {
                 isOpen={showOrderHelpCard}
                 onClose={() => setShowOrderHelpCard(false)}
                 description="Online checkout is not available right now. Please call the number below to place your order for your selected tests and packages."
+                phone={phone}
+                displayPhone={displayPhone}
             />
         </div>
     );

@@ -8,7 +8,7 @@ module.exports = {
   apps: [
     {
       name: "hanuman-app",
-      script: "server.js",
+      script: ".next/standalone/server.js",
       cwd: "/var/www/hanuman-app",
       env: {
         NODE_ENV: "production",

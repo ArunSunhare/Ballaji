@@ -4,6 +4,7 @@ export type LocationPageData = {
   subtitle: string;
   image: string;
   imageAlt: string;
+  address: string;
   intro: string;
   highlights: string[];
   coverage: string[];
@@ -11,64 +12,136 @@ export type LocationPageData = {
 
 export const locationPages: LocationPageData[] = [
   {
+    slug: "delhi-loc",
+    name: "Delhi",
+    subtitle:
+      "Shri Hanuman Balaji Charitable Diagnostic Centre (SHBCDC)",
+    image: "/assets/banner/banner_3.jpeg",
+    imageAlt:
+      "Shri Hanuman Balaji Charitable Diagnostic Centre (SHBCDC)",
+    address:
+      "Plot No : X-24 Karkardooma Institutional Area, Near Karkardooma Court Metro Station, New Delhi - 110092",
+
+    intro:
+      "The Delhi centre of Shri Hanuman Balaji Charitable Diagnostic Centre (SHBCDC) provides affordable diagnostic and healthcare support services for patients across Delhi NCR. Located near Karkardooma Court Metro Station, the centre offers radiology, pathology, dialysis support, cancer diagnostics, and patient-focused healthcare coordination under one charitable care network.",
+
+    highlights: [
+      "Conveniently located near Karkardooma Court Metro Station for easy patient access.",
+      "Affordable diagnostic services including pathology, radiology, and advanced imaging.",
+      "Support for cancer care coordination, dialysis assistance, and patient consultation services.",
+    ],
+
+    coverage: [
+      "New Delhi",
+      "East Delhi",
+      "Shahdara",
+      "Laxmi Nagar",
+      "Noida",
+      "Ghaziabad",
+      "Greater Noida",
+    ],
+  },
+
+  {
     slug: "delhi-ncr",
     name: "Delhi / NCR",
-    subtitle: "Charitable diagnostics and cancer care support for Delhi and NCR families.",
-    image: "/assets/Header.jpg",
-    imageAlt: "Shri Hanuman Balaji charitable diagnostic centre in Delhi NCR",
+    subtitle:
+      "SHB-MDH Cancer & Multi-Speciality Charitable Hospital",
+    image: "/assets/cancer_hospital.jpeg",
+    imageAlt:
+      "SHB-MDH Cancer & Multi-Speciality Charitable Hospital",
+
+    address:
+      "X-25 Karkardooma Institutional Area, Near Karkardooma Court Metro Station, New Delhi - 110092",
+
     intro:
-      "Our Delhi / NCR service area is anchored by Shri Hanuman Balaji Charitable Diagnostic Centre at Karkardooma Institutional Area, New Delhi. The centre supports patients with affordable diagnostic services, consultation support, home blood sample collection, and advanced cancer care facilities.",
+      "The Delhi NCR facility of SHB-MDH Cancer & Multi-Speciality Charitable Hospital supports patients seeking affordable cancer care, diagnostics, imaging, pathology, and multi-speciality healthcare services. The centre is designed to help families from Delhi NCR access coordinated treatment planning and advanced healthcare support.",
+
     highlights: [
-      "Central access from East Delhi, Shahdara, Ghaziabad, Noida, Greater Noida, Faridabad, and Gurgaon.",
-      "Radiology, pathology, dialysis, pharmacy, F&B, and radiation therapy support under one care network.",
-      "Home blood collection and patient coordination through the centre contact numbers.",
+      "Multi-speciality healthcare support with cancer-care coordination services.",
+      "Advanced diagnostic imaging, CT scans, pathology, and laboratory services.",
+      "Easy accessibility for patients travelling from Noida, Ghaziabad, Faridabad, and nearby NCR regions.",
     ],
-    coverage: ["New Delhi", "East Delhi", "Noida", "Ghaziabad", "Greater Noida", "Gurgaon"],
+
+    coverage: [
+      "Delhi NCR",
+      "Noida",
+      "Greater Noida",
+      "Ghaziabad",
+      "Faridabad",
+      "Indirapuram",
+      "Vaishali",
+    ],
   },
+
   {
-    slug: "uttar-pradesh",
-    name: "Uttar Pradesh",
-    subtitle: "Accessible diagnostic support for nearby Uttar Pradesh cities.",
-    image: "/assets/diagnostics/CT.jpg",
-    imageAlt: "Diagnostic imaging equipment supporting Uttar Pradesh patients",
+    slug: "ghaziabad-loc",
+    name: "Ghaziabad",
+    subtitle:
+      "Shri Hanuman Balaji Bhartiya Chikitsa Charitable Swasthyavardhak Sansthan",
+
+    image: "/assets/modi_nagar.jpeg",
+
+    imageAlt:
+      "Shri Hanuman Balaji Bhartiya Chikitsa Charitable Swasthyavardhak Sansthan",
+
+    address:
+      "Khasra No: 92, 259, 275 and 276, Village Ishaknagar, Tehsil Modinagar, District Ghaziabad - 245304",
+
     intro:
-      "For patients from Uttar Pradesh, the location support is focused on convenient coordination from Noida, Ghaziabad, Greater Noida, and adjoining areas. Patients can access investigations, imaging, pathology, and referral support through the Delhi NCR charitable diagnostic network.",
+      "The Ghaziabad charitable healthcare centre focuses on affordable patient care, dialysis support, diagnostic coordination, and wellness services for families in Modinagar and nearby Ghaziabad regions. The institution aims to provide accessible healthcare support with charitable medical assistance and patient-centered services.",
+
     highlights: [
-      "Support for patients travelling from Noida, Greater Noida, Ghaziabad, and nearby districts.",
-      "Diagnostics and treatment planning assistance connected with the main Karkardooma centre.",
-      "Home sample collection coordination where service coverage is available.",
+      "Healthcare support services for patients from Modinagar and nearby Ghaziabad areas.",
+      "Dialysis-related coordination, diagnostics, and charitable patient care initiatives.",
+      "Connected support network for diagnostics, treatment planning, and follow-up care.",
     ],
-    coverage: ["Noida", "Greater Noida", "Ghaziabad", "Raj Nagar", "Indirapuram", "Nearby UP districts"],
+
+    coverage: [
+      "Ghaziabad",
+      "Modinagar",
+      "Muradnagar",
+      "Raj Nagar",
+      "Meerut Road",
+      "Hapur",
+      "Nearby Uttar Pradesh regions",
+    ],
   },
+
   {
-    slug: "haryana",
-    name: "Haryana",
-    subtitle: "Diagnostic and patient-care access for Gurgaon and nearby Haryana regions.",
-    image: "/assets/dialysis.jpeg",
-    imageAlt: "Dialysis and diagnostic care support for Haryana patients",
+    slug: "gurugram-loc",
+    name: "Gurugram",
+
+    subtitle:
+      "Shri Hanuman Balaji Aashrit Rogi Sewa Grah",
+
+    image:
+      "/assets/gurugram/main.jpeg",
+
+    imageAlt:
+      "Shri Hanuman Balaji Aashrit Rogi Sewa Grah in Gurugram",
+
+    address:
+      "Plot No 7P, Sector 38, Gurugram, Haryana",
+
     intro:
-      "The Haryana location page helps patients from Gurgaon and nearby areas connect with the charitable diagnostic network for tests, imaging, dialysis-related support, and cancer-care coordination. The aim is to make appointment planning simpler for families travelling into Delhi NCR.",
+      "The Gurugram patient support centre provides accommodation assistance, supportive healthcare coordination, and access guidance for patients and families seeking treatment within the Delhi NCR charitable healthcare network. The centre especially supports patients travelling for advanced diagnostics, radiation therapy, and cancer-care services.",
+
     highlights: [
-      "Patient support for Gurgaon, Faridabad, and nearby Haryana areas.",
-      "Diagnostic coordination for radiology, pathology, and day-care service needs.",
-      "Clear route back to the main centre for advanced treatment planning and follow-up.",
+      "Supportive stay and patient assistance services for families visiting Gurugram and Delhi NCR.",
+      "Guidance for radiation therapy, diagnostics, pathology, and advanced healthcare services.",
+      "Convenient connectivity from HUDA City Centre Metro Station, Sohna, and nearby Haryana regions.",
     ],
-    coverage: ["Gurgaon", "Faridabad", "Sector 14", "Manesar", "Bahadurgarh", "Nearby Haryana areas"],
-  },
-  {
-    slug: "rajasthan",
-    name: "Rajasthan",
-    subtitle: "Care guidance for Rajasthan patients, including Mehndipur Balaji visitors.",
-    image: "/assets/machine photo/machine photo/TRUEBEAM MACHINE.jpeg",
-    imageAlt: "Radiation therapy machine supporting advanced cancer care",
-    intro:
-      "The Rajasthan location page is designed for patients and families from Mehndipur Balaji and nearby Rajasthan regions who need affordable diagnostics, cancer-care guidance, and coordinated referral support through Shri Hanuman Balaji Charitable Diagnostic Centre.",
-    highlights: [
-      "Patient coordination for families travelling from Mehndipur Balaji and nearby Rajasthan cities.",
-      "Access guidance for diagnostics, pathology, radiology, and advanced radiation therapy services.",
-      "Supportive care planning for appointments, reports, and follow-up visits.",
+
+    coverage: [
+      "Gurugram",
+      "Sector 38",
+      "Sohna",
+      "Manesar",
+      "Faridabad",
+      "HUDA City Centre",
+      "Nearby Haryana areas",
     ],
-    coverage: ["Mehndipur Balaji", "Dausa", "Jaipur", "Alwar", "Bharatpur", "Nearby Rajasthan areas"],
   },
 ];
 

@@ -86,8 +86,9 @@ export function OrderContactModal({
             Close
           </button>
           <a
-            href="tel:9990867867"
+            href={`tel:${phone}`}
             className="flex-1 rounded-lg bg-orange-600 px-4 py-3 text-center font-medium text-white hover:bg-orange-700"
+            aria-label={`Call support at ${displayPhone}`}
           >
             Call Now
           </a>

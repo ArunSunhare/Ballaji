@@ -16,49 +16,49 @@ const galleryImages = [
     id: 1,
     category: "hospital",
     title: "Hospital Building",
-    // description: "Main building view of the diagnostic centre",
+    description: "Main building view of the diagnostic centre",
     image: "/assets/Header.jpg"
   },
   {
     id: 2,
     category: "equipment",
     title: "MRI Machine",
-    // description: "Advanced MRI imaging facility",
+    description: "Advanced MRI imaging facility",
     image: "/assets/diagnostics/MRI.jpg"
   },
   {
     id: 3,
     category: "patients",
     title: "Reception Area",
-    // description: "Welcoming patient support and registration desk",
+    description: "Welcoming patient support and registration desk",
     image: "/assets/banner/Reception.png"
   },
   {
     id: 4,
     category: "hospital",
     title: "Diagnostic Centre",
-    // description: "Clean and modern infrastructure for visitors",
+    description: "Clean and modern infrastructure for visitors",
     image: "/assets/hero.jpg"
   },
   {
     id: 5,
     category: "equipment",
     title: "CT Scanner",
-    // description: "High-quality CT imaging technology",
+    description: "High-quality CT imaging technology",
     image: "/assets/diagnostics/CT.jpg"
   }, 
   {
     id: 6,
     category: "patients",
     title: "Patient Care Area",
-    // description: "Supportive spaces built around patient comfort",
+    description: "Supportive spaces built around patient comfort",
     image: "/assets/dialysis.jpeg"
   },
   {
     id: 7,
     category: "equipment",
     title: "Pathology Lab Equipment",
-    // description: "Reliable pathology and lab diagnostics setup",
+    description: "Reliable pathology and lab diagnostics setup",
     image: "/assets/diagnostics/path_lab.jpg"
   }
 ];

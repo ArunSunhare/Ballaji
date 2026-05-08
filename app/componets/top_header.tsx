@@ -13,7 +13,7 @@ export function TopHeader() {
         <div className="flex w-full flex-col sm:flex-row items-center gap-4 min-[1090px]:gap-8">
 
           {/* Contact Information - Sabhi links aur icons intact hain */}
-          <div className="flex flex-1 flex-wrap min-[760px]:max-[989px]:flex-nowrap min-[1024px]:max-[1089px]:flex-nowrap items-center justify-around min-[760px]:max-[989px]:justify-between min-[1024px]:max-[1089px]:justify-between gap-3 md:gap-5 min-[760px]:max-[989px]:gap-2 min-[1024px]:max-[1089px]:gap-2 min-[1090px]:gap-8 text-xs sm:text-sm min-[760px]:max-[989px]:text-[11px] min-[1024px]:max-[1089px]:text-[11px] font-medium">
+          <div className="flex flex-1 flex-wrap min-[760px]:max-[989px]:flex-nowrap min-[1024px]:max-[1089px]:flex-nowrap items-center  min-[760px]:max-[989px]:justify-between min-[1024px]:max-[1089px]:justify-between gap-3 md:gap-5 min-[760px]:max-[989px]:gap-2 min-[1024px]:max-[1089px]:gap-2 min-[1090px]:gap-8 text-xs sm:text-sm min-[760px]:max-[989px]:text-[11px] min-[1024px]:max-[1089px]:text-[11px] font-medium">
 
             <div className="flex items-center gap-2 min-[760px]:max-[989px]:gap-1.5 min-[1024px]:max-[1089px]:gap-1.5 bg-white/20 px-3 min-[760px]:max-[989px]:px-2 min-[1024px]:max-[1089px]:px-2 py-1 rounded-full hover:bg-white/30 transition-all duration-300">
               <Phone className="w-4 h-4 min-[760px]:max-[989px]:h-3.5 min-[1024px]:max-[1089px]:h-3.5 min-[760px]:max-[989px]:w-3.5 min-[1024px]:max-[1089px]:w-3.5" />

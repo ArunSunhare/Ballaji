@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "node server.js",
+    "build": "next build && node scripts/copy-sharp-assets.js",
+    "start": "node -e \"process.env.PORT=process.env.PORT||'3001'; process.env.HOSTNAME=process.env.HOSTNAME||'127.0.0.1'; require('./.next/standalone/server.js')\"",
     "start:standalone": "node .next/standalone/server.js",
     "lint": "eslint"
   },
@@ -18,6 +18,7 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-qr-code": "^2.0.18",
+    "sharp": "^0.34.5",
     "whatsapp": "^0.0.5-Alpha"
   },
   "devDependencies": {

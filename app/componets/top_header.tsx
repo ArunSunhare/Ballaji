@@ -31,14 +31,7 @@ export function TopHeader() {
               </a>
             </div>
             <div className="flex items-center gap-2 min-[760px]:max-[989px]:gap-1.5 min-[1024px]:max-[1089px]:gap-1.5 bg-white/20 px-3 min-[760px]:max-[989px]:px-2 min-[1024px]:max-[1089px]:px-2 py-1 rounded-full hover:bg-white/30 transition-all duration-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-4 h-4 min-[760px]:max-[989px]:h-3.5 min-[1024px]:max-[1089px]:h-3.5 min-[760px]:max-[989px]:w-3.5 min-[1024px]:max-[1089px]:w-3.5 text-white"
-              >
-                <path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0c0-5-7-13-7-13z" />
-              </svg>
+              c
 
 
 

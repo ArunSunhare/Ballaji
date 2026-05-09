@@ -13,7 +13,7 @@ import { Search_Bar } from "./search_bar";
 import { motion, AnimatePresence } from "framer-motion"; 
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "@/app/i18n/LanguageContext";
-import { doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
+import { doctorsData, doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
 
 type UserType = {
   name: string;
@@ -69,6 +69,11 @@ export function TopNavbar() {
     { name: t.nav.feedback, href: "/feedback" },
     { name: t.nav.contact, href: "/contact_us" }
   ];
+
+  const getSpecialtyLabel = (specialty: string) => {
+    const doctor = doctorsData.find((item) => item.specialization === specialty);
+    return t.home.doctorCards.find((item) => item.id === doctor?.id)?.specialization ?? specialty;
+  };
 
   // Animation Variants for Links
   const linkVariants = {
@@ -237,7 +242,7 @@ export function TopNavbar() {
                                 }}
                                 className="block w-full rounded-xl px-3 py-3 text-left text-sm font-bold text-orange-700 hover:bg-white"
                               >
-                                View All Doctors
+                                {t.doctorsPage.viewAllDoctors}
                               </button>
 
                               {doctorSpecialties.map((specialty) => (
@@ -251,7 +256,7 @@ export function TopNavbar() {
                                   }}
                                   className="block w-full rounded-xl px-3 py-3 text-left text-sm font-semibold text-gray-700 hover:bg-white hover:text-orange-600"
                                 >
-                                  {specialty}
+                                  {getSpecialtyLabel(specialty)}
                                 </button>
                               ))}
                             </div>

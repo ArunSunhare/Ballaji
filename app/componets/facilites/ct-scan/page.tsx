@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { X } from "lucide-react";
 import { useState } from "react";
 import { Footer } from "@/app/componets/footer";
 import { useLanguage } from "@/app/i18n/LanguageContext";
@@ -128,10 +129,14 @@ export default function CTScanPage() {
         >
           <button
             type="button"
-            className="absolute right-6 top-6 text-3xl font-bold text-white"
-            onClick={() => setActiveImage(null)}
+            aria-label="Close image details"
+            className="fixed right-4 top-4 z-[70] flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-900 shadow-lg transition hover:bg-orange-50 hover:text-orange-700 sm:right-6 sm:top-6"
+            onClick={(event) => {
+              event.stopPropagation();
+              setActiveImage(null);
+            }}
           >
-            x
+            <X className="h-6 w-6" />
           </button>
 
           <div

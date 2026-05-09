@@ -83,9 +83,12 @@ export function Footer() {
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
                   <p className="text-sm">
-                    Plot No. X-24, Karkardooma Institutional Area, <br />
-                    Near Karkardooma Court Metro Station, <br />
-                    New Delhi-110092
+                    {t.footer.locationLines.map((line, i) => (
+                    <span key={i}>
+                      {line}
+                      {i < t.footer.locationLines.length - 1 && <br />}
+                    </span>
+                  ))}
                   </p>
                 </li>
                 <li className="flex items-start gap-3">

@@ -8,6 +8,7 @@ import { Footer } from "@/app/componets/footer";
 import { MainNavbar } from "@/app/componets/MainNavbar";
 import { TopHeader } from "@/app/componets/top_header";
 import { TopNavbar } from "@/app/componets/TopNavbar";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 import { LocationPageData, locationPages } from "./locationData";
 
 type LocationDetailPageProps = {
@@ -15,12 +16,18 @@ type LocationDetailPageProps = {
 };
 
 export function LocationDetailPage({ location }: LocationDetailPageProps) {
+  const { t } = useLanguage();
   const [activeSlug, setActiveSlug] = useState(location.slug);
 
   const activeLocation = useMemo(
     () => locationPages.find((item) => item.slug === activeSlug) ?? location,
     [activeSlug, location]
   );
+  const activeLocationCopy =
+    t.ourLocations.locations.find((item) => item.slug === activeLocation.slug) ?? activeLocation;
+
+  const getLocationName = (slug: string, fallback: string) =>
+    t.ourLocations.locations.find((item) => item.slug === slug)?.name || fallback;
 
   return (
     <div className="min-h-screen bg-white">
@@ -31,12 +38,12 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
       <main>
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
           <div className="space-y-6">
-            <div className="flex flex-wrap gap-x-4 gap-y-3 border-b border-stone-300 pb-4 text-xs font-semibold text-stone-500 sm:gap-x-6 sm:text-sm">
+            <div className="flex flex-wrap gap-x-4 gap-y-3 border-b border-stone-300 text-xs font-semibold text-stone-500 sm:gap-x-6 sm:text-sm">
               <Link
                 href="/our_locations"
-                className="pb-2 text-stone-500 transition-colors hover:text-stone-800"
+                className="border-b-2 border-transparent pb-3 text-stone-500 transition-colors hover:text-orange-700"
               >
-                All Locations
+                {t.ourLocations.allLocations}
               </Link>
 
               {locationPages.map((item) => (
@@ -44,13 +51,13 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
                   key={item.slug}
                   type="button"
                   onClick={() => setActiveSlug(item.slug)}
-                  className={`pb-2 transition-colors ${
+                  className={`border-b-2 pb-3 transition-colors ${
                     item.slug === activeLocation.slug
-                      ? "border-b-2 border-stone-700 text-stone-900"
-                      : "text-stone-500 hover:text-stone-800"
+                      ? "border-orange-600 text-orange-700"
+                      : "border-transparent text-stone-500 hover:text-orange-700"
                   }`}
                 >
-                  {item.name}
+                  {getLocationName(item.slug, item.name)}
                 </button>
               ))}
             </div>
@@ -60,22 +67,22 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
                 <div className="space-y-4 text-stone-700">
                   <div className="space-y-2">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">
-                      Our Location
+                      {t.ourLocations.eyebrow}
                     </p>
                     <h1 className="text-2xl font-bold leading-tight text-stone-900 md:text-3xl">
-                      {activeLocation.subtitle}                      
+                      {activeLocationCopy.subtitle}
                     </h1>
                     <p className="text-sm font-semibold text-orange-700 md:text-base">
-                      {activeLocation.address}
+                      {activeLocationCopy.address}
                     </p>
                   </div>
 
                   <p className="text-sm leading-7 md:text-base md:leading-8">
-                    {activeLocation.intro}
+                    {activeLocationCopy.intro}
                   </p>
 
                   <div className="grid gap-2 text-sm md:text-base">
-                    {activeLocation.highlights.slice(0, 2).map((highlight) => (
+                    {activeLocationCopy.highlights.slice(0, 2).map((highlight) => (
                       <p key={highlight} className="flex items-start gap-3">
                         <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-amber-700" />
                         <span>{highlight}</span>
@@ -84,9 +91,9 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
                   </div>
 
                   <div>
-                    <h2 className="mb-2 text-sm font-bold text-stone-900 md:text-base">Covered Areas</h2>
+                    <h2 className="mb-2 text-sm font-bold text-stone-900 md:text-base">{t.ourLocations.coveredAreas}</h2>
                     <div className="flex flex-wrap gap-2">
-                      {activeLocation.coverage.map((area) => (
+                      {activeLocationCopy.coverage.map((area) => (
                         <span
                           key={area}
                           className="rounded-md bg-white px-3 py-1.5 text-xs font-semibold text-stone-700 shadow-sm"
@@ -103,14 +110,14 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
                       className="inline-flex items-center justify-center gap-2 rounded-md bg-orange-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-700"
                     >
                       <Phone className="h-4 w-4" />
-                      Call
+                      {t.ourLocations.call}
                     </a>
                     <Link
                       href="/contact_us"
                       className="inline-flex items-center justify-center gap-2 rounded-md border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold text-stone-800 transition hover:border-orange-500 hover:text-orange-700"
                     >
                       <MapPin className="h-4 w-4" />
-                      Reach Centre
+                      {t.ourLocations.reachCentre}
                     </Link>
                   </div>
                 </div>
@@ -119,7 +126,7 @@ export function LocationDetailPage({ location }: LocationDetailPageProps) {
                   <div className="relative overflow-hidden rounded-xl">
                     <Image
                       src={activeLocation.image}
-                      alt={activeLocation.imageAlt}
+                      alt={activeLocationCopy.imageAlt}
                       width={760}
                       height={560}
                       className="h-[220px] w-full object-cover md:h-[280px]"

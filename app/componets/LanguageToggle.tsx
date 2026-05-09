@@ -6,8 +6,9 @@ import { useLanguage } from "@/app/i18n/LanguageContext";
 export function LanguageToggle() {
   const { language, setLanguage, t } = useLanguage();
 
-  return (
-    <div></div>
+  return (    
+    <></>
+    
     // <div
     //   className="flex items-center gap-1 rounded-lg border border-orange-200 bg-orange-50 p-1 text-xs font-semibold text-gray-700"
     //   aria-label={t.common.language}

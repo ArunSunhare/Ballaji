@@ -16,11 +16,19 @@ export function DoctorsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const [failedImages, setFailedImages] = useState<Set<number>>(() => new Set());
   const trackRef = useRef<HTMLDivElement>(null);
-  const loopedDoctors = useMemo(
-    () => [...doctorsData, ...doctorsData],
-    []
+  const localizedDoctors = useMemo(
+    () =>
+      doctorsData.map((doctor) => ({
+        ...doctor,
+        ...(t.home.doctorCards.find((item) => item.id === doctor.id) ?? {}),
+      })),
+    [t.home.doctorCards]
   );
-  const totalOriginal = doctorsData.length;
+  const loopedDoctors = useMemo(
+    () => [...localizedDoctors, ...localizedDoctors],
+    [localizedDoctors]
+  );
+  const totalOriginal = localizedDoctors.length;
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 

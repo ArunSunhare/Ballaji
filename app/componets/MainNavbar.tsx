@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
+import { doctorsData, doctorSpecialties, slugifySpecialty } from "@/app/data/doctors";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 
 const facilityLinks = [
@@ -23,10 +23,11 @@ export function MainNavbar() {
   const [isHealthPackagesOpen, setIsHealthPackagesOpen] = useState(false);
   const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  const [popularTests, setPopularTests] = useState<any[]>([]);
-  const [popularLoading, setPopularLoading] = useState(false);
-  const [popularError, setPopularError] = useState("");
-  const [popularSearch, setPopularSearch] = useState("");
+  const [allTests, setAllTests] = useState<any[]>([]);
+  const [testsLoading, setTestsLoading] = useState(false);
+  const [testsError, setTestsError] = useState("");
+  const [testsSearch, setTestsSearch] = useState("");
+  const [testsLoaded, setTestsLoaded] = useState(false);
 
   const [healthPackages, setHealthPackages] = useState<any[]>([]);
   const [healthPackagesLoading, setHealthPackagesLoading] = useState(false);
@@ -62,45 +63,45 @@ export function MainNavbar() {
       .replace(/^-|-$/g, "");
 
   useEffect(() => {
-    const loadPopular = async () => {
+    const loadTests = async () => {
       if (!isFindTestOpen) return;
-      if (popularLoading) return;
-      if (popularTests.length > 0) return;
+      if (testsLoading) return;
+      if (testsLoaded) return;
 
       try {
-        setPopularError("");
-        setPopularLoading(true);
+        setTestsError("");
+        setTestsLoading(true);
 
-        const res = await fetch("/api/popular-investigation");
+        const params = new URLSearchParams({
+          page: "1",
+          limit: "1000",
+        });
+
+        const res = await fetch(`/api/get-investigation?${params}`);
         const json = await res.json();
 
-        if (!res.ok || !json?.success) {
-          setPopularError(json?.message || t.common.noTestsFound);
-          setPopularTests([]);
+        if (!res.ok || json?.status !== "Success") {
+          setTestsError(json?.message || t.common.noTestsFound);
+          setAllTests([]);
           return;
         }
 
-        let parsed = json?.data;
-        if (typeof parsed === "string") {
-          parsed = JSON.parse(parsed);
-        }
-
-        const list = Array.isArray(parsed?.data) ? parsed.data : [];
-        setPopularTests(list);
+        setAllTests(Array.isArray(json.data) ? json.data : []);
       } catch {
-        setPopularError(t.common.noTestsFound);
-        setPopularTests([]);
+        setTestsError(t.common.noTestsFound);
+        setAllTests([]);
       } finally {
-        setPopularLoading(false);
+        setTestsLoaded(true);
+        setTestsLoading(false);
       }
     };
 
-    loadPopular();
-  }, [isFindTestOpen, popularLoading, popularTests.length]);
+    loadTests();
+  }, [isFindTestOpen, testsLoaded, testsLoading, t.common.noTestsFound]);
 
   useEffect(() => {
     if (!isFindTestOpen) {
-      setPopularSearch("");
+      setTestsSearch("");
     }
   }, [isFindTestOpen]);
 
@@ -157,12 +158,13 @@ export function MainNavbar() {
     }
   }, [isHealthPackagesOpen]);
 
-  const filteredPopularTests = popularTests.filter((item: any) => {
-    const query = popularSearch.trim().toLowerCase();
+  const filteredTests = allTests.filter((item: any) => {
+    const query = testsSearch.trim().toLowerCase();
     if (!query) return true;
     return (
       item.ItemName?.toLowerCase().includes(query) ||
-      item.Item_ID?.toLowerCase().includes(query)
+      item.Item_ID?.toLowerCase().includes(query) ||
+      item.ItemCode?.toLowerCase().includes(query)
     );
   });
 
@@ -174,6 +176,11 @@ export function MainNavbar() {
       pkg.itemID?.toLowerCase().includes(query)
     );
   });
+
+  const getSpecialtyLabel = (specialty: string) => {
+    const doctor = doctorsData.find((item) => item.specialization === specialty);
+    return t.home.doctorCards.find((item) => item.id === doctor?.id)?.specialization ?? specialty;
+  };
 
   return (
     <div className="bg-white hidden lg:block">
@@ -217,7 +224,7 @@ export function MainNavbar() {
                     }}
                     className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:text-orange-600 transition-colors whitespace-normal"
                   >
-                    {specialty}
+                    {getSpecialtyLabel(specialty)}
                   </button>
                 ))}
               </div>
@@ -290,28 +297,28 @@ export function MainNavbar() {
               onMouseEnter={() => handleMouseEnter(setIsFindTestOpen)}
               onMouseLeave={() => handleMouseLeave(setIsFindTestOpen)}
             >
-              {popularLoading ? (
+              {testsLoading ? (
                 <div className="px-4 py-2 text-gray-500 text-sm">{t.common.loading}</div>
-              ) : popularError ? (
-                <div className="px-4 py-2 text-red-600 text-sm">{popularError}</div>
-              ) : popularTests.length === 0 ? (
+              ) : testsError ? (
+                <div className="px-4 py-2 text-red-600 text-sm">{testsError}</div>
+              ) : allTests.length === 0 ? (
                 <div className="px-4 py-2 text-gray-500 text-sm">{t.common.noTestsFound}</div>
               ) : (
                 <div className="px-3 pb-2">
                   <div className="mb-2">
                     <input
                       type="text"
-                      value={popularSearch}
-                      onChange={(e) => setPopularSearch(e.target.value)}
+                      value={testsSearch}
+                      onChange={(e) => setTestsSearch(e.target.value)}
                       placeholder={t.nav.searchTests}
                       className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   <div className="max-h-64 overflow-auto">
-                    {filteredPopularTests.length === 0 ? (
+                    {filteredTests.length === 0 ? (
                       <div className="px-2 py-2 text-gray-500 text-sm">{t.common.noMatchingTests}</div>
                     ) : (
-                      filteredPopularTests.slice(0, 10).map((item: any) => (
+                      filteredTests.map((item: any) => (
                         <button
                           key={item.Item_ID}
                           type="button"
@@ -378,7 +385,7 @@ export function MainNavbar() {
                     {filteredHealthPackages.length === 0 ? (
                       <div className="px-2 py-2 text-gray-500 text-sm">{t.common.noMatchingPackages}</div>
                     ) : (
-                      filteredHealthPackages.slice(0, 10).map((pkg: any) => (
+                      filteredHealthPackages.map((pkg: any) => (
                         <button
                           key={pkg.itemID || pkg.ItemName}
                           type="button"

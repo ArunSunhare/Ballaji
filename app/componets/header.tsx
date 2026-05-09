@@ -50,7 +50,7 @@ export default function App() {
         }}
       >
         {/* Navigation buttons */}
-        <button
+        {/* <button
           onClick={goToPreviousSlide}
           className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all duration-200 z-10"
         >
@@ -62,7 +62,7 @@ export default function App() {
           className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all duration-200 z-10"
         >
           <ChevronRight className="w-6 h-6 text-gray-800" />
-        </button>
+        </button> */}
 
         {/* Slide indicators */}
         <div className="absolute bottom-6 left-6 flex items-center gap-3">

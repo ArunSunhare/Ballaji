@@ -1,134 +1,121 @@
 "use client";
-import React from 'react';
-import Link from 'next/link';
-import { TopHeader } from '../componets/top_header';
-import { TopNavbar } from '../componets/TopNavbar';
-import { MainNavbar } from '../componets/MainNavbar';
+
+import Link from "next/link";
 import { Footer } from "@/app/componets/footer";
+import { MainNavbar } from "@/app/componets/MainNavbar";
+import { TopHeader } from "@/app/componets/top_header";
+import { TopNavbar } from "@/app/componets/TopNavbar";
+import { useLanguage } from "@/app/i18n/LanguageContext";
 import { locationPages } from "./locationData";
 
 export default function OurLocations() {
-    const locations = [
-        {
-            id: 1,
-            name: "Shri Hanuman Balaji Charitable Diagnostic centre (SHBCDC), Delhi",
-            image: "/assets/banner/banner_3.jpeg",
-            rating: 4.8,
-        },
-        {
-            id: 2,
-            name: "SHB-MDH cancer & Multi - Speciality Charitable Hospital, Delhi,",
-            image: "/assets/cancer_hospital.jpeg",
-            rating: 4.6,
-        },
-        {
-            id: 3,
-            name: "Shri Hanuman Balaji Bhartiya Chikitsa Charitable Swasthyavardhak Sansthan, Ghaziabad",
-            image: "/assets/modi_nagar.jpeg",
-            rating: 4.5,
-        },
-        {
-            id: 4,
-            name: "Shri Hanuman balance Aashrit Rogi Sewa Grah, Gurugram",
-            image: "/assets/gurugram/main.jpeg",
-            rating: 4.4,
-        }
-    ];
+  const { t } = useLanguage();
 
-    const locationFilters = [
-        { label: "All Locations", href: "/our_locations" },
-        ...locationPages.map((location) => ({
-            label: location.name,
-            href: `/our_locations/${location.slug}`,
-        })),
-    ];
+  const baseLocations = [
+    { id: 1, slug: "delhi-loc", image: "/assets/banner/banner_3.jpeg", rating: 4.8 },
+    { id: 2, slug: "delhi-ncr", image: "/assets/cancer_hospital.jpeg", rating: 4.6 },
+    { id: 3, slug: "ghaziabad-loc", image: "/assets/modi_nagar.jpeg", rating: 4.5 },
+    { id: 4, slug: "gurugram-loc", image: "/assets/gurugram/main.jpeg", rating: 4.4 },
+  ];
 
-    return (
-        <div className="min-h-screen bg-white">
-            <TopHeader />
-            <TopNavbar />
-            <MainNavbar />
+  const getLocationCopy = (slug: string) =>
+    t.ourLocations.locations.find((location) => location.slug === slug);
 
+  const locations = baseLocations.map((location) => ({
+    ...location,
+    name:
+      getLocationCopy(location.slug)?.cardName ||
+      locationPages.find((item) => item.slug === location.slug)?.subtitle ||
+      "",
+  }));
 
-            <div className="bg-white py-12 px-4 md:px-10">
-                <div className="max-w-7xl mx-auto">
+  const locationFilters = [
+    { label: t.ourLocations.allLocations, href: "/our_locations" },
+    ...locationPages.map((location) => ({
+      label: getLocationCopy(location.slug)?.name || location.name,
+      href: `/our_locations/${location.slug}`,
+    })),
+  ];
 
-                    {/* 1. Tabs/Filters Section */}
-                    <div className="flex items-center space-x-8 border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
-                        {locationFilters.map((filter, index) => (
-                            <Link
-                                key={filter.href}
-                                href={filter.href}
-                                className={`pb-3 text-sm font-medium whitespace-nowrap transition-colors ${
-                                    index === 0
-                                        ? 'text-orange-700 border-b-2 border-orange-600'
-                                        : 'text-gray-500 hover:text-orange-600'
-                                }`}
-                            >
-                                {filter.label}
-                            </Link>
-                        ))}
+  return (
+    <div className="min-h-screen bg-white">
+      <TopHeader />
+      <TopNavbar />
+      <MainNavbar />
+
+      <div className="bg-white px-4 py-12 md:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="no-scrollbar mb-8 flex items-center space-x-8 overflow-x-auto border-b border-gray-200">
+            {locationFilters.map((filter, index) => (
+              <Link
+                key={filter.href}
+                href={filter.href}
+                className={`whitespace-nowrap pb-3 text-sm font-medium transition-colors ${
+                  index === 0
+                    ? "border-b-2 border-orange-600 text-orange-700"
+                    : "text-gray-500 hover:text-orange-700"
+                }`}
+              >
+                {filter.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="group relative">
+            <div className="no-scrollbar flex snap-x gap-5 overflow-x-auto pb-6">
+              <div className="flex min-w-[300px] snap-start flex-col justify-center rounded-xl bg-gradient-to-br from-orange-700 to-orange-500 p-8 md:min-w-[380px]">
+                <h2 className="mb-4 text-2xl font-bold text-white">
+                  {t.ourLocations.networkTitle}
+                </h2>
+                <p className="mb-8 text-sm leading-relaxed text-orange-100">
+                  {t.ourLocations.networkDescription}
+                </p>
+                <button className="flex w-full items-center justify-between rounded-lg bg-white px-5 py-3 font-semibold text-orange-700 transition-all hover:bg-orange-50 md:w-64">
+                  {t.ourLocations.findCentre}
+                  <span className="text-xl">›</span>
+                </button>
+              </div>
+
+              {locations.map((loc) => (
+                <div
+                  key={loc.id}
+                  className="flex min-w-[260px] snap-start flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-md md:min-w-[280px]"
+                >
+                  <div className="h-48 w-full overflow-hidden">
+                    <img
+                      src={loc.image}
+                      alt={loc.name}
+                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                    />
+                  </div>
+                  <div className="flex flex-grow flex-col justify-between p-5">
+                    <h3 className="mb-4 text-[15px] font-bold leading-tight text-gray-800">
+                      {loc.name}
+                    </h3>
+
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-red-500 text-[10px] font-bold text-white">
+                        G
+                      </div>
+                      <div className="flex text-xs text-yellow-400">
+                        {"★".repeat(Math.floor(loc.rating))}
+                        <span className="text-gray-300">★</span>
+                      </div>
+                      <span className="text-xs font-semibold text-gray-500">{loc.rating}</span>
                     </div>
-
-                    {/* 2. Main Horizontal Scroll Area */}
-                    <div className="relative group">
-                        <div className="flex gap-5 overflow-x-auto pb-6 no-scrollbar snap-x">
-
-                            {/* THE INTRO CARD */}
-                            <div className="min-w-[300px] md:min-w-[380px] bg-gradient-to-br from-orange-700 to-orange-500 rounded-xl p-8 flex flex-col justify-center snap-start">
-                                <h2 className="text-2xl font-bold text-white mb-4">Our Diagnostic Network</h2>
-                                <p className="text-orange-100 text-sm leading-relaxed mb-8">
-                                    Shri Hanuman Balaji Charitable Diagnostic Centre provides affordable,
-                                    world-class diagnostics across Delhi NCR. Home sample collection
-                                    available at just ₹50/person.
-                                </p>
-                                <button className="bg-white hover:bg-orange-50 text-orange-700 font-semibold py-3 px-5 rounded-lg flex justify-between items-center transition-all w-full md:w-64">
-                                    Find Centre Near You
-                                    <span className="text-xl">›</span>
-                                </button>
-                            </div>
-
-                            {/* LOCATION CARDS */}
-                            {locations.map((loc) => (
-                                <div
-                                    key={loc.id}
-                                    className="min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col snap-start hover:shadow-md transition-shadow"
-                                >
-                                    <div className="h-48 w-full overflow-hidden">
-                                        <img
-                                            src={loc.image}
-                                            alt={loc.name}
-                                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                                        />
-                                    </div>
-                                    <div className="p-5 flex flex-col justify-between flex-grow">
-                                        <h3 className="text-[15px] font-bold text-gray-800 leading-tight mb-4">
-                                            {loc.name}
-                                        </h3>
-
-                                        <div className="flex items-center gap-2">
-                                            {/* Google Icon */}
-                                            <div className="w-4 h-4 flex items-center justify-center text-[10px] font-bold text-white bg-red-500 rounded-sm">G</div>
-                                            <div className="flex text-yellow-400 text-xs">
-                                                {"★".repeat(Math.floor(loc.rating))}
-                                                <span className="text-gray-300">★</span>
-                                            </div>
-                                            <span className="text-xs font-semibold text-gray-500">{loc.rating}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Right Arrow Indicator */}
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">
-                            <span className="text-orange-600 text-2xl">→</span>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+              ))}
             </div>
 
-            <Footer />
+            <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 cursor-pointer rounded-full bg-white/80 p-2 opacity-0 shadow-md transition-opacity group-hover:opacity-100 md:block">
+              <span className="text-2xl text-orange-600">→</span>
+            </div>
+          </div>
         </div>
-    );
+      </div>
+
+      <Footer />
+    </div>
+  );
 }

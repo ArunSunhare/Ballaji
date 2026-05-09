@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
-
-// const galleryCategories = [
-//   // { id: "all", name: "All Photos" },
-//   // { id: "hospital", name: "Hospital" },
-//   // { id: "equipment", name: "Equipment" },
-//   // { id: "staff", name: "Staff" },
-//   // { id: "patients", name: "Patient Care" }
-// ];
+import { useLanguage } from "@/app/i18n/LanguageContext";
 
 const galleryImages = [
   {
@@ -67,6 +60,7 @@ export function GallerySection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState<typeof galleryImages[0] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { t } = useLanguage();
 
   const filteredImages = selectedCategory === "all" 
     ? galleryImages 
@@ -95,11 +89,11 @@ export function GallerySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Photo Gallery
+            {t.gallery.heroTitle}
           </h2>
           <div className="w-20 h-1 bg-red-600 mx-auto mb-4"></div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our hospital facilities, advanced equipment, and dedicated healthcare team
+           {t.gallery.heroSubtitle}
           </p>
         </div>
 

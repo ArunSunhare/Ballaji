@@ -30,7 +30,7 @@ export function DR_Qualification() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % doctors.length);
-    }, 3000); // Slides every 3 seconds
+    }, 2000); // Slides every 3 seconds
 
     return () => clearInterval(interval);
   }, [doctors.length]);
